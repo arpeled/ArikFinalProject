@@ -1,3 +1,4 @@
+'image' 'Atelectasis' 'Cardiomegaly' 'Effusion' 'Infiltration' 'Mass' 'Nodule' 'Pneumonia' 'Pneumothorax' 'Consolidation' 'Edema' 'Emphysema' 'Fibrosis' 'Pleural_Thickening' 'Hernia'
 00001522_000.png 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 00023313_000.png 1 0 0 0 0 0 0 0 0 0 0 0 0 0
 00023313_001.png 0 0 0 0 0 0 0 0 0 0 0 0 0 0
