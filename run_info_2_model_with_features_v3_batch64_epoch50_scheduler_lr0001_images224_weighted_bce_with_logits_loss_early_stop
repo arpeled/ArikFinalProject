@@ -1,0 +1,23 @@
+file chest-x-ray-classifier-densenet121-train_v03  # Model training script
+Validation Loss: 40.2425
+Epoch: 24, Validation Loss: 40.2425
+Early stopping at epoch 24
+Training complete.
+Loss history:  [23.920385496472125, 23.697239135932243, 24.103363149106716, 25.034579080194764, 27.852126179216594, 31.182475113783866, 32.84476906718733, 34.88060279248872, 37.99625257749999, 39.385152421387915, 39.869934932192876, 39.55902512811681, 39.4376377295769, 40.33872463864364, 40.58792314156094, 39.80359150082191, 40.66985203278022, 41.59068905161793, 39.787313283126124, 40.409428550679486, 40.71098784789496, 40.13133334943832, 40.80318360481398, 40.24245633264454]
+Training complete in 18191.46 seconds
+
+
+# Parameters
+num_classes = 14
+batch_size = 64
+learning_rate = 0.0001
+num_epochs = 50
+use_additional_features = True  # Toggle for using additional features
+    class_weights = torch.tensor([
+        14.22, 21.26, 24.46, 44.74, 48.90, 53.34, 60.60,
+        83.68, 102.04, 112.36, 122.70, 168.06, 198.02, 1250.00
+    ], dtype=torch.float32).to(device)
+model saved:
+model_with_features_v3_batch64_epoch50_scheduler_lr0001_images224_weighted_bce_with_logits_loss_early_stop.pth
+class EarlyStopping:
+    def __init__(self, patience=10, min_delta=0.01, warmup_epochs=15):
