@@ -1,0 +1,63 @@
+file chest-x-ray-classifier-densenet121-train_v04  # Model training script
+Validation Loss: 4.6727
+Epoch: 32, Validation Loss: 4.6727
+Early stopping at epoch 32
+Training complete.
+Loss history:  [1.617294897816398, 1.5704323092373935, 1.5626034751805393, 1.6213412950255655, 1.724498925859278, 2.010019777254625, 2.08323143937371, 2.370457106286829, 2.4867236456004056, 2.629302834814245, 2.773909654183821, 2.9279380124265497, 2.984419078393416, 3.20398867520419, 3.412253344709223, 3.6436257375370373, 3.723904822956432, 3.85010808988051, 4.253168832605535, 4.028169666203586, 4.098066383708607, 4.070364972894842, 4.2968426704406735, 4.314735464182767, 4.454586559208956, 4.452900746518916, 4.494623517990112, 4.480554406859658, 4.578330962007696, 4.644880491603504, 4.6243334609811955, 4.6727457245913415]
+Training complete in 25593.20 seconds
+
+# Parameters
+num_classes = 14
+batch_size = 64
+learning_rate = 0.0001
+num_epochs = 50
+use_additional_features = True  # Toggle for using additional features
+    model = ModifiedDenseNetWithDropOut(num_classes=num_classes, use_additional_features=use_additional_features).to(device)
+    class_weights = torch.tensor([
+        1.42, 2.12, 2.44, 4.47, 4.89, 5.33, 6.06,
+        8.36, 10.20, 11.23, 12.27, 16.80, 19.80, 50.00
+    ], dtype=torch.float32).to(device)
+split data by patient id:
+gss = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+train_idx, val_idx = next(gss.split(df, groups=df["Patient ID"]))
+
+
+class ModifiedDenseNetWithDropOut(nn.Module):
+    def __init__(self, num_classes=14, use_additional_features=False):
+        super(ModifiedDenseNetWithDropOut, self).__init__()
+        weights = DenseNet121_Weights.IMAGENET1K_V1
+        model = densenet121(weights=weights)
+        self.base_model = model
+        self.base_model.classifier = nn.Identity()  # Remove DenseNet's classifier
+        self.dropout = nn.Dropout(0.3)  # Dropout חדש!
+
+        self.use_additional_features = use_additional_features
+        if self.use_additional_features:
+            self.additional_fc = nn.Linear(4, 128)
+            self.final_fc = nn.Linear(1024 + 128, num_classes)
+        else:
+            self.final_fc = nn.Linear(1024, num_classes)
+# add dropout layer
+class ModifiedDenseNetWithDropOut(nn.Module):
+    def __init__(self, num_classes=14, use_additional_features=False):
+        super(ModifiedDenseNetWithDropOut, self).__init__()
+        weights = DenseNet121_Weights.IMAGENET1K_V1
+        model = densenet121(weights=weights)
+        self.base_model = model
+        self.base_model.classifier = nn.Identity()  # Remove DenseNet's classifier
+        self.dropout = nn.Dropout(0.3)  # Dropout חדש!
+
+        self.use_additional_features = use_additional_features
+        if self.use_additional_features:
+            self.additional_fc = nn.Linear(4, 128)
+            self.final_fc = nn.Linear(1024 + 128, num_classes)
+        else:
+            self.final_fc = nn.Linear(1024, num_classes)
+
+
+model saved:
+model_with_features_v4_batch64_epoch50_scheduler_lr0001_images224_weighted_bce_with_logits_loss_early_stop_warmup25_pat7_ModifiedDenseNetWithDropOut_fix_val_test_split.pth
+
+
+class EarlyStopping:
+    def __init__(self, patience=7, min_delta=0.01, warmup_epochs=25):
