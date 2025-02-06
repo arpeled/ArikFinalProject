@@ -12,7 +12,12 @@ device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 if device.type == "mps":
     print("PyTorch is using Metal Performance Shaders (MPS) for GPU acceleration.")
 else:
-    print("PyTorch is not using GPU. Running on CPU.")
+    if torch.cuda.is_available():
+        print("PyTorch is using Cuda for GPU acceleration.")
+    else:
+        print("PyTorch is not using GPU. Running on CPU.")
+
+print("torch check ", torch.cuda.is_available(), torch.cuda.device_count())
 
 # Generate synthetic dataset
 input_dim = 1000
