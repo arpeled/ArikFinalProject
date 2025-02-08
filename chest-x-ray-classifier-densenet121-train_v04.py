@@ -10,7 +10,6 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch.nn.functional as F
 from torch.utils.data import random_split
 from sklearn.model_selection import GroupShuffleSplit
-import torch.distributed as dist
 
 #  fix performace issue, validation loss is not decreasing even when training loss is decreasing
 # change weights - normalize them
@@ -76,9 +75,11 @@ def train_model():
         "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
     num_gpus = torch.cuda.device_count() if torch.cuda.is_available() else 1
     print(f"✅ Using {num_gpus} GPU(s) on {device}")
-    if torch.cuda.device_count() > 1:
-        dist.init_process_group(backend="gloo")  # Alternative: backend="mpi" if you installed MPI
-        print(f"Initialized distributed training on {torch.cuda.device_count()} GPUs.")
+    if torch.cuda.is_available() and torch.cuda.device_count() > 1:
+        # backend = "nccl" if torch.distributed.is_nccl_available() else "gloo"
+        # dist.init_process_group(backend=backend)
+        print(f"✅ Using backend for distributed training.")
+
     # Dataset and DataLoader
 
     df = pd.read_csv(csv_file)
@@ -105,14 +106,16 @@ def train_model():
     val_dataset = ChestXRayDataset(dataset=val_df, csv_file=None, root_dir= root_dir,transform=transform, use_additional_features=True)
 
     # יצירת ה-DataLoaders
-    dataloader_train = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-    dataloader_val = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
+    dataloader_train = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=8, pin_memory=True)
+    dataloader_val = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=8, pin_memory=True)
 
     print(f"מספר הדוגמאות ב-Train: {len(train_dataset)}, מספר הדוגמאות ב-Validation: {len(val_dataset)}")
     # Initialize model
     model = ModifiedDenseNetWithDropOut(num_classes=num_classes, use_additional_features=use_additional_features).to(device)
     if torch.cuda.is_available() and num_gpus > 1:
+        print("parallel gpu training")
         model = torch.nn.DataParallel(model)
+
     model = model.to(device)
 
     class_weights = torch.tensor([
@@ -158,7 +161,7 @@ def train_model():
                 images, labels = batch
                 images, labels = images.to(device), labels.to(device)
                 outputs = model(images)
-            print(outputs.shape)
+            # print(outputs.shape)
             if isinstance(outputs, tuple):  # ✅ Handle DataParallel outputs
                 outputs = outputs[0]
             loss = criterion(outputs, labels)
