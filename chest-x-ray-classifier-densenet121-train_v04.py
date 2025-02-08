@@ -10,6 +10,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch.nn.functional as F
 from torch.utils.data import random_split
 from sklearn.model_selection import GroupShuffleSplit
+import torch.distributed as dist
 
 #  fix performace issue, validation loss is not decreasing even when training loss is decreasing
 # change weights - normalize them
@@ -75,7 +76,9 @@ def train_model():
         "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
     num_gpus = torch.cuda.device_count() if torch.cuda.is_available() else 1
     print(f"✅ Using {num_gpus} GPU(s) on {device}")
-
+    if torch.cuda.device_count() > 1:
+        dist.init_process_group(backend="gloo")  # Alternative: backend="mpi" if you installed MPI
+        print(f"Initialized distributed training on {torch.cuda.device_count()} GPUs.")
     # Dataset and DataLoader
 
     df = pd.read_csv(csv_file)
