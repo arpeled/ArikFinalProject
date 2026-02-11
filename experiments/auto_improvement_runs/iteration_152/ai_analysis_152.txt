@@ -1,0 +1,34 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-11 09:14:57
+Iteration: 152
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "NEXT FOCUSED TASK (Iter-152 \u2192 Iter-153): run a *single, Phase-5-compliant* hard-negative emphasis adjustment aimed at suppressing confident false positives for the target diseases (Pneumonia, Fibrosis, Edema) to improve their ranking/AUC, while keeping stable diseases from regressing.\n\nWhy this task now:\n- Iter-152 macro AUC=0.7486 is materially below the Iter-84 baseline AUC=0.7659 (Δ=-0.0173), so the current run is outside the Phase-5 stability band (±0.01). That means we should *not* escalate aggressiveness further; we should de-risk by dialing back from the overly strict recent settings (Iter-151 used 0.15/2.6).\n- Target-class failure mode still matches the Phase-5 key insight (noise/FPs): Pneumonia AUC=0.7059 with low recall and non-trivial FP=689; Fibrosis AUC=0.6825 with FP=1559. This suggests mis-ranked negatives are still a dominant error source.\n- Edema AUC is already strong (0.8707). Including it in the target list is fine, but the tuning should primarily avoid collateral damage to stable classes and overall macro AUC.\n\nTherefore: use a *moderate* hard-negative threshold/weight (between the baseline 0.3/1.5 and the strict 0.15/2.6) to reduce the risk of global AUC collapse while still applying additional penalty to high-scoring negatives in Pneumonia/Fibrosis.\n\nCRITICAL ISSUES (must be flagged):\n1) Mandatory Phase-5 checks cannot be completed from the provided info: we do not have per-class AUC deltas vs Iter-84 for all diseases, so stable-disease regression cannot be verified. The loop must output a ΔAUC table next iteration.\n2) Evaluation has threshold=auto and threshold_optimization=per_class_f1_score enabled. While this does not change AUC mathematically, it has repeatedly confounded the experiment loop by shifting attention to F1/recall and creating non-Phase-5 behavior in prior iterations. Phase 5 should be interpreted strictly as AUC/ranking only.\n\nIteration comparison / trend:\n- AUC is degrading recently: 0.7610 (Iter-150) \u2192 0.7422 (Iter-151) \u2192 0.7486 (Iter-152). This coincides with increasingly aggressive hard-negative settings and suggests over-penalization is harming overall ranking.\n- Target AUCs remain weak for Pneumonia/Fibrosis; Edema remains strong. This supports continuing noise suppression but with reduced aggressiveness.\n\nNew approach not yet properly tested *within allowed Phase-5 levers*: a de-escalation sweep (moderate threshold + moderate weight) to find the stability-improvement frontier rather than pushing harsher mining. This is still 'hard_negative_emphasis' and stays within the permitted config knobs.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis",
+    "Edema"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.25,
+    "hard_negative_weight": 1.9
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "FAILED",
+  "success": false
+}
