@@ -99,13 +99,26 @@ This project uses the **NIH ChestX-ray14** dataset:
 - 14 disease labels (multi-label)
 - Patient metadata: age, gender, view position
 
-The dataset is **not included** in this repository due to its size (~45 GB). To set up:
+The image files are **not included** in this repository due to their size. The CSV metadata and split files are already present in `ChestX-ray14/`. To set up the images:
 
-1. Download ChestX-ray14 from the [NIH Clinical Center](https://nihcc.app.box.com/v/ChestXray-NIHCC).
-2. Place the data in a `ChestX-ray14/` directory at the project root.
-3. Ensure `images224/` contains the resized 224x224 images, and `train_data.csv` / `test_data.csv` are present.
+1. Download `images224.zip` from [Google Drive](https://drive.google.com/file/d/1ZD9HVZjOnBsTJYUM8fOvIn77l9IID5QF/view?usp=sharing).
+2. Extract the zip file **into** the `ChestX-ray14/` directory at the project root:
+   ```bash
+   unzip images224.zip -d ChestX-ray14/
+   ```
+3. Verify the resulting structure — the images must be directly inside `images224/`:
+   ```
+   ChestX-ray14/
+   ├── images224/
+   │   ├── 00000001_000.png
+   │   ├── 00000001_001.png
+   │   └── ...
+   ├── train_data.csv
+   ├── test_data.csv
+   └── Data_Entry_2017_v2020.csv
+   ```
 
-The pipeline expects relative paths: `./ChestX-ray14/train_data.csv`, `./ChestX-ray14/images224/`.
+> **Note:** If extracting creates a nested folder (`ChestX-ray14/images224/images224/`), move the inner contents up one level so that `.png` files sit directly under `ChestX-ray14/images224/`.
 
 ---
 
@@ -223,6 +236,14 @@ The single entry point is **`main.py`** at the project root. It supports:
 - **Input**: 224x224 chest X-ray images + patient metadata (age, gender, view position)
 - **Output**: 14 sigmoid outputs (one per disease)
 - **Loss**: Weighted Binary Cross-Entropy with Logits
+
+### Backbone Freezing Strategy (Advanced Phase Optimization)
+
+In the initial experimental phases (iterations 1–86), the full DenseNet-121 backbone was trainable alongside the classification head. While this allowed the model to adapt learned representations, it introduced significant performance instability: macro AUROC fluctuated between runs and exhibited drift, dropping from 0.80 (iteration 12) to as low as 0.75 by iteration 86 despite continued optimization. The decline indicated that unrestricted backbone fine-tuning was causing catastrophic interference with previously learned feature representations.
+
+Beginning at iteration 87, the project transitioned to a HEAD_UPGRADE phase in which the DenseNet-121 backbone was frozen and only the classification head was trained. The backbone weights were loaded from iteration 12 — the highest-ranking AUC anchor (macro AUROC 0.8009) — via `load_backbone_from_checkpoint()`, which selectively loads convolutional and batch normalization parameters while discarding head layers (`core/dataset.py:415`). The backbone is then frozen by setting `requires_grad=False` on all backbone parameters (`core/dataset.py:405`), and only the MLP head parameters remain trainable.
+
+This strategy immediately recovered macro AUROC to ~0.82 at iteration 87 and maintained stable performance across subsequent iterations (0.816–0.820 through iteration 131). The frozen backbone configuration is controlled by the `training.freeze_backbone` flag in the YAML config, with the source checkpoint specified via `metadata.backbone_source` (defaulting to iteration 12). A partial unfreezing variant (`model.unfreeze_last_blocks`) was also implemented for fine-tuning only `denseblock4` and `norm5`, though the fully frozen configuration was used for the majority of later iterations. This architectural decision — treating the backbone as a fixed feature extractor and optimizing only the decision head — proved essential for achieving reproducible, stable AUC performance across the final 60+ iterations of the experiment.
 
 ---
 

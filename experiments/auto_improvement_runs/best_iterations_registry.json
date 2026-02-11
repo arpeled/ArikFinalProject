@@ -2333,7 +2333,20 @@
       "timestamp": "2026-02-10T23:46:12.720387",
       "role": "TARGETED_AUC",
       "parent_iteration": 84
+    },
+    {
+      "iteration": 152,
+      "metrics": {
+        "avg_f1": 0.2146333384551989,
+        "avg_auc": 0.748590397252067,
+        "avg_recall": 0.43566018512139987,
+        "avg_precision": 0.17872759606388502,
+        "avg_accuracy": 0.8011696651546811
+      },
+      "timestamp": "2026-02-11T09:14:37.749681",
+      "role": "TARGETED_AUC",
+      "parent_iteration": 84
     }
   ],
-  "last_updated": "2026-02-10T23:46:12.720493"
+  "last_updated": "2026-02-11T09:14:37.749778"
 }

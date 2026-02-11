@@ -1,10 +1,10 @@
 # Auto-Improvement Loop - Final Report
 
-**Generated**: 2026-02-10 23:46:21
+**Generated**: 2026-02-11 09:14:57
 
-**Total Runtime**: 7261.16 seconds (2.02 hours)
+**Total Runtime**: 7256.98 seconds (2.02 hours)
 
-**Iterations Completed**: 143/1
+**Iterations Completed**: 144/1
 
 ## Iteration Summary
 
@@ -153,6 +153,7 @@
 | 149 | 0.7766 | 0.2515 | 0.4228 | 0.2032 | 0.8594 | completed | config_iteration_149.yaml |
 | 150 | 0.7610 | 0.2333 | 0.4190 | 0.1836 | 0.8420 | completed | config_iteration_150.yaml |
 | 151 | 0.7422 | 0.2338 | 0.4121 | 0.1912 | 0.8235 | completed | config_iteration_151.yaml |
+| 152 | 0.7486 | 0.2146 | 0.4357 | 0.1787 | 0.8012 | completed | experiments/configs/config_iteration_152.yaml |
 
 ## Best Performing Iteration
 
@@ -183,13 +184,13 @@
 
 ## Improvement Over Iterations
 
-**AUC Change**: -0.0749 (-9.17%)
+**AUC Change**: -0.0686 (-8.39%)
 
-**F1 Change**: +0.0994
+**F1 Change**: +0.0802
 
-**Recall Change**: +0.3163
+**Recall Change**: +0.3399
 
-**Precision Change**: -0.1671
+**Precision Change**: -0.1796
 
-**Accuracy Change**: -0.1259
+**Accuracy Change**: -0.1483
 
