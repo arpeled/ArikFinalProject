@@ -1,0 +1,144 @@
+======================================================================
+PARAMETER VARIATION ANALYSIS
+======================================================================
+
+Total configurations analyzed: 139
+Parameters that varied: 20
+
+--------------------------------------------------
+VARYING PARAMETERS:
+--------------------------------------------------
+
+parent_iteration:
+    -: 78 iterations
+    91: 26 iterations
+    84: 14 iterations
+    89: 6 iterations
+    122: 6 iterations
+    12: 4 iterations
+    126: 1 iterations
+    127: 1 iterations
+    128: 1 iterations
+    129: 1 iterations
+    130: 1 iterations
+
+loss_type:
+    FocalLoss: 85 iterations
+    BCE: 47 iterations
+    focal: 7 iterations
+
+loss_gamma:
+    -: 47 iterations
+    2.00: 41 iterations
+    3.00: 35 iterations
+    2.50: 8 iterations
+    4.00: 2 iterations
+    5.00: 2 iterations
+    3.50: 2 iterations
+    1.50: 2 iterations
+
+loss_alpha:
+    -: 66 iterations
+    0.7500: 32 iterations
+    0.7000: 19 iterations
+    0.5000: 11 iterations
+    0.8000: 8 iterations
+    0.2500: 2 iterations
+    0.6000: 1 iterations
+
+use_class_weights:
+    Yes: 82 iterations
+    No: 57 iterations
+
+dropout_rate:
+    0.3000: 112 iterations
+    0.2000: 11 iterations
+    0.5000: 10 iterations
+    0.4000: 4 iterations
+    0.1000: 2 iterations
+
+head_hidden_features:
+    -: 113 iterations
+    1024: 22 iterations
+    512: 4 iterations
+
+learning_rate:
+    0.0001: 55 iterations
+    0.0005: 45 iterations
+    0.0010: 23 iterations
+    1.00e-05: 13 iterations
+    5.00e-05: 3 iterations
+
+num_epochs:
+    50: 67 iterations
+    35: 16 iterations
+    20: 12 iterations
+    10: 12 iterations
+    60: 11 iterations
+    200: 7 iterations
+    40: 2 iterations
+    70: 2 iterations
+    100: 2 iterations
+    150: 2 iterations
+    15: 2 iterations
+    30: 1 iterations
+    90: 1 iterations
+    120: 1 iterations
+    5: 1 iterations
+
+freeze_backbone:
+    -: 92 iterations
+    Yes: 46 iterations
+    No: 1 iterations
+
+weight_decay:
+    0.00e+00: 75 iterations
+    0.0001: 62 iterations
+    0.0100: 2 iterations
+
+scheduler_patience:
+    5: 91 iterations
+    3: 47 iterations
+    7: 1 iterations
+
+scheduler_mode:
+    min: 84 iterations
+    max: 55 iterations
+
+early_stopping_enabled:
+    Yes: 138 iterations
+    No: 1 iterations
+
+early_stopping_patience:
+    5: 107 iterations
+    10: 30 iterations
+    15: 1 iterations
+    -: 1 iterations
+
+early_stopping_monitor:
+    -: 72 iterations
+    val_macro_auc: 47 iterations
+    val_f1: 20 iterations
+
+early_stopping_min_delta:
+    0.0100: 70 iterations
+    0.0010: 67 iterations
+    0.0050: 1 iterations
+    -: 1 iterations
+
+rare_class_aug_enabled:
+    Yes: 91 iterations
+    No: 48 iterations
+
+threshold_optimization:
+    per_class_f1_score: 119 iterations
+    per_class: 7 iterations
+    per_class_fbeta_score: 7 iterations
+    -: 4 iterations
+    f1_score: 1 iterations
+    No: 1 iterations
+
+auc_improvement_enabled:
+    -: 78 iterations
+    No: 47 iterations
+    Yes: 14 iterations

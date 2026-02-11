@@ -1,0 +1,22 @@
+1. ANALYSIS:
+
+The model seems to have a problem with the prediction of minority classes. The model's recall is quite low, indicating that the model is not predicting positive cases well and is predicting almost all samples as negative. This is an issue commonly faced in highly imbalanced classification problems. This is also reflected in the F1-Score, which is a balance between Precision and Recall and is currently quite low across most of the classes.
+
+The AUC is decent, which is not surprising as AUC-ROC is not sensitive to class imbalance. However, AUC alone does not give a complete picture in imbalanced classification problems. We need to focus on improving F1-Score and Recall.
+
+Comparing with previous iterations, it seems that changes made in the last iterations (like oversampling, usage of dynamic weights, and adjusting gamma in FocalLoss) has not provided a significant improvement in F1-Score and Recall.
+
+2. SUGGESTED_CHANGES:
+
+The current threshold set at 0.5 is not appropriate for imbalanced classification problems. We should consider optimizing the threshold per class based on the F1-Score. This should significantly improve the Recall and Precision leading to a better F1-Score.
+
+```json
+{
+  "evaluation": {
+    "threshold_optimization": "per_class_f1_score"
+  },
+  "reasoning": "The model is currently predicting almost all samples as negative, especially for rare classes. The standard threshold of 0.5 is not suitable for imbalanced classification problems. By enabling per-class threshold optimization based on F1-Score, we can improve the Recall and Precision of the model leading to a better F1-Score."
+}
+``` 
+
+After applying this change, we should continue focusing on the points mentioned in the systematic improvement strategy. We should also analyze the effect of this change on the model performance before implementing the next change in the strategy.

@@ -1,0 +1,86 @@
+{
+  "Cardiomegaly": {
+    "threshold": 0.1,
+    "score": 0.31893687707641194,
+    "positive_samples": 413,
+    "status": "optimized"
+  },
+  "Emphysema": {
+    "threshold": 0.05,
+    "score": 0.4098360655737705,
+    "positive_samples": 416,
+    "status": "optimized"
+  },
+  "Effusion": {
+    "threshold": 0.15,
+    "score": 0.5114782235571765,
+    "positive_samples": 2146,
+    "status": "optimized"
+  },
+  "Hernia": {
+    "threshold": 0.5,
+    "score": 0.0,
+    "positive_samples": 32,
+    "status": "optimized"
+  },
+  "Infiltration": {
+    "threshold": 0.15,
+    "score": 0.37953843892400413,
+    "positive_samples": 3127,
+    "status": "optimized"
+  },
+  "Mass": {
+    "threshold": 0.1,
+    "score": 0.3751263902932255,
+    "positive_samples": 999,
+    "status": "optimized"
+  },
+  "Nodule": {
+    "threshold": 0.1,
+    "score": 0.25206010664081435,
+    "positive_samples": 1042,
+    "status": "optimized"
+  },
+  "Atelectasis": {
+    "threshold": 0.1,
+    "score": 0.3585786802030457,
+    "positive_samples": 1815,
+    "status": "optimized"
+  },
+  "Pneumothorax": {
+    "threshold": 0.1,
+    "score": 0.40763765541740676,
+    "positive_samples": 870,
+    "status": "optimized"
+  },
+  "Pleural_Thickening": {
+    "threshold": 0.05,
+    "score": 0.18867924528301888,
+    "positive_samples": 523,
+    "status": "optimized"
+  },
+  "Pneumonia": {
+    "threshold": 0.05,
+    "score": 0.08351648351648351,
+    "positive_samples": 234,
+    "status": "optimized"
+  },
+  "Fibrosis": {
+    "threshold": 0.05,
+    "score": 0.1654320987654321,
+    "positive_samples": 310,
+    "status": "optimized"
+  },
+  "Edema": {
+    "threshold": 0.1,
+    "score": 0.22485207100591717,
+    "positive_samples": 313,
+    "status": "optimized"
+  },
+  "Consolidation": {
+    "threshold": 0.39999999999999997,
+    "score": 0.23559870550161813,
+    "positive_samples": 771,
+    "status": "optimized"
+  }
+}

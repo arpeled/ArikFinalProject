@@ -1,0 +1,1045 @@
+file chest-x-ray-classifier-densenet121-train_v04  # Model training script
+# change no. 3 in weights for better results
+Validation Loss: 0.3785
+Epoch: 32, Validation Loss: 0.3785
+Early stopping at epoch 32
+Training complete.
+Loss history:  [0.23426707622679796, 0.2237694018266418, 0.22144525080919267, 0.22238988350738179, 0.2203562240708958, 0.22155400907451456, 0.2395924817973917, 0.22456158556721428, 0.22920716998252003, 0.23220736061984842, 0.23374294728040695, 0.22843875513835388, 0.2424331469698386, 0.2428641928326, 0.2498668308420615, 0.26048992121761494, 0.2692744011228735, 0.27470123827457427, 0.28850734626704994, 0.2886948877302083, 0.30306818983771583, 0.3153083317930048, 0.3205334492976015, 0.3278232894160531, 0.3442356344244697, 0.34401475868441844, 0.3566327054934068, 0.3610354843464765, 0.3638882637294856, 0.36854775255376643, 0.37569526282223786, 0.37849786698818205]
+Training complete in 26481.73 seconds
+
+New Class Weights: {'Infiltration': 0.34271725826193394, 'Effusion': 0.5118829981718466, 'Atelectasis': 0.5898876404494383, 'Nodule': 1.076923076923077, 'Mass': 1.1797752808988766, 'Pneumothorax': 1.2863705972434918, 'Consolidation': 1.4608695652173913, 'Pleural_Thickening': 2.0143884892086334, 'Cardiomegaly': 2.456140350877193, 'Emphysema': 2.709677419354839, 'Edema': 2.95774647887324, 'Fibrosis': 4.038461538461539, 'Pneumonia': 4.7727272727272725, 'Hernia': 30.0}
+# calculating weights
+import torch
+
+# Disease prevalence from dataset (convert to fraction)
+disease_prevalence = {
+    'Infiltration': 24.51 / 100, 'Effusion': 16.41 / 100, 'Atelectasis': 14.24 / 100,
+    'Nodule': 7.80 / 100, 'Mass': 7.12 / 100, 'Pneumothorax': 6.53 / 100,
+    'Consolidation': 5.75 / 100, 'Pleural_Thickening': 4.17 / 100, 'Cardiomegaly': 3.42 / 100,
+    'Emphysema': 3.10 / 100, 'Edema': 2.84 / 100, 'Fibrosis': 2.08 / 100,
+    'Pneumonia': 1.76 / 100, 'Hernia': 0.28 / 100
+}
+
+# Compute inverse prevalence weights
+class_weights = {disease: 1 / freq for disease, freq in disease_prevalence.items()}
+
+# Normalize weights so the largest is 30 (to prevent exploding gradients)
+max_weight = 30.0
+min_weight = 1.0
+normalized_weights = {disease: (w / max(class_weights.values())) * max_weight for disease, w in class_weights.items()}
+
+# Convert to tensor for PyTorch
+weight_tensor = torch.tensor(list(normalized_weights.values()), dtype=torch.float32).to("cuda" if torch.cuda.is_available() else "cpu")
+
+print("New Class Weights:", normalized_weights)
+print("Weight Tensor:", weight_tensor)
+
+
+# Parameters
+num_classes = 14
+batch_size = 64
+learning_rate = 0.0001
+num_epochs = 50
+use_additional_features = True  # Toggle for using additional features
+    model = ModifiedDenseNetWithDropOut(num_classes=num_classes, use_additional_features=use_additional_features).to(device)
+
+
+split data by patient id:
+gss = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+train_idx, val_idx = next(gss.split(df, groups=df["Patient ID"]))
+
+
+class ModifiedDenseNetWithDropOut(nn.Module):
+    def __init__(self, num_classes=14, use_additional_features=False):
+        super(ModifiedDenseNetWithDropOut, self).__init__()
+        weights = DenseNet121_Weights.IMAGENET1K_V1
+        model = densenet121(weights=weights)
+        self.base_model = model
+        self.base_model.classifier = nn.Identity()  # Remove DenseNet's classifier
+        self.dropout = nn.Dropout(0.3)  # Dropout חדש!
+
+        self.use_additional_features = use_additional_features
+        if self.use_additional_features:
+            self.additional_fc = nn.Linear(4, 128)
+            self.final_fc = nn.Linear(1024 + 128, num_classes)
+        else:
+            self.final_fc = nn.Linear(1024, num_classes)
+# add dropout layer
+class ModifiedDenseNetWithDropOut(nn.Module):
+    def __init__(self, num_classes=14, use_additional_features=False):
+        super(ModifiedDenseNetWithDropOut, self).__init__()
+        weights = DenseNet121_Weights.IMAGENET1K_V1
+        model = densenet121(weights=weights)
+        self.base_model = model
+        self.base_model.classifier = nn.Identity()  # Remove DenseNet's classifier
+        self.dropout = nn.Dropout(0.3)  # Dropout חדש!
+
+        self.use_additional_features = use_additional_features
+        if self.use_additional_features:
+            self.additional_fc = nn.Linear(4, 128)
+            self.final_fc = nn.Linear(1024 + 128, num_classes)
+        else:
+            self.final_fc = nn.Linear(1024, num_classes)
+
+
+model saved:
+run_info_5_model_with_features_v4_change_weights3_plus_augmentation.pth
+
+
+class EarlyStopping:
+    def __init__(self, patience=7, min_delta=0.01, warmup_epochs=25):
+
+/usr/bin/python3 /Users/arikpeled/PycharmProjects/ArikFinalProject/chest-x-ray-classifier-densenet121-train_v04.py
+✅ Using 1 GPU(s) on mps
+חולים חופפים בין הסטים: 0
+מספר הדוגמאות ב-Train: 72156, מספר הדוגמאות ב-Validation: 17540
+Starting training... at:  1739221562.8487968
+Starting Epoch [1/50]
+🟢 Batch 100/1128: Loss=0.2888 - Time=0.63s
+Epoch [1/50], Batch [100/1128], Loss: 0.2888, Elapsed Time: 79.24 seconds
+🟢 Batch 200/1128: Loss=0.2301 - Time=0.61s
+Epoch [1/50], Batch [200/1128], Loss: 0.2301, Elapsed Time: 141.64 seconds
+🟢 Batch 300/1128: Loss=0.2271 - Time=0.61s
+Epoch [1/50], Batch [300/1128], Loss: 0.2271, Elapsed Time: 202.86 seconds
+🟢 Batch 400/1128: Loss=0.2502 - Time=0.62s
+Epoch [1/50], Batch [400/1128], Loss: 0.2502, Elapsed Time: 265.06 seconds
+🟢 Batch 500/1128: Loss=0.3991 - Time=0.61s
+Epoch [1/50], Batch [500/1128], Loss: 0.3991, Elapsed Time: 325.81 seconds
+🟢 Batch 600/1128: Loss=0.3394 - Time=0.61s
+Epoch [1/50], Batch [600/1128], Loss: 0.3394, Elapsed Time: 386.96 seconds
+🟢 Batch 700/1128: Loss=0.2480 - Time=0.60s
+Epoch [1/50], Batch [700/1128], Loss: 0.2480, Elapsed Time: 447.95 seconds
+🟢 Batch 800/1128: Loss=0.2488 - Time=0.61s
+Epoch [1/50], Batch [800/1128], Loss: 0.2488, Elapsed Time: 508.52 seconds
+🟢 Batch 900/1128: Loss=0.2101 - Time=0.60s
+Epoch [1/50], Batch [900/1128], Loss: 0.2101, Elapsed Time: 569.50 seconds
+🟢 Batch 1000/1128: Loss=0.1516 - Time=0.60s
+Epoch [1/50], Batch [1000/1128], Loss: 0.1516, Elapsed Time: 630.15 seconds
+🟢 Batch 1100/1128: Loss=0.2283 - Time=0.60s
+Epoch [1/50], Batch [1100/1128], Loss: 0.2283, Elapsed Time: 690.67 seconds
+🟢 Batch 1128/1128: Loss=0.1962 - Time=1.29s
+Epoch [1/50], Batch [1128/1128], Loss: 0.1962, Elapsed Time: 708.27 seconds
+Epoch [1/50] Complete. Average Loss: 0.2964
+Validation Loss: 0.2343
+Epoch: 1, Validation Loss: 0.2343
+Current Learning Rate: 0.0001
+Starting Epoch [2/50]
+🟢 Batch 100/1128: Loss=0.1750 - Time=0.60s
+Epoch [2/50], Batch [100/1128], Loss: 0.1750, Elapsed Time: 74.68 seconds
+🟢 Batch 200/1128: Loss=0.1989 - Time=0.61s
+Epoch [2/50], Batch [200/1128], Loss: 0.1989, Elapsed Time: 135.05 seconds
+🟢 Batch 300/1128: Loss=0.1875 - Time=0.60s
+Epoch [2/50], Batch [300/1128], Loss: 0.1875, Elapsed Time: 195.68 seconds
+🟢 Batch 400/1128: Loss=0.2004 - Time=0.60s
+Epoch [2/50], Batch [400/1128], Loss: 0.2004, Elapsed Time: 255.90 seconds
+🟢 Batch 500/1128: Loss=0.2149 - Time=0.60s
+Epoch [2/50], Batch [500/1128], Loss: 0.2149, Elapsed Time: 315.94 seconds
+🟢 Batch 600/1128: Loss=0.1817 - Time=0.60s
+Epoch [2/50], Batch [600/1128], Loss: 0.1817, Elapsed Time: 375.75 seconds
+🟢 Batch 700/1128: Loss=0.1390 - Time=0.60s
+Epoch [2/50], Batch [700/1128], Loss: 0.1390, Elapsed Time: 435.60 seconds
+🟢 Batch 800/1128: Loss=0.2338 - Time=0.59s
+Epoch [2/50], Batch [800/1128], Loss: 0.2338, Elapsed Time: 495.54 seconds
+🟢 Batch 900/1128: Loss=0.1609 - Time=0.59s
+Epoch [2/50], Batch [900/1128], Loss: 0.1609, Elapsed Time: 555.45 seconds
+🟢 Batch 1000/1128: Loss=0.2366 - Time=0.60s
+Epoch [2/50], Batch [1000/1128], Loss: 0.2366, Elapsed Time: 615.41 seconds
+🟢 Batch 1100/1128: Loss=0.1810 - Time=0.60s
+Epoch [2/50], Batch [1100/1128], Loss: 0.1810, Elapsed Time: 675.39 seconds
+🟢 Batch 1128/1128: Loss=0.2200 - Time=0.28s
+Epoch [2/50], Batch [1128/1128], Loss: 0.2200, Elapsed Time: 691.92 seconds
+Epoch [2/50] Complete. Average Loss: 0.2230
+Validation Loss: 0.2238
+Epoch: 2, Validation Loss: 0.2238
+Current Learning Rate: 0.0001
+Starting Epoch [3/50]
+🟢 Batch 100/1128: Loss=0.2506 - Time=0.60s
+Epoch [3/50], Batch [100/1128], Loss: 0.2506, Elapsed Time: 73.97 seconds
+🟢 Batch 200/1128: Loss=0.2698 - Time=0.60s
+Epoch [3/50], Batch [200/1128], Loss: 0.2698, Elapsed Time: 134.16 seconds
+🟢 Batch 300/1128: Loss=0.1637 - Time=0.60s
+Epoch [3/50], Batch [300/1128], Loss: 0.1637, Elapsed Time: 194.52 seconds
+🟢 Batch 400/1128: Loss=0.1745 - Time=0.60s
+Epoch [3/50], Batch [400/1128], Loss: 0.1745, Elapsed Time: 254.70 seconds
+🟢 Batch 500/1128: Loss=0.2254 - Time=0.60s
+Epoch [3/50], Batch [500/1128], Loss: 0.2254, Elapsed Time: 314.73 seconds
+🟢 Batch 600/1128: Loss=0.1987 - Time=0.60s
+Epoch [3/50], Batch [600/1128], Loss: 0.1987, Elapsed Time: 374.85 seconds
+🟢 Batch 700/1128: Loss=0.2197 - Time=0.61s
+Epoch [3/50], Batch [700/1128], Loss: 0.2197, Elapsed Time: 435.00 seconds
+🟢 Batch 800/1128: Loss=0.1848 - Time=0.60s
+Epoch [3/50], Batch [800/1128], Loss: 0.1848, Elapsed Time: 495.17 seconds
+🟢 Batch 900/1128: Loss=0.1388 - Time=0.61s
+Epoch [3/50], Batch [900/1128], Loss: 0.1388, Elapsed Time: 555.31 seconds
+🟢 Batch 1000/1128: Loss=0.1945 - Time=0.60s
+Epoch [3/50], Batch [1000/1128], Loss: 0.1945, Elapsed Time: 615.48 seconds
+🟢 Batch 1100/1128: Loss=0.1946 - Time=0.61s
+Epoch [3/50], Batch [1100/1128], Loss: 0.1946, Elapsed Time: 675.65 seconds
+🟢 Batch 1128/1128: Loss=0.2142 - Time=0.29s
+Epoch [3/50], Batch [1128/1128], Loss: 0.2142, Elapsed Time: 692.17 seconds
+Epoch [3/50] Complete. Average Loss: 0.2115
+Validation Loss: 0.2214
+Epoch: 3, Validation Loss: 0.2214
+Current Learning Rate: 0.0001
+Starting Epoch [4/50]
+🟢 Batch 100/1128: Loss=0.1516 - Time=0.60s
+Epoch [4/50], Batch [100/1128], Loss: 0.1516, Elapsed Time: 73.88 seconds
+🟢 Batch 200/1128: Loss=0.2726 - Time=0.60s
+Epoch [4/50], Batch [200/1128], Loss: 0.2726, Elapsed Time: 133.91 seconds
+🟢 Batch 300/1128: Loss=0.1822 - Time=0.60s
+Epoch [4/50], Batch [300/1128], Loss: 0.1822, Elapsed Time: 194.20 seconds
+🟢 Batch 400/1128: Loss=0.1303 - Time=0.60s
+Epoch [4/50], Batch [400/1128], Loss: 0.1303, Elapsed Time: 254.29 seconds
+🟢 Batch 500/1128: Loss=0.1673 - Time=0.59s
+Epoch [4/50], Batch [500/1128], Loss: 0.1673, Elapsed Time: 314.20 seconds
+🟢 Batch 600/1128: Loss=0.1782 - Time=0.60s
+Epoch [4/50], Batch [600/1128], Loss: 0.1782, Elapsed Time: 374.15 seconds
+🟢 Batch 700/1128: Loss=0.1894 - Time=0.60s
+Epoch [4/50], Batch [700/1128], Loss: 0.1894, Elapsed Time: 434.18 seconds
+🟢 Batch 800/1128: Loss=0.2262 - Time=0.60s
+Epoch [4/50], Batch [800/1128], Loss: 0.2262, Elapsed Time: 494.19 seconds
+🟢 Batch 900/1128: Loss=0.1972 - Time=0.60s
+Epoch [4/50], Batch [900/1128], Loss: 0.1972, Elapsed Time: 554.27 seconds
+🟢 Batch 1000/1128: Loss=0.2035 - Time=0.60s
+Epoch [4/50], Batch [1000/1128], Loss: 0.2035, Elapsed Time: 614.21 seconds
+🟢 Batch 1100/1128: Loss=0.2280 - Time=0.60s
+Epoch [4/50], Batch [1100/1128], Loss: 0.2280, Elapsed Time: 674.15 seconds
+🟢 Batch 1128/1128: Loss=0.1421 - Time=0.28s
+Epoch [4/50], Batch [1128/1128], Loss: 0.1421, Elapsed Time: 690.62 seconds
+Epoch [4/50] Complete. Average Loss: 0.2048
+Validation Loss: 0.2224
+Epoch: 4, Validation Loss: 0.2224
+Current Learning Rate: 0.0001
+Starting Epoch [5/50]
+🟢 Batch 100/1128: Loss=0.2130 - Time=0.60s
+Epoch [5/50], Batch [100/1128], Loss: 0.2130, Elapsed Time: 74.48 seconds
+🟢 Batch 200/1128: Loss=0.2062 - Time=0.61s
+Epoch [5/50], Batch [200/1128], Loss: 0.2062, Elapsed Time: 134.87 seconds
+🟢 Batch 300/1128: Loss=0.1957 - Time=0.60s
+Epoch [5/50], Batch [300/1128], Loss: 0.1957, Elapsed Time: 195.34 seconds
+🟢 Batch 400/1128: Loss=0.1795 - Time=0.60s
+Epoch [5/50], Batch [400/1128], Loss: 0.1795, Elapsed Time: 255.67 seconds
+🟢 Batch 500/1128: Loss=0.1758 - Time=0.61s
+Epoch [5/50], Batch [500/1128], Loss: 0.1758, Elapsed Time: 315.89 seconds
+🟢 Batch 600/1128: Loss=0.2401 - Time=0.60s
+Epoch [5/50], Batch [600/1128], Loss: 0.2401, Elapsed Time: 376.02 seconds
+🟢 Batch 700/1128: Loss=0.2255 - Time=0.60s
+Epoch [5/50], Batch [700/1128], Loss: 0.2255, Elapsed Time: 436.10 seconds
+🟢 Batch 800/1128: Loss=0.1887 - Time=0.59s
+Epoch [5/50], Batch [800/1128], Loss: 0.1887, Elapsed Time: 496.03 seconds
+🟢 Batch 900/1128: Loss=0.1990 - Time=0.60s
+Epoch [5/50], Batch [900/1128], Loss: 0.1990, Elapsed Time: 555.96 seconds
+🟢 Batch 1000/1128: Loss=0.1700 - Time=0.60s
+Epoch [5/50], Batch [1000/1128], Loss: 0.1700, Elapsed Time: 615.81 seconds
+🟢 Batch 1100/1128: Loss=0.1745 - Time=0.60s
+Epoch [5/50], Batch [1100/1128], Loss: 0.1745, Elapsed Time: 675.78 seconds
+🟢 Batch 1128/1128: Loss=0.2321 - Time=0.28s
+Epoch [5/50], Batch [1128/1128], Loss: 0.2321, Elapsed Time: 692.26 seconds
+Epoch [5/50] Complete. Average Loss: 0.1996
+Validation Loss: 0.2204
+Epoch: 5, Validation Loss: 0.2204
+Current Learning Rate: 0.0001
+Starting Epoch [6/50]
+🟢 Batch 100/1128: Loss=0.1690 - Time=0.60s
+Epoch [6/50], Batch [100/1128], Loss: 0.1690, Elapsed Time: 74.25 seconds
+🟢 Batch 200/1128: Loss=0.1878 - Time=0.60s
+Epoch [6/50], Batch [200/1128], Loss: 0.1878, Elapsed Time: 134.53 seconds
+🟢 Batch 300/1128: Loss=0.1978 - Time=0.60s
+Epoch [6/50], Batch [300/1128], Loss: 0.1978, Elapsed Time: 194.79 seconds
+🟢 Batch 400/1128: Loss=0.1781 - Time=0.60s
+Epoch [6/50], Batch [400/1128], Loss: 0.1781, Elapsed Time: 254.99 seconds
+🟢 Batch 500/1128: Loss=0.1340 - Time=0.60s
+Epoch [6/50], Batch [500/1128], Loss: 0.1340, Elapsed Time: 314.93 seconds
+🟢 Batch 600/1128: Loss=0.1605 - Time=0.60s
+Epoch [6/50], Batch [600/1128], Loss: 0.1605, Elapsed Time: 374.93 seconds
+🟢 Batch 700/1128: Loss=0.1879 - Time=0.60s
+Epoch [6/50], Batch [700/1128], Loss: 0.1879, Elapsed Time: 434.97 seconds
+🟢 Batch 800/1128: Loss=0.2112 - Time=0.60s
+Epoch [6/50], Batch [800/1128], Loss: 0.2112, Elapsed Time: 495.05 seconds
+🟢 Batch 900/1128: Loss=0.1283 - Time=0.60s
+Epoch [6/50], Batch [900/1128], Loss: 0.1283, Elapsed Time: 555.15 seconds
+🟢 Batch 1000/1128: Loss=0.1805 - Time=0.61s
+Epoch [6/50], Batch [1000/1128], Loss: 0.1805, Elapsed Time: 615.40 seconds
+🟢 Batch 1100/1128: Loss=0.2175 - Time=0.60s
+Epoch [6/50], Batch [1100/1128], Loss: 0.2175, Elapsed Time: 675.52 seconds
+🟢 Batch 1128/1128: Loss=0.1854 - Time=0.28s
+Epoch [6/50], Batch [1128/1128], Loss: 0.1854, Elapsed Time: 692.04 seconds
+Epoch [6/50] Complete. Average Loss: 0.1955
+Validation Loss: 0.2216
+Epoch: 6, Validation Loss: 0.2216
+Current Learning Rate: 0.0001
+Starting Epoch [7/50]
+🟢 Batch 100/1128: Loss=0.1425 - Time=0.60s
+Epoch [7/50], Batch [100/1128], Loss: 0.1425, Elapsed Time: 74.41 seconds
+🟢 Batch 200/1128: Loss=0.2277 - Time=0.62s
+Epoch [7/50], Batch [200/1128], Loss: 0.2277, Elapsed Time: 134.68 seconds
+🟢 Batch 300/1128: Loss=0.1825 - Time=0.60s
+Epoch [7/50], Batch [300/1128], Loss: 0.1825, Elapsed Time: 194.88 seconds
+🟢 Batch 400/1128: Loss=0.2251 - Time=0.60s
+Epoch [7/50], Batch [400/1128], Loss: 0.2251, Elapsed Time: 254.90 seconds
+🟢 Batch 500/1128: Loss=0.1321 - Time=0.60s
+Epoch [7/50], Batch [500/1128], Loss: 0.1321, Elapsed Time: 314.81 seconds
+🟢 Batch 600/1128: Loss=0.1579 - Time=0.60s
+Epoch [7/50], Batch [600/1128], Loss: 0.1579, Elapsed Time: 374.63 seconds
+🟢 Batch 700/1128: Loss=0.2491 - Time=0.60s
+Epoch [7/50], Batch [700/1128], Loss: 0.2491, Elapsed Time: 434.64 seconds
+🟢 Batch 800/1128: Loss=0.2289 - Time=0.60s
+Epoch [7/50], Batch [800/1128], Loss: 0.2289, Elapsed Time: 494.57 seconds
+🟢 Batch 900/1128: Loss=0.2885 - Time=0.59s
+Epoch [7/50], Batch [900/1128], Loss: 0.2885, Elapsed Time: 554.52 seconds
+🟢 Batch 1000/1128: Loss=0.2702 - Time=0.60s
+Epoch [7/50], Batch [1000/1128], Loss: 0.2702, Elapsed Time: 614.54 seconds
+🟢 Batch 1100/1128: Loss=0.2166 - Time=0.60s
+Epoch [7/50], Batch [1100/1128], Loss: 0.2166, Elapsed Time: 674.61 seconds
+🟢 Batch 1128/1128: Loss=0.1658 - Time=0.28s
+Epoch [7/50], Batch [1128/1128], Loss: 0.1658, Elapsed Time: 691.09 seconds
+Epoch [7/50] Complete. Average Loss: 0.1898
+Validation Loss: 0.2396
+Epoch: 7, Validation Loss: 0.2396
+Current Learning Rate: 0.0001
+Starting Epoch [8/50]
+🟢 Batch 100/1128: Loss=0.1502 - Time=0.61s
+Epoch [8/50], Batch [100/1128], Loss: 0.1502, Elapsed Time: 74.49 seconds
+🟢 Batch 200/1128: Loss=0.3150 - Time=0.60s
+Epoch [8/50], Batch [200/1128], Loss: 0.3150, Elapsed Time: 134.79 seconds
+🟢 Batch 300/1128: Loss=0.1858 - Time=0.60s
+Epoch [8/50], Batch [300/1128], Loss: 0.1858, Elapsed Time: 195.17 seconds
+🟢 Batch 400/1128: Loss=0.1523 - Time=0.60s
+Epoch [8/50], Batch [400/1128], Loss: 0.1523, Elapsed Time: 255.44 seconds
+🟢 Batch 500/1128: Loss=0.2532 - Time=0.60s
+Epoch [8/50], Batch [500/1128], Loss: 0.2532, Elapsed Time: 315.60 seconds
+🟢 Batch 600/1128: Loss=0.2263 - Time=0.60s
+Epoch [8/50], Batch [600/1128], Loss: 0.2263, Elapsed Time: 375.77 seconds
+🟢 Batch 700/1128: Loss=0.2060 - Time=0.60s
+Epoch [8/50], Batch [700/1128], Loss: 0.2060, Elapsed Time: 435.85 seconds
+🟢 Batch 800/1128: Loss=0.1733 - Time=0.60s
+Epoch [8/50], Batch [800/1128], Loss: 0.1733, Elapsed Time: 495.96 seconds
+🟢 Batch 900/1128: Loss=0.1667 - Time=0.59s
+Epoch [8/50], Batch [900/1128], Loss: 0.1667, Elapsed Time: 555.95 seconds
+🟢 Batch 1000/1128: Loss=0.1929 - Time=0.60s
+Epoch [8/50], Batch [1000/1128], Loss: 0.1929, Elapsed Time: 615.77 seconds
+🟢 Batch 1100/1128: Loss=0.2714 - Time=0.60s
+Epoch [8/50], Batch [1100/1128], Loss: 0.2714, Elapsed Time: 675.66 seconds
+🟢 Batch 1128/1128: Loss=0.1705 - Time=0.28s
+Epoch [8/50], Batch [1128/1128], Loss: 0.1705, Elapsed Time: 692.10 seconds
+Epoch [8/50] Complete. Average Loss: 0.1866
+Validation Loss: 0.2246
+Epoch: 8, Validation Loss: 0.2246
+Current Learning Rate: 0.0001
+Starting Epoch [9/50]
+🟢 Batch 100/1128: Loss=0.1444 - Time=0.60s
+Epoch [9/50], Batch [100/1128], Loss: 0.1444, Elapsed Time: 74.17 seconds
+🟢 Batch 200/1128: Loss=0.1619 - Time=0.60s
+Epoch [9/50], Batch [200/1128], Loss: 0.1619, Elapsed Time: 134.34 seconds
+🟢 Batch 300/1128: Loss=0.2118 - Time=0.60s
+Epoch [9/50], Batch [300/1128], Loss: 0.2118, Elapsed Time: 194.59 seconds
+🟢 Batch 400/1128: Loss=0.2145 - Time=0.62s
+Epoch [9/50], Batch [400/1128], Loss: 0.2145, Elapsed Time: 254.79 seconds
+🟢 Batch 500/1128: Loss=0.2295 - Time=0.60s
+Epoch [9/50], Batch [500/1128], Loss: 0.2295, Elapsed Time: 314.90 seconds
+🟢 Batch 600/1128: Loss=0.2199 - Time=0.60s
+Epoch [9/50], Batch [600/1128], Loss: 0.2199, Elapsed Time: 374.90 seconds
+🟢 Batch 700/1128: Loss=0.1066 - Time=0.61s
+Epoch [9/50], Batch [700/1128], Loss: 0.1066, Elapsed Time: 434.96 seconds
+🟢 Batch 800/1128: Loss=0.1336 - Time=0.60s
+Epoch [9/50], Batch [800/1128], Loss: 0.1336, Elapsed Time: 495.03 seconds
+🟢 Batch 900/1128: Loss=0.3192 - Time=0.60s
+Epoch [9/50], Batch [900/1128], Loss: 0.3192, Elapsed Time: 555.05 seconds
+🟢 Batch 1000/1128: Loss=0.1205 - Time=0.60s
+Epoch [9/50], Batch [1000/1128], Loss: 0.1205, Elapsed Time: 615.10 seconds
+🟢 Batch 1100/1128: Loss=0.1484 - Time=0.61s
+Epoch [9/50], Batch [1100/1128], Loss: 0.1484, Elapsed Time: 675.26 seconds
+🟢 Batch 1128/1128: Loss=0.1508 - Time=0.28s
+Epoch [9/50], Batch [1128/1128], Loss: 0.1508, Elapsed Time: 691.84 seconds
+Epoch [9/50] Complete. Average Loss: 0.1820
+Validation Loss: 0.2292
+Epoch: 9, Validation Loss: 0.2292
+Current Learning Rate: 0.0001
+Starting Epoch [10/50]
+🟢 Batch 100/1128: Loss=0.1765 - Time=0.60s
+Epoch [10/50], Batch [100/1128], Loss: 0.1765, Elapsed Time: 74.37 seconds
+🟢 Batch 200/1128: Loss=0.1887 - Time=0.60s
+Epoch [10/50], Batch [200/1128], Loss: 0.1887, Elapsed Time: 134.84 seconds
+🟢 Batch 300/1128: Loss=0.1624 - Time=0.61s
+Epoch [10/50], Batch [300/1128], Loss: 0.1624, Elapsed Time: 195.20 seconds
+🟢 Batch 400/1128: Loss=0.1272 - Time=0.60s
+Epoch [10/50], Batch [400/1128], Loss: 0.1272, Elapsed Time: 255.29 seconds
+🟢 Batch 500/1128: Loss=0.1982 - Time=0.60s
+Epoch [10/50], Batch [500/1128], Loss: 0.1982, Elapsed Time: 315.25 seconds
+🟢 Batch 600/1128: Loss=0.1656 - Time=0.60s
+Epoch [10/50], Batch [600/1128], Loss: 0.1656, Elapsed Time: 375.10 seconds
+🟢 Batch 700/1128: Loss=0.1740 - Time=0.60s
+Epoch [10/50], Batch [700/1128], Loss: 0.1740, Elapsed Time: 435.04 seconds
+🟢 Batch 800/1128: Loss=0.1739 - Time=0.60s
+Epoch [10/50], Batch [800/1128], Loss: 0.1739, Elapsed Time: 495.07 seconds
+🟢 Batch 900/1128: Loss=0.1722 - Time=0.60s
+Epoch [10/50], Batch [900/1128], Loss: 0.1722, Elapsed Time: 554.96 seconds
+🟢 Batch 1000/1128: Loss=0.1329 - Time=0.60s
+Epoch [10/50], Batch [1000/1128], Loss: 0.1329, Elapsed Time: 614.93 seconds
+🟢 Batch 1100/1128: Loss=0.1378 - Time=0.60s
+Epoch [10/50], Batch [1100/1128], Loss: 0.1378, Elapsed Time: 674.83 seconds
+🟢 Batch 1128/1128: Loss=0.2726 - Time=0.28s
+Epoch [10/50], Batch [1128/1128], Loss: 0.2726, Elapsed Time: 691.34 seconds
+Epoch [10/50] Complete. Average Loss: 0.1790
+Validation Loss: 0.2322
+Epoch: 10, Validation Loss: 0.2322
+Current Learning Rate: 0.0001
+Starting Epoch [11/50]
+🟢 Batch 100/1128: Loss=0.1468 - Time=0.60s
+Epoch [11/50], Batch [100/1128], Loss: 0.1468, Elapsed Time: 74.37 seconds
+🟢 Batch 200/1128: Loss=0.1259 - Time=0.61s
+Epoch [11/50], Batch [200/1128], Loss: 0.1259, Elapsed Time: 134.77 seconds
+🟢 Batch 300/1128: Loss=0.1657 - Time=0.60s
+Epoch [11/50], Batch [300/1128], Loss: 0.1657, Elapsed Time: 195.21 seconds
+🟢 Batch 400/1128: Loss=0.1949 - Time=0.60s
+Epoch [11/50], Batch [400/1128], Loss: 0.1949, Elapsed Time: 255.71 seconds
+🟢 Batch 500/1128: Loss=0.1834 - Time=0.61s
+Epoch [11/50], Batch [500/1128], Loss: 0.1834, Elapsed Time: 315.88 seconds
+🟢 Batch 600/1128: Loss=0.2251 - Time=0.60s
+Epoch [11/50], Batch [600/1128], Loss: 0.2251, Elapsed Time: 375.94 seconds
+🟢 Batch 700/1128: Loss=0.1435 - Time=0.60s
+Epoch [11/50], Batch [700/1128], Loss: 0.1435, Elapsed Time: 436.19 seconds
+🟢 Batch 800/1128: Loss=0.1971 - Time=0.61s
+Epoch [11/50], Batch [800/1128], Loss: 0.1971, Elapsed Time: 496.56 seconds
+🟢 Batch 900/1128: Loss=0.1313 - Time=0.61s
+Epoch [11/50], Batch [900/1128], Loss: 0.1313, Elapsed Time: 556.86 seconds
+🟢 Batch 1000/1128: Loss=0.2182 - Time=0.59s
+Epoch [11/50], Batch [1000/1128], Loss: 0.2182, Elapsed Time: 617.00 seconds
+🟢 Batch 1100/1128: Loss=0.1598 - Time=0.60s
+Epoch [11/50], Batch [1100/1128], Loss: 0.1598, Elapsed Time: 676.89 seconds
+🟢 Batch 1128/1128: Loss=0.1739 - Time=0.28s
+Epoch [11/50], Batch [1128/1128], Loss: 0.1739, Elapsed Time: 693.41 seconds
+Epoch [11/50] Complete. Average Loss: 0.1751
+Validation Loss: 0.2337
+Epoch: 11, Validation Loss: 0.2337
+Current Learning Rate: 0.0001
+Starting Epoch [12/50]
+🟢 Batch 100/1128: Loss=0.1280 - Time=0.60s
+Epoch [12/50], Batch [100/1128], Loss: 0.1280, Elapsed Time: 74.07 seconds
+🟢 Batch 200/1128: Loss=0.1797 - Time=0.61s
+Epoch [12/50], Batch [200/1128], Loss: 0.1797, Elapsed Time: 134.30 seconds
+🟢 Batch 300/1128: Loss=0.1473 - Time=0.60s
+Epoch [12/50], Batch [300/1128], Loss: 0.1473, Elapsed Time: 194.69 seconds
+🟢 Batch 400/1128: Loss=0.2053 - Time=0.60s
+Epoch [12/50], Batch [400/1128], Loss: 0.2053, Elapsed Time: 254.83 seconds
+🟢 Batch 500/1128: Loss=0.1255 - Time=0.60s
+Epoch [12/50], Batch [500/1128], Loss: 0.1255, Elapsed Time: 314.80 seconds
+🟢 Batch 600/1128: Loss=0.1936 - Time=0.60s
+Epoch [12/50], Batch [600/1128], Loss: 0.1936, Elapsed Time: 374.90 seconds
+🟢 Batch 700/1128: Loss=0.1670 - Time=0.60s
+Epoch [12/50], Batch [700/1128], Loss: 0.1670, Elapsed Time: 434.99 seconds
+🟢 Batch 800/1128: Loss=0.1858 - Time=0.60s
+Epoch [12/50], Batch [800/1128], Loss: 0.1858, Elapsed Time: 495.27 seconds
+🟢 Batch 900/1128: Loss=0.1764 - Time=0.60s
+Epoch [12/50], Batch [900/1128], Loss: 0.1764, Elapsed Time: 555.50 seconds
+🟢 Batch 1000/1128: Loss=0.1383 - Time=0.61s
+Epoch [12/50], Batch [1000/1128], Loss: 0.1383, Elapsed Time: 615.77 seconds
+🟢 Batch 1100/1128: Loss=0.2246 - Time=0.60s
+Epoch [12/50], Batch [1100/1128], Loss: 0.2246, Elapsed Time: 675.94 seconds
+🟢 Batch 1128/1128: Loss=0.1611 - Time=0.28s
+Epoch [12/50], Batch [1128/1128], Loss: 0.1611, Elapsed Time: 692.50 seconds
+Epoch [12/50] Complete. Average Loss: 0.1695
+Validation Loss: 0.2284
+Epoch: 12, Validation Loss: 0.2284
+Current Learning Rate: 0.0001
+Starting Epoch [13/50]
+🟢 Batch 100/1128: Loss=0.1373 - Time=0.60s
+Epoch [13/50], Batch [100/1128], Loss: 0.1373, Elapsed Time: 74.73 seconds
+🟢 Batch 200/1128: Loss=0.2144 - Time=0.60s
+Epoch [13/50], Batch [200/1128], Loss: 0.2144, Elapsed Time: 135.16 seconds
+🟢 Batch 300/1128: Loss=0.1332 - Time=0.61s
+Epoch [13/50], Batch [300/1128], Loss: 0.1332, Elapsed Time: 195.81 seconds
+🟢 Batch 400/1128: Loss=0.1331 - Time=0.60s
+Epoch [13/50], Batch [400/1128], Loss: 0.1331, Elapsed Time: 256.07 seconds
+🟢 Batch 500/1128: Loss=0.1214 - Time=0.60s
+Epoch [13/50], Batch [500/1128], Loss: 0.1214, Elapsed Time: 316.03 seconds
+🟢 Batch 600/1128: Loss=0.1566 - Time=0.60s
+Epoch [13/50], Batch [600/1128], Loss: 0.1566, Elapsed Time: 375.83 seconds
+🟢 Batch 700/1128: Loss=0.1785 - Time=0.60s
+Epoch [13/50], Batch [700/1128], Loss: 0.1785, Elapsed Time: 435.48 seconds
+🟢 Batch 800/1128: Loss=0.1628 - Time=0.59s
+Epoch [13/50], Batch [800/1128], Loss: 0.1628, Elapsed Time: 495.28 seconds
+🟢 Batch 900/1128: Loss=0.1825 - Time=0.59s
+Epoch [13/50], Batch [900/1128], Loss: 0.1825, Elapsed Time: 555.08 seconds
+🟢 Batch 1000/1128: Loss=0.1650 - Time=0.60s
+Epoch [13/50], Batch [1000/1128], Loss: 0.1650, Elapsed Time: 614.84 seconds
+🟢 Batch 1100/1128: Loss=0.1717 - Time=0.60s
+Epoch [13/50], Batch [1100/1128], Loss: 0.1717, Elapsed Time: 674.73 seconds
+🟢 Batch 1128/1128: Loss=0.2535 - Time=0.28s
+Epoch [13/50], Batch [1128/1128], Loss: 0.2535, Elapsed Time: 691.23 seconds
+Epoch [13/50] Complete. Average Loss: 0.1661
+Validation Loss: 0.2424
+Epoch: 13, Validation Loss: 0.2424
+Current Learning Rate: 5e-05
+Starting Epoch [14/50]
+🟢 Batch 100/1128: Loss=0.1598 - Time=0.60s
+Epoch [14/50], Batch [100/1128], Loss: 0.1598, Elapsed Time: 75.01 seconds
+🟢 Batch 200/1128: Loss=0.1506 - Time=0.60s
+Epoch [14/50], Batch [200/1128], Loss: 0.1506, Elapsed Time: 135.92 seconds
+🟢 Batch 300/1128: Loss=0.1008 - Time=0.60s
+Epoch [14/50], Batch [300/1128], Loss: 0.1008, Elapsed Time: 196.58 seconds
+🟢 Batch 400/1128: Loss=0.1893 - Time=0.60s
+Epoch [14/50], Batch [400/1128], Loss: 0.1893, Elapsed Time: 256.82 seconds
+🟢 Batch 500/1128: Loss=0.1278 - Time=0.60s
+Epoch [14/50], Batch [500/1128], Loss: 0.1278, Elapsed Time: 316.81 seconds
+🟢 Batch 600/1128: Loss=0.1103 - Time=0.59s
+Epoch [14/50], Batch [600/1128], Loss: 0.1103, Elapsed Time: 376.93 seconds
+🟢 Batch 700/1128: Loss=0.1090 - Time=0.60s
+Epoch [14/50], Batch [700/1128], Loss: 0.1090, Elapsed Time: 437.02 seconds
+🟢 Batch 800/1128: Loss=0.1086 - Time=0.60s
+Epoch [14/50], Batch [800/1128], Loss: 0.1086, Elapsed Time: 497.17 seconds
+🟢 Batch 900/1128: Loss=0.1729 - Time=0.60s
+Epoch [14/50], Batch [900/1128], Loss: 0.1729, Elapsed Time: 557.09 seconds
+🟢 Batch 1000/1128: Loss=0.1675 - Time=0.60s
+Epoch [14/50], Batch [1000/1128], Loss: 0.1675, Elapsed Time: 617.11 seconds
+🟢 Batch 1100/1128: Loss=0.1759 - Time=0.60s
+Epoch [14/50], Batch [1100/1128], Loss: 0.1759, Elapsed Time: 677.17 seconds
+🟢 Batch 1128/1128: Loss=0.1717 - Time=0.28s
+Epoch [14/50], Batch [1128/1128], Loss: 0.1717, Elapsed Time: 693.71 seconds
+Epoch [14/50] Complete. Average Loss: 0.1503
+Validation Loss: 0.2429
+Epoch: 14, Validation Loss: 0.2429
+Current Learning Rate: 5e-05
+Starting Epoch [15/50]
+🟢 Batch 100/1128: Loss=0.1072 - Time=0.59s
+Epoch [15/50], Batch [100/1128], Loss: 0.1072, Elapsed Time: 74.06 seconds
+🟢 Batch 200/1128: Loss=0.2088 - Time=0.59s
+Epoch [15/50], Batch [200/1128], Loss: 0.2088, Elapsed Time: 134.07 seconds
+🟢 Batch 300/1128: Loss=0.0962 - Time=0.60s
+Epoch [15/50], Batch [300/1128], Loss: 0.0962, Elapsed Time: 194.06 seconds
+🟢 Batch 400/1128: Loss=0.1264 - Time=0.59s
+Epoch [15/50], Batch [400/1128], Loss: 0.1264, Elapsed Time: 253.92 seconds
+🟢 Batch 500/1128: Loss=0.1790 - Time=0.60s
+Epoch [15/50], Batch [500/1128], Loss: 0.1790, Elapsed Time: 313.57 seconds
+🟢 Batch 600/1128: Loss=0.1991 - Time=0.60s
+Epoch [15/50], Batch [600/1128], Loss: 0.1991, Elapsed Time: 373.59 seconds
+🟢 Batch 700/1128: Loss=0.0916 - Time=0.60s
+Epoch [15/50], Batch [700/1128], Loss: 0.0916, Elapsed Time: 433.46 seconds
+🟢 Batch 800/1128: Loss=0.1913 - Time=0.59s
+Epoch [15/50], Batch [800/1128], Loss: 0.1913, Elapsed Time: 493.14 seconds
+🟢 Batch 900/1128: Loss=0.1174 - Time=0.60s
+Epoch [15/50], Batch [900/1128], Loss: 0.1174, Elapsed Time: 552.80 seconds
+🟢 Batch 1000/1128: Loss=0.1306 - Time=0.59s
+Epoch [15/50], Batch [1000/1128], Loss: 0.1306, Elapsed Time: 612.75 seconds
+🟢 Batch 1100/1128: Loss=0.1659 - Time=0.59s
+Epoch [15/50], Batch [1100/1128], Loss: 0.1659, Elapsed Time: 672.46 seconds
+🟢 Batch 1128/1128: Loss=0.1492 - Time=0.27s
+Epoch [15/50], Batch [1128/1128], Loss: 0.1492, Elapsed Time: 688.88 seconds
+Epoch [15/50] Complete. Average Loss: 0.1412
+Validation Loss: 0.2499
+Epoch: 15, Validation Loss: 0.2499
+Current Learning Rate: 5e-05
+Starting Epoch [16/50]
+🟢 Batch 100/1128: Loss=0.0820 - Time=0.59s
+Epoch [16/50], Batch [100/1128], Loss: 0.0820, Elapsed Time: 73.89 seconds
+🟢 Batch 200/1128: Loss=0.1548 - Time=0.60s
+Epoch [16/50], Batch [200/1128], Loss: 0.1548, Elapsed Time: 133.88 seconds
+🟢 Batch 300/1128: Loss=0.1328 - Time=0.61s
+Epoch [16/50], Batch [300/1128], Loss: 0.1328, Elapsed Time: 194.02 seconds
+🟢 Batch 400/1128: Loss=0.1188 - Time=0.59s
+Epoch [16/50], Batch [400/1128], Loss: 0.1188, Elapsed Time: 253.92 seconds
+🟢 Batch 500/1128: Loss=0.1799 - Time=0.59s
+Epoch [16/50], Batch [500/1128], Loss: 0.1799, Elapsed Time: 313.70 seconds
+🟢 Batch 600/1128: Loss=0.1003 - Time=0.60s
+Epoch [16/50], Batch [600/1128], Loss: 0.1003, Elapsed Time: 373.46 seconds
+🟢 Batch 700/1128: Loss=0.1483 - Time=0.60s
+Epoch [16/50], Batch [700/1128], Loss: 0.1483, Elapsed Time: 433.23 seconds
+🟢 Batch 800/1128: Loss=0.1162 - Time=0.59s
+Epoch [16/50], Batch [800/1128], Loss: 0.1162, Elapsed Time: 492.96 seconds
+🟢 Batch 900/1128: Loss=0.1113 - Time=0.59s
+Epoch [16/50], Batch [900/1128], Loss: 0.1113, Elapsed Time: 552.56 seconds
+🟢 Batch 1000/1128: Loss=0.1443 - Time=0.59s
+Epoch [16/50], Batch [1000/1128], Loss: 0.1443, Elapsed Time: 612.15 seconds
+🟢 Batch 1100/1128: Loss=0.1203 - Time=0.59s
+Epoch [16/50], Batch [1100/1128], Loss: 0.1203, Elapsed Time: 671.80 seconds
+🟢 Batch 1128/1128: Loss=0.1217 - Time=0.28s
+Epoch [16/50], Batch [1128/1128], Loss: 0.1217, Elapsed Time: 688.21 seconds
+Epoch [16/50] Complete. Average Loss: 0.1335
+Validation Loss: 0.2605
+Epoch: 16, Validation Loss: 0.2605
+Current Learning Rate: 5e-05
+Starting Epoch [17/50]
+🟢 Batch 100/1128: Loss=0.1147 - Time=0.60s
+Epoch [17/50], Batch [100/1128], Loss: 0.1147, Elapsed Time: 74.08 seconds
+🟢 Batch 200/1128: Loss=0.1399 - Time=0.60s
+Epoch [17/50], Batch [200/1128], Loss: 0.1399, Elapsed Time: 134.16 seconds
+🟢 Batch 300/1128: Loss=0.1670 - Time=0.60s
+Epoch [17/50], Batch [300/1128], Loss: 0.1670, Elapsed Time: 194.13 seconds
+🟢 Batch 400/1128: Loss=0.1746 - Time=0.59s
+Epoch [17/50], Batch [400/1128], Loss: 0.1746, Elapsed Time: 254.06 seconds
+🟢 Batch 500/1128: Loss=0.1222 - Time=0.60s
+Epoch [17/50], Batch [500/1128], Loss: 0.1222, Elapsed Time: 313.73 seconds
+🟢 Batch 600/1128: Loss=0.1414 - Time=0.59s
+Epoch [17/50], Batch [600/1128], Loss: 0.1414, Elapsed Time: 373.35 seconds
+🟢 Batch 700/1128: Loss=0.0914 - Time=0.59s
+Epoch [17/50], Batch [700/1128], Loss: 0.0914, Elapsed Time: 433.16 seconds
+🟢 Batch 800/1128: Loss=0.1081 - Time=0.60s
+Epoch [17/50], Batch [800/1128], Loss: 0.1081, Elapsed Time: 492.83 seconds
+🟢 Batch 900/1128: Loss=0.1182 - Time=0.60s
+Epoch [17/50], Batch [900/1128], Loss: 0.1182, Elapsed Time: 552.76 seconds
+🟢 Batch 1000/1128: Loss=0.1367 - Time=0.60s
+Epoch [17/50], Batch [1000/1128], Loss: 0.1367, Elapsed Time: 612.59 seconds
+🟢 Batch 1100/1128: Loss=0.1350 - Time=0.60s
+Epoch [17/50], Batch [1100/1128], Loss: 0.1350, Elapsed Time: 672.40 seconds
+🟢 Batch 1128/1128: Loss=0.1665 - Time=0.28s
+Epoch [17/50], Batch [1128/1128], Loss: 0.1665, Elapsed Time: 688.83 seconds
+Epoch [17/50] Complete. Average Loss: 0.1265
+Validation Loss: 0.2693
+Epoch: 17, Validation Loss: 0.2693
+Current Learning Rate: 5e-05
+Starting Epoch [18/50]
+🟢 Batch 100/1128: Loss=0.1133 - Time=0.60s
+Epoch [18/50], Batch [100/1128], Loss: 0.1133, Elapsed Time: 74.84 seconds
+🟢 Batch 200/1128: Loss=0.0907 - Time=0.60s
+Epoch [18/50], Batch [200/1128], Loss: 0.0907, Elapsed Time: 135.00 seconds
+🟢 Batch 300/1128: Loss=0.0818 - Time=0.59s
+Epoch [18/50], Batch [300/1128], Loss: 0.0818, Elapsed Time: 195.01 seconds
+🟢 Batch 400/1128: Loss=0.1055 - Time=0.59s
+Epoch [18/50], Batch [400/1128], Loss: 0.1055, Elapsed Time: 254.72 seconds
+🟢 Batch 500/1128: Loss=0.1437 - Time=0.59s
+Epoch [18/50], Batch [500/1128], Loss: 0.1437, Elapsed Time: 314.29 seconds
+🟢 Batch 600/1128: Loss=0.1051 - Time=0.59s
+Epoch [18/50], Batch [600/1128], Loss: 0.1051, Elapsed Time: 373.72 seconds
+🟢 Batch 700/1128: Loss=0.1167 - Time=0.59s
+Epoch [18/50], Batch [700/1128], Loss: 0.1167, Elapsed Time: 433.32 seconds
+🟢 Batch 800/1128: Loss=0.1203 - Time=0.60s
+Epoch [18/50], Batch [800/1128], Loss: 0.1203, Elapsed Time: 492.87 seconds
+🟢 Batch 900/1128: Loss=0.1055 - Time=0.59s
+Epoch [18/50], Batch [900/1128], Loss: 0.1055, Elapsed Time: 552.48 seconds
+🟢 Batch 1000/1128: Loss=0.1450 - Time=0.60s
+Epoch [18/50], Batch [1000/1128], Loss: 0.1450, Elapsed Time: 612.17 seconds
+🟢 Batch 1100/1128: Loss=0.1326 - Time=0.59s
+Epoch [18/50], Batch [1100/1128], Loss: 0.1326, Elapsed Time: 671.85 seconds
+🟢 Batch 1128/1128: Loss=0.1037 - Time=0.28s
+Epoch [18/50], Batch [1128/1128], Loss: 0.1037, Elapsed Time: 688.26 seconds
+Epoch [18/50] Complete. Average Loss: 0.1207
+Validation Loss: 0.2747
+Epoch: 18, Validation Loss: 0.2747
+Current Learning Rate: 5e-05
+Starting Epoch [19/50]
+🟢 Batch 100/1128: Loss=0.1479 - Time=0.60s
+Epoch [19/50], Batch [100/1128], Loss: 0.1479, Elapsed Time: 73.88 seconds
+🟢 Batch 200/1128: Loss=0.0864 - Time=0.60s
+Epoch [19/50], Batch [200/1128], Loss: 0.0864, Elapsed Time: 133.76 seconds
+🟢 Batch 300/1128: Loss=0.1104 - Time=0.60s
+Epoch [19/50], Batch [300/1128], Loss: 0.1104, Elapsed Time: 193.66 seconds
+🟢 Batch 400/1128: Loss=0.1140 - Time=0.59s
+Epoch [19/50], Batch [400/1128], Loss: 0.1140, Elapsed Time: 253.39 seconds
+🟢 Batch 500/1128: Loss=0.0913 - Time=0.59s
+Epoch [19/50], Batch [500/1128], Loss: 0.0913, Elapsed Time: 313.10 seconds
+🟢 Batch 600/1128: Loss=0.1040 - Time=0.59s
+Epoch [19/50], Batch [600/1128], Loss: 0.1040, Elapsed Time: 373.00 seconds
+🟢 Batch 700/1128: Loss=0.1130 - Time=0.59s
+Epoch [19/50], Batch [700/1128], Loss: 0.1130, Elapsed Time: 432.81 seconds
+🟢 Batch 800/1128: Loss=0.1236 - Time=0.59s
+Epoch [19/50], Batch [800/1128], Loss: 0.1236, Elapsed Time: 492.47 seconds
+🟢 Batch 900/1128: Loss=0.1264 - Time=0.59s
+Epoch [19/50], Batch [900/1128], Loss: 0.1264, Elapsed Time: 552.03 seconds
+🟢 Batch 1000/1128: Loss=0.1036 - Time=0.60s
+Epoch [19/50], Batch [1000/1128], Loss: 0.1036, Elapsed Time: 611.58 seconds
+🟢 Batch 1100/1128: Loss=0.1152 - Time=0.60s
+Epoch [19/50], Batch [1100/1128], Loss: 0.1152, Elapsed Time: 671.04 seconds
+🟢 Batch 1128/1128: Loss=0.1110 - Time=0.28s
+Epoch [19/50], Batch [1128/1128], Loss: 0.1110, Elapsed Time: 687.40 seconds
+Epoch [19/50] Complete. Average Loss: 0.1149
+Validation Loss: 0.2885
+Epoch: 19, Validation Loss: 0.2885
+Current Learning Rate: 5e-05
+Starting Epoch [20/50]
+🟢 Batch 100/1128: Loss=0.0981 - Time=0.60s
+Epoch [20/50], Batch [100/1128], Loss: 0.0981, Elapsed Time: 73.85 seconds
+🟢 Batch 200/1128: Loss=0.1107 - Time=0.60s
+Epoch [20/50], Batch [200/1128], Loss: 0.1107, Elapsed Time: 133.68 seconds
+🟢 Batch 300/1128: Loss=0.1004 - Time=0.59s
+Epoch [20/50], Batch [300/1128], Loss: 0.1004, Elapsed Time: 193.63 seconds
+🟢 Batch 400/1128: Loss=0.1076 - Time=0.60s
+Epoch [20/50], Batch [400/1128], Loss: 0.1076, Elapsed Time: 253.33 seconds
+🟢 Batch 500/1128: Loss=0.1337 - Time=0.59s
+Epoch [20/50], Batch [500/1128], Loss: 0.1337, Elapsed Time: 312.86 seconds
+🟢 Batch 600/1128: Loss=0.1033 - Time=0.60s
+Epoch [20/50], Batch [600/1128], Loss: 0.1033, Elapsed Time: 372.44 seconds
+🟢 Batch 700/1128: Loss=0.0971 - Time=0.59s
+Epoch [20/50], Batch [700/1128], Loss: 0.0971, Elapsed Time: 432.15 seconds
+🟢 Batch 800/1128: Loss=0.1194 - Time=0.60s
+Epoch [20/50], Batch [800/1128], Loss: 0.1194, Elapsed Time: 491.85 seconds
+🟢 Batch 900/1128: Loss=0.1235 - Time=0.59s
+Epoch [20/50], Batch [900/1128], Loss: 0.1235, Elapsed Time: 551.52 seconds
+🟢 Batch 1000/1128: Loss=0.1212 - Time=0.60s
+Epoch [20/50], Batch [1000/1128], Loss: 0.1212, Elapsed Time: 611.30 seconds
+🟢 Batch 1100/1128: Loss=0.1154 - Time=0.60s
+Epoch [20/50], Batch [1100/1128], Loss: 0.1154, Elapsed Time: 671.16 seconds
+🟢 Batch 1128/1128: Loss=0.0958 - Time=0.28s
+Epoch [20/50], Batch [1128/1128], Loss: 0.0958, Elapsed Time: 687.62 seconds
+Epoch [20/50] Complete. Average Loss: 0.1095
+Validation Loss: 0.2887
+Epoch: 20, Validation Loss: 0.2887
+Current Learning Rate: 5e-05
+Starting Epoch [21/50]
+🟢 Batch 100/1128: Loss=0.1111 - Time=0.59s
+Epoch [21/50], Batch [100/1128], Loss: 0.1111, Elapsed Time: 74.22 seconds
+🟢 Batch 200/1128: Loss=0.1138 - Time=0.61s
+Epoch [21/50], Batch [200/1128], Loss: 0.1138, Elapsed Time: 134.26 seconds
+🟢 Batch 300/1128: Loss=0.1270 - Time=0.59s
+Epoch [21/50], Batch [300/1128], Loss: 0.1270, Elapsed Time: 194.28 seconds
+🟢 Batch 400/1128: Loss=0.1076 - Time=0.59s
+Epoch [21/50], Batch [400/1128], Loss: 0.1076, Elapsed Time: 254.08 seconds
+🟢 Batch 500/1128: Loss=0.1108 - Time=0.60s
+Epoch [21/50], Batch [500/1128], Loss: 0.1108, Elapsed Time: 313.71 seconds
+🟢 Batch 600/1128: Loss=0.1444 - Time=0.59s
+Epoch [21/50], Batch [600/1128], Loss: 0.1444, Elapsed Time: 373.26 seconds
+🟢 Batch 700/1128: Loss=0.0917 - Time=0.59s
+Epoch [21/50], Batch [700/1128], Loss: 0.0917, Elapsed Time: 432.78 seconds
+🟢 Batch 800/1128: Loss=0.1295 - Time=0.59s
+Epoch [21/50], Batch [800/1128], Loss: 0.1295, Elapsed Time: 492.37 seconds
+🟢 Batch 900/1128: Loss=0.1412 - Time=0.59s
+Epoch [21/50], Batch [900/1128], Loss: 0.1412, Elapsed Time: 552.01 seconds
+🟢 Batch 1000/1128: Loss=0.1035 - Time=0.60s
+Epoch [21/50], Batch [1000/1128], Loss: 0.1035, Elapsed Time: 611.60 seconds
+🟢 Batch 1100/1128: Loss=0.1186 - Time=0.59s
+Epoch [21/50], Batch [1100/1128], Loss: 0.1186, Elapsed Time: 671.22 seconds
+🟢 Batch 1128/1128: Loss=0.0691 - Time=0.28s
+Epoch [21/50], Batch [1128/1128], Loss: 0.0691, Elapsed Time: 687.65 seconds
+Epoch [21/50] Complete. Average Loss: 0.1053
+Validation Loss: 0.3031
+Epoch: 21, Validation Loss: 0.3031
+Current Learning Rate: 2.5e-05
+Starting Epoch [22/50]
+🟢 Batch 100/1128: Loss=0.1168 - Time=0.60s
+Epoch [22/50], Batch [100/1128], Loss: 0.1168, Elapsed Time: 74.97 seconds
+🟢 Batch 200/1128: Loss=0.0761 - Time=0.61s
+Epoch [22/50], Batch [200/1128], Loss: 0.0761, Elapsed Time: 134.91 seconds
+🟢 Batch 300/1128: Loss=0.0815 - Time=0.60s
+Epoch [22/50], Batch [300/1128], Loss: 0.0815, Elapsed Time: 194.93 seconds
+🟢 Batch 400/1128: Loss=0.1249 - Time=0.60s
+Epoch [22/50], Batch [400/1128], Loss: 0.1249, Elapsed Time: 255.00 seconds
+🟢 Batch 500/1128: Loss=0.0893 - Time=0.59s
+Epoch [22/50], Batch [500/1128], Loss: 0.0893, Elapsed Time: 314.68 seconds
+🟢 Batch 600/1128: Loss=0.0895 - Time=0.61s
+Epoch [22/50], Batch [600/1128], Loss: 0.0895, Elapsed Time: 374.26 seconds
+🟢 Batch 700/1128: Loss=0.1229 - Time=0.59s
+Epoch [22/50], Batch [700/1128], Loss: 0.1229, Elapsed Time: 433.91 seconds
+🟢 Batch 800/1128: Loss=0.0767 - Time=0.60s
+Epoch [22/50], Batch [800/1128], Loss: 0.0767, Elapsed Time: 493.76 seconds
+🟢 Batch 900/1128: Loss=0.0744 - Time=0.59s
+Epoch [22/50], Batch [900/1128], Loss: 0.0744, Elapsed Time: 553.41 seconds
+🟢 Batch 1000/1128: Loss=0.0940 - Time=0.59s
+Epoch [22/50], Batch [1000/1128], Loss: 0.0940, Elapsed Time: 613.16 seconds
+🟢 Batch 1100/1128: Loss=0.1052 - Time=0.59s
+Epoch [22/50], Batch [1100/1128], Loss: 0.1052, Elapsed Time: 672.70 seconds
+🟢 Batch 1128/1128: Loss=0.1299 - Time=0.27s
+Epoch [22/50], Batch [1128/1128], Loss: 0.1299, Elapsed Time: 689.04 seconds
+Epoch [22/50] Complete. Average Loss: 0.0944
+Validation Loss: 0.3153
+Epoch: 22, Validation Loss: 0.3153
+Current Learning Rate: 2.5e-05
+Starting Epoch [23/50]
+🟢 Batch 100/1128: Loss=0.0999 - Time=0.61s
+Epoch [23/50], Batch [100/1128], Loss: 0.0999, Elapsed Time: 74.04 seconds
+🟢 Batch 200/1128: Loss=0.1217 - Time=0.60s
+Epoch [23/50], Batch [200/1128], Loss: 0.1217, Elapsed Time: 133.89 seconds
+🟢 Batch 300/1128: Loss=0.0644 - Time=0.61s
+Epoch [23/50], Batch [300/1128], Loss: 0.0644, Elapsed Time: 193.79 seconds
+🟢 Batch 400/1128: Loss=0.0768 - Time=0.60s
+Epoch [23/50], Batch [400/1128], Loss: 0.0768, Elapsed Time: 253.41 seconds
+🟢 Batch 500/1128: Loss=0.0684 - Time=0.59s
+Epoch [23/50], Batch [500/1128], Loss: 0.0684, Elapsed Time: 312.88 seconds
+🟢 Batch 600/1128: Loss=0.1049 - Time=0.60s
+Epoch [23/50], Batch [600/1128], Loss: 0.1049, Elapsed Time: 372.47 seconds
+🟢 Batch 700/1128: Loss=0.0685 - Time=0.59s
+Epoch [23/50], Batch [700/1128], Loss: 0.0685, Elapsed Time: 432.03 seconds
+🟢 Batch 800/1128: Loss=0.1105 - Time=0.60s
+Epoch [23/50], Batch [800/1128], Loss: 0.1105, Elapsed Time: 491.56 seconds
+🟢 Batch 900/1128: Loss=0.1338 - Time=0.59s
+Epoch [23/50], Batch [900/1128], Loss: 0.1338, Elapsed Time: 551.14 seconds
+🟢 Batch 1000/1128: Loss=0.0848 - Time=0.59s
+Epoch [23/50], Batch [1000/1128], Loss: 0.0848, Elapsed Time: 610.73 seconds
+🟢 Batch 1100/1128: Loss=0.0695 - Time=0.60s
+Epoch [23/50], Batch [1100/1128], Loss: 0.0695, Elapsed Time: 670.27 seconds
+🟢 Batch 1128/1128: Loss=0.0732 - Time=0.28s
+Epoch [23/50], Batch [1128/1128], Loss: 0.0732, Elapsed Time: 686.68 seconds
+Epoch [23/50] Complete. Average Loss: 0.0903
+Validation Loss: 0.3205
+Epoch: 23, Validation Loss: 0.3205
+Current Learning Rate: 2.5e-05
+Starting Epoch [24/50]
+🟢 Batch 100/1128: Loss=0.0859 - Time=0.59s
+Epoch [24/50], Batch [100/1128], Loss: 0.0859, Elapsed Time: 74.75 seconds
+🟢 Batch 200/1128: Loss=0.1167 - Time=0.60s
+Epoch [24/50], Batch [200/1128], Loss: 0.1167, Elapsed Time: 134.76 seconds
+🟢 Batch 300/1128: Loss=0.0830 - Time=0.60s
+Epoch [24/50], Batch [300/1128], Loss: 0.0830, Elapsed Time: 194.84 seconds
+🟢 Batch 400/1128: Loss=0.0777 - Time=0.59s
+Epoch [24/50], Batch [400/1128], Loss: 0.0777, Elapsed Time: 254.59 seconds
+🟢 Batch 500/1128: Loss=0.0881 - Time=0.59s
+Epoch [24/50], Batch [500/1128], Loss: 0.0881, Elapsed Time: 314.22 seconds
+🟢 Batch 600/1128: Loss=0.0964 - Time=0.59s
+Epoch [24/50], Batch [600/1128], Loss: 0.0964, Elapsed Time: 373.66 seconds
+🟢 Batch 700/1128: Loss=0.0566 - Time=0.60s
+Epoch [24/50], Batch [700/1128], Loss: 0.0566, Elapsed Time: 433.14 seconds
+🟢 Batch 800/1128: Loss=0.0728 - Time=0.59s
+Epoch [24/50], Batch [800/1128], Loss: 0.0728, Elapsed Time: 492.66 seconds
+🟢 Batch 900/1128: Loss=0.0699 - Time=0.59s
+Epoch [24/50], Batch [900/1128], Loss: 0.0699, Elapsed Time: 552.29 seconds
+🟢 Batch 1000/1128: Loss=0.0913 - Time=0.59s
+Epoch [24/50], Batch [1000/1128], Loss: 0.0913, Elapsed Time: 611.68 seconds
+🟢 Batch 1100/1128: Loss=0.0913 - Time=0.59s
+Epoch [24/50], Batch [1100/1128], Loss: 0.0913, Elapsed Time: 671.29 seconds
+🟢 Batch 1128/1128: Loss=0.0663 - Time=0.28s
+Epoch [24/50], Batch [1128/1128], Loss: 0.0663, Elapsed Time: 687.69 seconds
+Epoch [24/50] Complete. Average Loss: 0.0869
+Validation Loss: 0.3278
+Epoch: 24, Validation Loss: 0.3278
+Current Learning Rate: 2.5e-05
+Starting Epoch [25/50]
+🟢 Batch 100/1128: Loss=0.0806 - Time=0.59s
+Epoch [25/50], Batch [100/1128], Loss: 0.0806, Elapsed Time: 73.93 seconds
+🟢 Batch 200/1128: Loss=0.0977 - Time=0.60s
+Epoch [25/50], Batch [200/1128], Loss: 0.0977, Elapsed Time: 133.89 seconds
+🟢 Batch 300/1128: Loss=0.0777 - Time=0.60s
+Epoch [25/50], Batch [300/1128], Loss: 0.0777, Elapsed Time: 193.84 seconds
+🟢 Batch 400/1128: Loss=0.0784 - Time=0.60s
+Epoch [25/50], Batch [400/1128], Loss: 0.0784, Elapsed Time: 253.60 seconds
+🟢 Batch 500/1128: Loss=0.1008 - Time=0.59s
+Epoch [25/50], Batch [500/1128], Loss: 0.1008, Elapsed Time: 313.20 seconds
+🟢 Batch 600/1128: Loss=0.0658 - Time=0.59s
+Epoch [25/50], Batch [600/1128], Loss: 0.0658, Elapsed Time: 372.89 seconds
+🟢 Batch 700/1128: Loss=0.0890 - Time=0.59s
+Epoch [25/50], Batch [700/1128], Loss: 0.0890, Elapsed Time: 432.58 seconds
+🟢 Batch 800/1128: Loss=0.0978 - Time=0.59s
+Epoch [25/50], Batch [800/1128], Loss: 0.0978, Elapsed Time: 492.19 seconds
+🟢 Batch 900/1128: Loss=0.0563 - Time=0.60s
+Epoch [25/50], Batch [900/1128], Loss: 0.0563, Elapsed Time: 551.87 seconds
+🟢 Batch 1000/1128: Loss=0.0813 - Time=0.60s
+Epoch [25/50], Batch [1000/1128], Loss: 0.0813, Elapsed Time: 611.63 seconds
+🟢 Batch 1100/1128: Loss=0.0892 - Time=0.59s
+Epoch [25/50], Batch [1100/1128], Loss: 0.0892, Elapsed Time: 671.38 seconds
+🟢 Batch 1128/1128: Loss=0.1302 - Time=0.28s
+Epoch [25/50], Batch [1128/1128], Loss: 0.1302, Elapsed Time: 687.91 seconds
+Epoch [25/50] Complete. Average Loss: 0.0840
+Validation Loss: 0.3442
+Epoch: 25, Validation Loss: 0.3442
+Current Learning Rate: 2.5e-05
+Starting Epoch [26/50]
+🟢 Batch 100/1128: Loss=0.0805 - Time=0.59s
+Epoch [26/50], Batch [100/1128], Loss: 0.0805, Elapsed Time: 74.25 seconds
+🟢 Batch 200/1128: Loss=0.0983 - Time=0.60s
+Epoch [26/50], Batch [200/1128], Loss: 0.0983, Elapsed Time: 134.03 seconds
+🟢 Batch 300/1128: Loss=0.0782 - Time=0.59s
+Epoch [26/50], Batch [300/1128], Loss: 0.0782, Elapsed Time: 193.96 seconds
+🟢 Batch 400/1128: Loss=0.0869 - Time=0.59s
+Epoch [26/50], Batch [400/1128], Loss: 0.0869, Elapsed Time: 253.71 seconds
+🟢 Batch 500/1128: Loss=0.1029 - Time=0.60s
+Epoch [26/50], Batch [500/1128], Loss: 0.1029, Elapsed Time: 313.22 seconds
+🟢 Batch 600/1128: Loss=0.0829 - Time=0.60s
+Epoch [26/50], Batch [600/1128], Loss: 0.0829, Elapsed Time: 372.68 seconds
+🟢 Batch 700/1128: Loss=0.0840 - Time=0.59s
+Epoch [26/50], Batch [700/1128], Loss: 0.0840, Elapsed Time: 432.31 seconds
+🟢 Batch 800/1128: Loss=0.0608 - Time=0.60s
+Epoch [26/50], Batch [800/1128], Loss: 0.0608, Elapsed Time: 491.96 seconds
+🟢 Batch 900/1128: Loss=0.0751 - Time=0.60s
+Epoch [26/50], Batch [900/1128], Loss: 0.0751, Elapsed Time: 551.56 seconds
+🟢 Batch 1000/1128: Loss=0.0923 - Time=0.59s
+Epoch [26/50], Batch [1000/1128], Loss: 0.0923, Elapsed Time: 611.21 seconds
+🟢 Batch 1100/1128: Loss=0.0853 - Time=0.59s
+Epoch [26/50], Batch [1100/1128], Loss: 0.0853, Elapsed Time: 670.77 seconds
+🟢 Batch 1128/1128: Loss=0.0764 - Time=0.27s
+Epoch [26/50], Batch [1128/1128], Loss: 0.0764, Elapsed Time: 687.14 seconds
+Epoch [26/50] Complete. Average Loss: 0.0815
+Validation Loss: 0.3440
+Epoch: 26, Validation Loss: 0.3440
+Current Learning Rate: 2.5e-05
+Starting Epoch [27/50]
+🟢 Batch 100/1128: Loss=0.0651 - Time=0.60s
+Epoch [27/50], Batch [100/1128], Loss: 0.0651, Elapsed Time: 75.05 seconds
+🟢 Batch 200/1128: Loss=0.0868 - Time=0.60s
+Epoch [27/50], Batch [200/1128], Loss: 0.0868, Elapsed Time: 135.06 seconds
+🟢 Batch 300/1128: Loss=0.0599 - Time=0.59s
+Epoch [27/50], Batch [300/1128], Loss: 0.0599, Elapsed Time: 195.05 seconds
+🟢 Batch 400/1128: Loss=0.0904 - Time=0.59s
+Epoch [27/50], Batch [400/1128], Loss: 0.0904, Elapsed Time: 254.85 seconds
+🟢 Batch 500/1128: Loss=0.0688 - Time=0.59s
+Epoch [27/50], Batch [500/1128], Loss: 0.0688, Elapsed Time: 314.68 seconds
+🟢 Batch 600/1128: Loss=0.0816 - Time=0.59s
+Epoch [27/50], Batch [600/1128], Loss: 0.0816, Elapsed Time: 374.32 seconds
+🟢 Batch 700/1128: Loss=0.0719 - Time=0.59s
+Epoch [27/50], Batch [700/1128], Loss: 0.0719, Elapsed Time: 434.03 seconds
+🟢 Batch 800/1128: Loss=0.0774 - Time=0.59s
+Epoch [27/50], Batch [800/1128], Loss: 0.0774, Elapsed Time: 493.46 seconds
+🟢 Batch 900/1128: Loss=0.0619 - Time=0.59s
+Epoch [27/50], Batch [900/1128], Loss: 0.0619, Elapsed Time: 552.96 seconds
+🟢 Batch 1000/1128: Loss=0.0734 - Time=0.59s
+Epoch [27/50], Batch [1000/1128], Loss: 0.0734, Elapsed Time: 612.46 seconds
+🟢 Batch 1100/1128: Loss=0.1111 - Time=0.59s
+Epoch [27/50], Batch [1100/1128], Loss: 0.1111, Elapsed Time: 672.10 seconds
+🟢 Batch 1128/1128: Loss=0.1084 - Time=0.28s
+Epoch [27/50], Batch [1128/1128], Loss: 0.1084, Elapsed Time: 688.55 seconds
+Epoch [27/50] Complete. Average Loss: 0.0784
+Validation Loss: 0.3566
+Epoch: 27, Validation Loss: 0.3566
+Current Learning Rate: 2.5e-05
+Starting Epoch [28/50]
+🟢 Batch 100/1128: Loss=0.0815 - Time=0.59s
+Epoch [28/50], Batch [100/1128], Loss: 0.0815, Elapsed Time: 73.99 seconds
+🟢 Batch 200/1128: Loss=0.0767 - Time=0.60s
+Epoch [28/50], Batch [200/1128], Loss: 0.0767, Elapsed Time: 133.86 seconds
+🟢 Batch 300/1128: Loss=0.0543 - Time=0.60s
+Epoch [28/50], Batch [300/1128], Loss: 0.0543, Elapsed Time: 193.77 seconds
+🟢 Batch 400/1128: Loss=0.0710 - Time=0.60s
+Epoch [28/50], Batch [400/1128], Loss: 0.0710, Elapsed Time: 253.57 seconds
+🟢 Batch 500/1128: Loss=0.0674 - Time=0.59s
+Epoch [28/50], Batch [500/1128], Loss: 0.0674, Elapsed Time: 313.15 seconds
+🟢 Batch 600/1128: Loss=0.0662 - Time=0.61s
+Epoch [28/50], Batch [600/1128], Loss: 0.0662, Elapsed Time: 372.74 seconds
+🟢 Batch 700/1128: Loss=0.0711 - Time=0.59s
+Epoch [28/50], Batch [700/1128], Loss: 0.0711, Elapsed Time: 432.36 seconds
+🟢 Batch 800/1128: Loss=0.0637 - Time=0.59s
+Epoch [28/50], Batch [800/1128], Loss: 0.0637, Elapsed Time: 491.95 seconds
+🟢 Batch 900/1128: Loss=0.1058 - Time=0.60s
+Epoch [28/50], Batch [900/1128], Loss: 0.1058, Elapsed Time: 551.86 seconds
+🟢 Batch 1000/1128: Loss=0.0678 - Time=0.60s
+Epoch [28/50], Batch [1000/1128], Loss: 0.0678, Elapsed Time: 611.53 seconds
+🟢 Batch 1100/1128: Loss=0.0904 - Time=0.59s
+Epoch [28/50], Batch [1100/1128], Loss: 0.0904, Elapsed Time: 671.22 seconds
+🟢 Batch 1128/1128: Loss=0.0780 - Time=0.28s
+Epoch [28/50], Batch [1128/1128], Loss: 0.0780, Elapsed Time: 687.64 seconds
+Epoch [28/50] Complete. Average Loss: 0.0766
+Validation Loss: 0.3610
+Epoch: 28, Validation Loss: 0.3610
+Current Learning Rate: 2.5e-05
+Starting Epoch [29/50]
+🟢 Batch 100/1128: Loss=0.0546 - Time=0.59s
+Epoch [29/50], Batch [100/1128], Loss: 0.0546, Elapsed Time: 74.09 seconds
+🟢 Batch 200/1128: Loss=0.0746 - Time=0.60s
+Epoch [29/50], Batch [200/1128], Loss: 0.0746, Elapsed Time: 134.07 seconds
+🟢 Batch 300/1128: Loss=0.0731 - Time=0.60s
+Epoch [29/50], Batch [300/1128], Loss: 0.0731, Elapsed Time: 193.98 seconds
+🟢 Batch 400/1128: Loss=0.0688 - Time=0.60s
+Epoch [29/50], Batch [400/1128], Loss: 0.0688, Elapsed Time: 253.95 seconds
+🟢 Batch 500/1128: Loss=0.0914 - Time=0.60s
+Epoch [29/50], Batch [500/1128], Loss: 0.0914, Elapsed Time: 313.61 seconds
+🟢 Batch 600/1128: Loss=0.0721 - Time=0.59s
+Epoch [29/50], Batch [600/1128], Loss: 0.0721, Elapsed Time: 373.10 seconds
+🟢 Batch 700/1128: Loss=0.0509 - Time=0.59s
+Epoch [29/50], Batch [700/1128], Loss: 0.0509, Elapsed Time: 432.57 seconds
+🟢 Batch 800/1128: Loss=0.0570 - Time=0.60s
+Epoch [29/50], Batch [800/1128], Loss: 0.0570, Elapsed Time: 492.20 seconds
+🟢 Batch 900/1128: Loss=0.0809 - Time=0.60s
+Epoch [29/50], Batch [900/1128], Loss: 0.0809, Elapsed Time: 551.84 seconds
+🟢 Batch 1000/1128: Loss=0.0516 - Time=0.59s
+Epoch [29/50], Batch [1000/1128], Loss: 0.0516, Elapsed Time: 611.54 seconds
+🟢 Batch 1100/1128: Loss=0.0606 - Time=0.59s
+Epoch [29/50], Batch [1100/1128], Loss: 0.0606, Elapsed Time: 671.07 seconds
+🟢 Batch 1128/1128: Loss=0.0777 - Time=0.28s
+Epoch [29/50], Batch [1128/1128], Loss: 0.0777, Elapsed Time: 687.43 seconds
+Epoch [29/50] Complete. Average Loss: 0.0742
+Validation Loss: 0.3639
+Epoch: 29, Validation Loss: 0.3639
+Current Learning Rate: 1.25e-05
+Starting Epoch [30/50]
+🟢 Batch 100/1128: Loss=0.0809 - Time=0.59s
+Epoch [30/50], Batch [100/1128], Loss: 0.0809, Elapsed Time: 73.93 seconds
+🟢 Batch 200/1128: Loss=0.0561 - Time=0.60s
+Epoch [30/50], Batch [200/1128], Loss: 0.0561, Elapsed Time: 133.80 seconds
+🟢 Batch 300/1128: Loss=0.0846 - Time=0.60s
+Epoch [30/50], Batch [300/1128], Loss: 0.0846, Elapsed Time: 193.78 seconds
+🟢 Batch 400/1128: Loss=0.0899 - Time=0.59s
+Epoch [30/50], Batch [400/1128], Loss: 0.0899, Elapsed Time: 253.71 seconds
+🟢 Batch 500/1128: Loss=0.0600 - Time=0.59s
+Epoch [30/50], Batch [500/1128], Loss: 0.0600, Elapsed Time: 313.50 seconds
+🟢 Batch 600/1128: Loss=0.0621 - Time=0.60s
+Epoch [30/50], Batch [600/1128], Loss: 0.0621, Elapsed Time: 373.21 seconds
+🟢 Batch 700/1128: Loss=0.0609 - Time=0.59s
+Epoch [30/50], Batch [700/1128], Loss: 0.0609, Elapsed Time: 433.06 seconds
+🟢 Batch 800/1128: Loss=0.0518 - Time=0.60s
+Epoch [30/50], Batch [800/1128], Loss: 0.0518, Elapsed Time: 492.95 seconds
+🟢 Batch 900/1128: Loss=0.0609 - Time=0.60s
+Epoch [30/50], Batch [900/1128], Loss: 0.0609, Elapsed Time: 552.79 seconds
+🟢 Batch 1000/1128: Loss=0.1004 - Time=0.70s
+Epoch [30/50], Batch [1000/1128], Loss: 0.1004, Elapsed Time: 612.52 seconds
+🟢 Batch 1100/1128: Loss=0.0625 - Time=0.60s
+Epoch [30/50], Batch [1100/1128], Loss: 0.0625, Elapsed Time: 672.11 seconds
+🟢 Batch 1128/1128: Loss=0.0698 - Time=0.27s
+Epoch [30/50], Batch [1128/1128], Loss: 0.0698, Elapsed Time: 688.51 seconds
+Epoch [30/50] Complete. Average Loss: 0.0698
+Validation Loss: 0.3685
+Epoch: 30, Validation Loss: 0.3685
+Current Learning Rate: 1.25e-05
+Starting Epoch [31/50]
+🟢 Batch 100/1128: Loss=0.0662 - Time=0.60s
+Epoch [31/50], Batch [100/1128], Loss: 0.0662, Elapsed Time: 74.95 seconds
+🟢 Batch 200/1128: Loss=0.0627 - Time=0.60s
+Epoch [31/50], Batch [200/1128], Loss: 0.0627, Elapsed Time: 135.00 seconds
+🟢 Batch 300/1128: Loss=0.0641 - Time=0.60s
+Epoch [31/50], Batch [300/1128], Loss: 0.0641, Elapsed Time: 195.05 seconds
+🟢 Batch 400/1128: Loss=0.0730 - Time=0.60s
+Epoch [31/50], Batch [400/1128], Loss: 0.0730, Elapsed Time: 254.85 seconds
+🟢 Batch 500/1128: Loss=0.0660 - Time=0.60s
+Epoch [31/50], Batch [500/1128], Loss: 0.0660, Elapsed Time: 314.62 seconds
+🟢 Batch 600/1128: Loss=0.0597 - Time=0.59s
+Epoch [31/50], Batch [600/1128], Loss: 0.0597, Elapsed Time: 374.20 seconds
+🟢 Batch 700/1128: Loss=0.0567 - Time=0.60s
+Epoch [31/50], Batch [700/1128], Loss: 0.0567, Elapsed Time: 433.95 seconds
+🟢 Batch 800/1128: Loss=0.0817 - Time=0.60s
+Epoch [31/50], Batch [800/1128], Loss: 0.0817, Elapsed Time: 493.81 seconds
+🟢 Batch 900/1128: Loss=0.0534 - Time=0.59s
+Epoch [31/50], Batch [900/1128], Loss: 0.0534, Elapsed Time: 553.84 seconds
+🟢 Batch 1000/1128: Loss=0.0486 - Time=0.59s
+Epoch [31/50], Batch [1000/1128], Loss: 0.0486, Elapsed Time: 613.53 seconds
+🟢 Batch 1100/1128: Loss=0.0546 - Time=0.60s
+Epoch [31/50], Batch [1100/1128], Loss: 0.0546, Elapsed Time: 673.46 seconds
+🟢 Batch 1128/1128: Loss=0.0575 - Time=0.28s
+Epoch [31/50], Batch [1128/1128], Loss: 0.0575, Elapsed Time: 689.97 seconds
+Epoch [31/50] Complete. Average Loss: 0.0677
+Validation Loss: 0.3757
+Epoch: 31, Validation Loss: 0.3757
+Current Learning Rate: 1.25e-05
+Starting Epoch [32/50]
+🟢 Batch 100/1128: Loss=0.0699 - Time=0.59s
+Epoch [32/50], Batch [100/1128], Loss: 0.0699, Elapsed Time: 74.29 seconds
+🟢 Batch 200/1128: Loss=0.0599 - Time=0.60s
+Epoch [32/50], Batch [200/1128], Loss: 0.0599, Elapsed Time: 134.46 seconds
+🟢 Batch 300/1128: Loss=0.0477 - Time=0.60s
+Epoch [32/50], Batch [300/1128], Loss: 0.0477, Elapsed Time: 194.67 seconds
+🟢 Batch 400/1128: Loss=0.0489 - Time=0.60s
+Epoch [32/50], Batch [400/1128], Loss: 0.0489, Elapsed Time: 254.71 seconds
+🟢 Batch 500/1128: Loss=0.0742 - Time=0.59s
+Epoch [32/50], Batch [500/1128], Loss: 0.0742, Elapsed Time: 314.35 seconds
+🟢 Batch 600/1128: Loss=0.0585 - Time=0.60s
+Epoch [32/50], Batch [600/1128], Loss: 0.0585, Elapsed Time: 373.90 seconds
+🟢 Batch 700/1128: Loss=0.0426 - Time=0.59s
+Epoch [32/50], Batch [700/1128], Loss: 0.0426, Elapsed Time: 433.56 seconds
+🟢 Batch 800/1128: Loss=0.0632 - Time=0.59s
+Epoch [32/50], Batch [800/1128], Loss: 0.0632, Elapsed Time: 493.17 seconds
+🟢 Batch 900/1128: Loss=0.0642 - Time=0.59s
+Epoch [32/50], Batch [900/1128], Loss: 0.0642, Elapsed Time: 552.77 seconds
+🟢 Batch 1000/1128: Loss=0.0699 - Time=0.60s
+Epoch [32/50], Batch [1000/1128], Loss: 0.0699, Elapsed Time: 612.47 seconds
+🟢 Batch 1100/1128: Loss=0.0351 - Time=0.60s
+Epoch [32/50], Batch [1100/1128], Loss: 0.0351, Elapsed Time: 672.28 seconds
+🟢 Batch 1128/1128: Loss=0.0435 - Time=0.27s
+Epoch [32/50], Batch [1128/1128], Loss: 0.0435, Elapsed Time: 688.67 seconds
+Epoch [32/50] Complete. Average Loss: 0.0658
+Validation Loss: 0.3785
+Epoch: 32, Validation Loss: 0.3785
+Early stopping at epoch 32
+Training complete.
+Loss history:  [0.23426707622679796, 0.2237694018266418, 0.22144525080919267, 0.22238988350738179, 0.2203562240708958, 0.22155400907451456, 0.2395924817973917, 0.22456158556721428, 0.22920716998252003, 0.23220736061984842, 0.23374294728040695, 0.22843875513835388, 0.2424331469698386, 0.2428641928326, 0.2498668308420615, 0.26048992121761494, 0.2692744011228735, 0.27470123827457427, 0.28850734626704994, 0.2886948877302083, 0.30306818983771583, 0.3153083317930048, 0.3205334492976015, 0.3278232894160531, 0.3442356344244697, 0.34401475868441844, 0.3566327054934068, 0.3610354843464765, 0.3638882637294856, 0.36854775255376643, 0.37569526282223786, 0.37849786698818205]
+Training complete in 26481.73 seconds
+Model saved successfully.
+
+test results:
+                 Label       AUC  Threshold  ...  Precision    Recall  F1-Score
+0         Cardiomegaly  0.830640   0.000178  ...   0.079514  0.732110  0.143448
+1            Emphysema  0.869428   0.000336  ...   0.118255  0.726190  0.203390
+2             Effusion  0.871596   0.102213  ...   0.336514  0.803951  0.474439
+3               Hernia  0.871048   0.000002  ...   0.016185  0.717949  0.031656
+4         Infiltration  0.703957   0.196360  ...   0.323670  0.543811  0.405808
+5                 Mass  0.816123   0.017579  ...   0.164271  0.687611  0.265188
+6               Nodule  0.727029   0.046395  ...   0.130029  0.560726  0.211105
+7          Atelectasis  0.793715   0.068163  ...   0.206332  0.779804  0.326322
+8         Pneumothorax  0.859153   0.006588  ...   0.150398  0.791423  0.252763
+9   Pleural_Thickening  0.695242   0.005162  ...   0.082852  0.438168  0.139354
+10           Pneumonia  0.612772   0.000138  ...   0.037307  0.299674  0.066354
+11            Fibrosis  0.714188   0.000015  ...   0.027906  0.632911  0.053454
+12               Edema  0.766492   0.000197  ...   0.073562  0.589800  0.130809
+13       Consolidation  0.723044   0.006661  ...   0.074903  0.704319  0.135406

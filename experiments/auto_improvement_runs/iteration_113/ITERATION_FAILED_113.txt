@@ -1,0 +1,41 @@
+Iteration 113 Failed
+================================================================================
+
+Error: linear(): input and weight.T shapes cannot be multiplied (64x1152 and 512x14)
+
+Traceback:
+Traceback (most recent call last):
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/auto_improvement_loop.py", line 991, in run_single_iteration
+    model, train_loss, val_loss, training_metadata = trainer.train()
+                                                     ~~~~~~~~~~~~~^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/config_based_pipeline.py", line 1021, in train
+    return self._run_feature_smote_training(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        model=model,
+        ^^^^^^^^^^^^
+    ...<8 lines>...
+        criterion=criterion
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/config_based_pipeline.py", line 1397, in _run_feature_smote_training
+    train_loss = head_trainer.train_epoch_on_embeddings(
+        combined_embeddings, combined_labels, batch_size, shuffle=True
+    )
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/feature_smote.py", line 349, in train_epoch_on_embeddings
+    outputs = self._forward_head(batch_emb)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/feature_smote.py", line 377, in _forward_head
+    out = self.model.final_fc(embeddings)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: linear(): input and weight.T shapes cannot be multiplied (64x1152 and 512x14)
+
+================================================================================
+Saved files:
+  - config.yaml

@@ -1,0 +1,33 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-04 22:39:22
+Iteration: 110
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "NEXT focused task for Iter-110: run the FIRST truly Phase-5-compliant AUC experiment anchored to Iter-84 by removing all confounders (SMOTE, freeze_backbone, per-class threshold optimization) and changing ONLY the auc_improvement block. The current run is critically invalid for Phase 5 attribution: auc_improvement is disabled while SMOTE(feature_space) is enabled, freeze_backbone=true, and threshold_optimization=per_class_f1_score (all forbidden/out-of-scope). Recent macro AUC is also drifting down (0.8200→0.8188→0.8169), so we should not chase F1/recall; we must focus on ranking noise suppression for the weakest AUC targets (Pneumonia, Fibrosis) while protecting stable diseases. Since 0.42/2.8 and 0.46/2.6 were already used recently, try a more inclusive hard-negative set with a slightly lower threshold but moderated weight to avoid collateral drift: threshold=0.34, weight=2.2. This should penalize a broader band of high-scoring negatives for Pneumonia/Fibrosis (the mechanism that improves AUC) without over-amplifying gradients. After training, compute per-class ΔAUC vs Iter-84 and STOP immediately if any stable disease regresses by >0.01.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.34,
+    "hard_negative_weight": 2.2
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

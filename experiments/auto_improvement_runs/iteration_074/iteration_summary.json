@@ -1,0 +1,123 @@
+{
+  "iteration": 74,
+  "timestamp": "20260116-042409",
+  "config_path": "config_iteration_074.yaml",
+  "model_file": "pipeline_model_20260116-042409.pth",
+  "results_file": "pipeline_results_20260116-042409.csv",
+  "comparison_file": "baseline_comparison_20260116-042409.csv",
+  "analysis_file": "auto_improvement_runs/iteration_074/ai_analysis_074.txt",
+  "avg_auc": 0.6338289566147065,
+  "avg_f1": 0.13850797132747805,
+  "avg_recall": 0.35040667715774687,
+  "avg_precision": 0.0924128521037176,
+  "avg_accuracy": 0.7944294378472044,
+  "train_loss": 0.005461293662995668,
+  "val_loss": 0.005711780768734488,
+  "suggested_changes": {
+    "task_name": "De-conflict imbalance handling: dynamic weights only",
+    "target_metric": "f1",
+    "loss": {
+      "type": "FocalLoss",
+      "gamma": 2.0,
+      "use_dynamic_weights": true,
+      "use_class_weights": false,
+      "alpha": null
+    },
+    "reasoning": "Last 3 iterations show F1 stuck ~0.14 with precision collapsed (~0.09) and unstable/extreme per-class thresholds (e.g., Consolidation=0.9, Hernia=0.5 with F1=0). Current config likely over-weights positives due to stacking: static class weights + dynamic weights + focal alpha. This can inflate false positives (precision collapse) and destabilize threshold optimization. For the next iteration, keep training/evaluation identical and remove the conflicting weighting mechanisms, leaving ONLY dynamic weights to handle imbalance. This is a single major change aimed at improving precision and therefore F1, while keeping threshold optimization properly logged and comparable."
+  },
+  "directory": "auto_improvement_runs/iteration_074",
+  "total_time": 17658.465937137604,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 25,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.06608884073672806,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.05995957781271053,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3402973081558859,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.34902859082039533,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.143461957179146,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.17003864514662423,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.26860003452442605,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.21294658648744252,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.10281517747858017,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.15,
+      "score": 0.04693140794223827,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.15,
+      "score": 0.04749679075738126,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.08541973490427099,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.9,
+      "score": 0.12482758620689655,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

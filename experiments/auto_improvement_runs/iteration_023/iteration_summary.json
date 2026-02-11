@@ -1,0 +1,20 @@
+{
+  "iteration": 23,
+  "timestamp": "20251231-082730",
+  "config_path": "config_iteration_022.yaml",
+  "model_file": "pipeline_model_20251231-082730.pth",
+  "results_file": "pipeline_results_20251231-082730.csv",
+  "comparison_file": "baseline_comparison_20251231-082730.csv",
+  "analysis_file": null,
+  "avg_auc": 0.7551423196219526,
+  "avg_f1": 0.028291226750895213,
+  "avg_recall": 0.0875858297959373,
+  "avg_precision": 0.1530774861813866,
+  "train_loss": 0.002519788036922964,
+  "val_loss": 0.004889225347644904,
+  "suggested_changes": null,
+  "directory": "auto_improvement_runs/iteration_023",
+  "total_time": 11422.69543504715,
+  "ai_analysis_status": "failed",
+  "ai_error": "Invalid format specifier ' 0.0001,\n    \"num_epochs\": 30\n  ' for object of type 'str'"
+}

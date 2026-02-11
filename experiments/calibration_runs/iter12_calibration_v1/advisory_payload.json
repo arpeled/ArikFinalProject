@@ -1,0 +1,25 @@
+{
+  "phase": "PHASE_6_CALIBRATION_ONLY",
+  "base_iteration": 12,
+  "macro_auc_test": 0.8009,
+  "macro_f1_test": 0.2912,
+  "per_class_f1": {
+    "Cardiomegaly": 0.3508,
+    "Emphysema": 0.4368,
+    "Effusion": 0.5161,
+    "Hernia": 0.0035,
+    "Infiltration": 0.4051,
+    "Mass": 0.401,
+    "Nodule": 0.2765,
+    "Atelectasis": 0.3726,
+    "Pneumothorax": 0.389,
+    "Pleural_Thickening": 0.2099,
+    "Pneumonia": 0.0951,
+    "Fibrosis": 0.1413,
+    "Edema": 0.2523,
+    "Consolidation": 0.2261
+  },
+  "auc_degradation": false,
+  "auc_delta": 0.0,
+  "decision_request": "Is further fine-tuning needed?"
+}

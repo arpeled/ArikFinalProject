@@ -1,0 +1,10 @@
+Metric,Value
+Total Images,"112,120"
+Total Unique Patients,"30,805"
+Average Images per Patient,3.64
+Median Images per Patient,1.0
+Min Images per Patient,1
+Max Images per Patient,184
+Images with Disease,"51,759"
+Images without Disease (No Finding),"60,361"
+Disease Prevalence Rate,46.2%

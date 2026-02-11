@@ -1,0 +1,18 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-04 23:17:01
+Iteration: 112
+================================================================================
+
+{
+  "phase": "SMOTE_HEAD",
+  "decision": "STOP",
+  "reasoning": "Feature-space SMOTE has already been probed at the maximum allowed sampling_ratio=8 (probe 2/2). The primary objective (non-zero Hernia F1) is still not achieved: Hernia remains F1=0 with TP=0. Macro AUC is not showing a clear improvement signal and has exhibited mild drift versus recent non-SMOTE baselines (e.g., 0.8188→0.8169→0.8146; current ~0.8155), so there is no justification for further SMOTE probing under the rules. Per experiment rules: if ratio=8 tested or 2 probes done → STOP.",
+  "smote_config": {
+    "sampling_ratio": 8
+  },
+  "hernia_metrics_summary": "Hernia remains non-functional under SMOTE(feature_space): F1=0.0000, Recall=0.0000, Precision=0.0000, AUC≈0.761. Confusion: TP=0, FP=0, FN=39, TN=22385. Validation threshold stayed at 0.500 with F1=0.0, indicating the model never produces useful positive scores for Hernia even after oversampling.",
+  "macro_metrics_summary": "Macro metrics are essentially flat-to-worse vs recent runs: current Avg AUC≈0.8155 and Avg F1≈0.2844 (vs Iter-110 AUC=0.8169, F1=0.2880). This does not meet the criteria to keep SMOTE, and further probes are disallowed."
+}

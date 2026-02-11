@@ -1,0 +1,102 @@
+metadata:
+  config_version: '1.0'
+  description: 'Phase 7A: MLP head upgrade for AUC improvement'
+  phase: 'PHASE_7A_HEAD_UPGRADE_AUC'
+  experiment_id: 'iter12_head_mlp_v1'
+  base_iteration: 12
+  base_checkpoint: 'auto_improvement_runs/iteration_012/pipeline_model_20251229-101232.pth'
+  created_at: '2026-01-31'
+
+model:
+  architecture: ModifiedDenseNetWithDropOut
+  backbone: densenet121
+  num_classes: 14
+  use_additional_features: true
+  dropout_rate: 0.3
+  pretrained: true
+
+  # NEW: MLP head configuration
+  head:
+    type: mlp
+    # Input is 1024 (backbone) + 128 (additional features) = 1152
+    in_features: 1152
+    hidden_features: 512
+    activation: relu
+    dropout: 0.2
+    out_features: 14
+
+training:
+  freeze_backbone: true
+  train_head_only: true
+  batch_size: 64
+  learning_rate: 0.0001
+  num_epochs: 15
+  num_workers: 8
+  use_mixed_precision: false
+  optimizer:
+    type: Adam
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-08
+    weight_decay: 0.0001
+  scheduler:
+    type: NONE
+  early_stopping:
+    enabled: true
+    monitor: val_macro_auc
+    mode: max
+    patience: 5
+    min_delta: 0.001
+    warmup_epochs: 3
+
+loss:
+  type: FocalLoss
+  gamma: 2.0
+  use_class_weights: false
+  use_dynamic_weights: false
+
+augmentation:
+  base:
+    resize:
+    - 224
+    - 224
+    normalize:
+      mean:
+      - 0.485
+      - 0.456
+      - 0.406
+      std:
+      - 0.229
+      - 0.224
+      - 0.225
+  rare_class:
+    enabled: false
+
+data_split:
+  method: GroupShuffleSplit
+  train_ratio: 0.8
+  val_ratio: 0.2
+  random_state: 42
+
+data:
+  train_csv: ./ChestX-ray14/train_data.csv
+  test_csv: ./ChestX-ray14/test_data.csv
+  images_dir: ./ChestX-ray14/images224
+
+evaluation:
+  metrics:
+  - AUC
+  threshold_optimization: false
+  threshold: 0.5
+
+hardware:
+  device: auto
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+
+logging:
+  log_interval: 100
+  save_model: true
+  save_results: true

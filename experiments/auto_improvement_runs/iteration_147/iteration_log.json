@@ -1,0 +1,188 @@
+{
+  "iteration": 147,
+  "role": "TARGETED_AUC",
+  "parent_iteration": 84,
+  "timestamp": "2026-02-09T07:48:20.584972",
+  "macro_auc": 0.7555366525834941,
+  "macro_f1": 0.23210759755716373,
+  "auc_vs_iter12": -0.04536334741650583,
+  "f1_vs_iter58": -0.04619240244283626,
+  "per_group_metrics": {
+    "rare": {
+      "auc": 0.7146541132465589,
+      "f1": 0.08648090391471963,
+      "diseases": [
+        "Hernia",
+        "Pneumonia",
+        "Fibrosis",
+        "Edema"
+      ]
+    },
+    "moderate": {
+      "auc": 0.8073712299398518,
+      "f1": 0.24748678062635,
+      "diseases": [
+        "Emphysema",
+        "Cardiomegaly",
+        "Pleural_Thickening"
+      ]
+    },
+    "common": {
+      "auc": 0.756683284766161,
+      "f1": 0.3087317726089091,
+      "diseases": [
+        "Effusion",
+        "Infiltration",
+        "Mass",
+        "Nodule",
+        "Atelectasis",
+        "Pneumothorax",
+        "Consolidation"
+      ]
+    }
+  },
+  "rare_class_details": {
+    "Hernia": {
+      "auc": 0.6526795072249618,
+      "f1": 0.0046511627906976,
+      "recall": 0.8974358974358975,
+      "precision": 0.0023316234761175,
+      "threshold": 0.95,
+      "tp": 35,
+      "fp": 14976,
+      "fn": 4
+    },
+    "Pneumonia": {
+      "auc": 0.6633425965758943,
+      "f1": 0.0591259640102827,
+      "recall": 0.0749185667752443,
+      "precision": 0.048832271762208,
+      "threshold": 0.2,
+      "tp": 23,
+      "fp": 448,
+      "fn": 284
+    },
+    "Fibrosis": {
+      "auc": 0.7215909871677129,
+      "f1": 0.0987012987012987,
+      "recall": 0.180379746835443,
+      "precision": 0.067938021454112,
+      "threshold": 0.15,
+      "tp": 57,
+      "fp": 782,
+      "fn": 259
+    },
+    "Edema": {
+      "auc": 0.8210033620176668,
+      "f1": 0.1834451901565995,
+      "recall": 0.3636363636363636,
+      "precision": 0.1226626776364996,
+      "threshold": 0.1,
+      "tp": 164,
+      "fp": 1173,
+      "fn": 287
+    }
+  },
+  "distribution_diagnostics": {},
+  "decision": {
+    "action": "CONTINUE",
+    "reasoning": "PHASE 5: Class-specific AUC improvement - Phase 5: Class-specific AUC improvement in progress",
+    "stop_condition_met": false
+  },
+  "training_metadata": {
+    "actual_epochs": 10,
+    "thresholds": {
+      "Cardiomegaly": {
+        "threshold": 0.35,
+        "score": 0.2531017369727047,
+        "positive_samples": 413,
+        "status": "optimized"
+      },
+      "Emphysema": {
+        "threshold": 0.15,
+        "score": 0.2901353965183752,
+        "positive_samples": 416,
+        "status": "optimized"
+      },
+      "Effusion": {
+        "threshold": 0.2,
+        "score": 0.49067713444553485,
+        "positive_samples": 2146,
+        "status": "optimized"
+      },
+      "Hernia": {
+        "threshold": 0.95,
+        "score": 0.004317789291882556,
+        "positive_samples": 32,
+        "status": "optimized"
+      },
+      "Infiltration": {
+        "threshold": 0.15,
+        "score": 0.35662688442211055,
+        "positive_samples": 3127,
+        "status": "optimized"
+      },
+      "Mass": {
+        "threshold": 0.15,
+        "score": 0.29815303430079154,
+        "positive_samples": 999,
+        "status": "optimized"
+      },
+      "Nodule": {
+        "threshold": 0.15,
+        "score": 0.2062407132243685,
+        "positive_samples": 1042,
+        "status": "optimized"
+      },
+      "Atelectasis": {
+        "threshold": 0.1,
+        "score": 0.305167503051675,
+        "positive_samples": 1815,
+        "status": "optimized"
+      },
+      "Pneumothorax": {
+        "threshold": 0.2,
+        "score": 0.30434782608695654,
+        "positive_samples": 870,
+        "status": "optimized"
+      },
+      "Pleural_Thickening": {
+        "threshold": 0.15,
+        "score": 0.14688715953307394,
+        "positive_samples": 523,
+        "status": "optimized"
+      },
+      "Pneumonia": {
+        "threshold": 0.2,
+        "score": 0.05,
+        "positive_samples": 234,
+        "status": "optimized"
+      },
+      "Fibrosis": {
+        "threshold": 0.15,
+        "score": 0.12562313060817548,
+        "positive_samples": 310,
+        "status": "optimized"
+      },
+      "Edema": {
+        "threshold": 0.1,
+        "score": 0.13793103448275862,
+        "positive_samples": 313,
+        "status": "optimized"
+      },
+      "Consolidation": {
+        "threshold": 0.1,
+        "score": 0.14858959078267778,
+        "positive_samples": 771,
+        "status": "optimized"
+      }
+    },
+    "description": "PHASE 5: Class-specific AUC improvement (targets: Pneumonia, Fibrosis, Edema)",
+    "early_stopping_monitor": "val_loss",
+    "early_stopping_mode": "min",
+    "min_delta": 0.01,
+    "patience": 5,
+    "best_score": 0.002641693375666033
+  },
+  "ai_corrections": []
+}

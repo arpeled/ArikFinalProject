@@ -1,0 +1,76 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: Anthropic Claude Sonnet 4 (claude-sonnet-4-20250514)
+Analysis Date: 2026-01-10 10:30:29
+Iteration: 64
+================================================================================
+
+## ANALYSIS
+
+**CRITICAL ISSUE IDENTIFIED**: This iteration represents a **CATASTROPHIC FAILURE** with the worst performance in 60+ iterations:
+
+- **F1-Score COLLAPSED**: From stable 0.27 plateau → 0.0927 (-65% drop)
+- **AUC COLLAPSED**: From 0.76-0.79 range → 0.4755 (-38% drop) 
+- **Model is BROKEN**: Predicting almost everything as positive (Recall=0.68 but Precision=0.053)
+
+**Root Cause Analysis**:
+The aggressive regularization approach in iteration 63 was **too extreme** and broke the model:
+1. **Mixup + Label Smoothing** destroyed class boundaries in this imbalanced dataset
+2. **High dropout (0.5) + Strong weight decay (0.01)** over-regularized the model
+3. **Model can no longer distinguish between classes** - it's essentially random
+
+**Comparison to Previous Success**:
+- **Best F1 period**: Iterations 31-63 maintained F1 ~0.15-0.27 with good AUC ~0.77
+- **Key success factors**: Per-class F1 threshold optimization + FocalLoss with moderate regularization
+- **What worked**: Iterations 32, 38, 47, 50, 56-58 had F1 >0.25 with balanced precision/recall
+
+**Critical Pattern**: The model was actually performing reasonably well (F1 ~0.27) until we over-regularized it. We need to **REVERT** to a working configuration and make smaller, targeted improvements.
+
+## SUGGESTED_CHANGES
+
+**TASK**: **EMERGENCY RECOVERY** - Revert to stable baseline and fix broken model
+
+```json
+{
+  "training": {
+    "learning_rate": 0.0005,
+    "num_epochs": 35,
+    "optimizer": {
+      "type": "Adam",
+      "weight_decay": 0.0001
+    }
+  },
+  "model": {
+    "dropout_rate": 0.3
+  },
+  "loss": {
+    "type": "FocalLoss",
+    "gamma": 2.0,
+    "alpha": 0.7,
+    "use_class_weights": true
+  },
+  "training_regularization": {
+    "label_smoothing": 0.0,
+    "mixup_alpha": 0.0
+  },
+  "augmentation": {
+    "base": {
+      "resize": [224, 224],
+      "normalize": {
+        "mean": [0.485, 0.456, 0.406],
+        "std": [0.229, 0.224, 0.225]
+      },
+      "additional_transforms": {
+        "random_horizontal_flip": 0.5
+      }
+    }
+  },
+  "evaluation": {
+    "threshold_optimization": "per_class_f1_score"
+  },
+  "reasoning": "EMERGENCY RECOVERY NEEDED. Current iteration shows catastrophic failure with F1 collapsed from 0.27→0.09 and AUC from 0.76→0.48. The aggressive regularization (mixup, label smoothing, high dropout, strong weight decay) destroyed the model's ability to distinguish classes. REVERTING to iteration 32-38 successful configuration: (1) Remove mixup_alpha=0 and label_smoothing=0 which broke class boundaries, (2) Reduce dropout from 0.5→0.3, (3) Reduce weight_decay from 0.01→0.0001, (4) Simplify augmentation to basic horizontal flip only, (5) Restore learning_rate to 0.0005 for faster recovery, (6) Keep successful FocalLoss+threshold_optimization that achieved F1~0.25-0.27 in iterations 32-63. Goal: Recover F1 to ≥0.20 and AUC to ≥0.75 before attempting new improvements."
+}
+```
+
+**NEXT TASK AFTER RECOVERY**: Once F1 returns to ≥0.20 range, focus on **targeted class-specific improvements** for the worst-performing diseases (Hernia, Pneumonia, Fibrosis) using class-specific loss weights rather than broad regularization changes.

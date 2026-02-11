@@ -1,0 +1,155 @@
+{
+  "iteration": 65,
+  "timestamp": "20260110-103030",
+  "config_path": "config_iteration_065.yaml",
+  "model_file": "pipeline_model_20260110-103030.pth",
+  "results_file": "pipeline_results_20260110-103030.csv",
+  "comparison_file": "baseline_comparison_20260110-103030.csv",
+  "analysis_file": "auto_improvement_runs/iteration_065/ai_analysis_065.txt",
+  "avg_auc": 0.6615460535147354,
+  "avg_f1": 0.12770028863594998,
+  "avg_recall": 0.5018771769180838,
+  "avg_precision": 0.08004792213314982,
+  "avg_accuracy": 0.6799475052239946,
+  "train_loss": 0.00425490908054734,
+  "val_loss": 0.004465390679172494,
+  "suggested_changes": {
+    "loss": {
+      "type": "FocalLoss",
+      "gamma": 3.0,
+      "alpha": 0.8,
+      "use_class_weights": true
+    },
+    "training": {
+      "learning_rate": 0.0003,
+      "num_epochs": 35
+    },
+    "evaluation": {
+      "threshold_optimization": "per_class_youden_index"
+    },
+    "augmentation": {
+      "base": {
+        "resize": [
+          224,
+          224
+        ],
+        "normalize": {
+          "mean": [
+            0.485,
+            0.456,
+            0.406
+          ],
+          "std": [
+            0.229,
+            0.224,
+            0.225
+          ]
+        },
+        "additional_transforms": {
+          "random_horizontal_flip": 0.5,
+          "random_rotation": 10,
+          "color_jitter": {
+            "brightness": 0.2,
+            "contrast": 0.2
+          }
+        }
+      }
+    },
+    "reasoning": "PRECISION RECOVERY TASK: Current F1=0.13 is caused by precision collapse (0.08 vs historical 0.24+). Model predicts too many positives. Strategy: (1) Increase gamma 2.0\u21923.0 to focus on hard examples and reduce easy false positives, (2) Increase alpha 0.7\u21920.8 to be more selective about positive predictions, (3) Switch to Youden's index threshold optimization (balances sensitivity/specificity vs pure F1 which can be gaming), (4) Reduce learning rate 0.0005\u21920.0003 for more stable convergence, (5) Moderate augmentation to avoid overfitting. This targets the precision-recall imbalance that differentiates current iteration from successful iterations 32-38. Goal: F1 \u22650.20 with precision \u22650.15."
+  },
+  "directory": "auto_improvement_runs/iteration_065",
+  "total_time": 35673.33320569992,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 25,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.06221776216758655,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.06554530656538253,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3181776090378739,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.9,
+      "score": 0.006978367062107467,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.1,
+      "score": 0.3165960221715031,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.1383923905090415,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.1,
+      "score": 0.12286173329552973,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.1,
+      "score": 0.2201769278884818,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.16245136186770429,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.08869987849331713,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.15,
+      "score": 0.0497581202487906,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.15,
+      "score": 0.05040871934604905,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.09432571849668386,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.1,
+      "score": 0.13749553199094483,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

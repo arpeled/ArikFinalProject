@@ -1,0 +1,59 @@
+# Dataset (large files and images)
+/ChestX-ray14/images/
+/ChestX-ray14/images224/
+/ChestX-ray14/labels/
+/ChestX-ray14/.DS_Store
+/ChestX-ray14/*.hdf5
+/ChestX-ray14/*.h5
+/ChestX-ray14/*.xlsx
+/ChestX-ray14/train_df.csv
+/ChestX-ray14/updated_train_df.csv
+/ChestX-ray14/updated_train_df_fixed.csv
+
+# UV virtual environment
+.venv/
+uv.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Large model files
+*.pth
+*.npz
+
+# Large prediction/inference CSVs
+experiments/results/iteration_012_test_detailed_predictions_*.csv
+experiments/calibration_runs/*/inference_*.csv
+
+# Experiment model files and embeddings
+experiments/auto_improvement_runs/embedding_cache/
+experiments/legacy_models/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+/logdir/
+*.log

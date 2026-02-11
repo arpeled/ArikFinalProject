@@ -1,0 +1,188 @@
+{
+  "iteration": 78,
+  "role": "TRAIN_AUC",
+  "parent_iteration": 12,
+  "timestamp": "2026-01-17T20:35:34.968965",
+  "macro_auc": 0.6309465092002604,
+  "macro_f1": 0.1381327696498366,
+  "auc_vs_iter12": -0.16995349079973954,
+  "f1_vs_iter58": -0.1401672303501634,
+  "per_group_metrics": {
+    "rare": {
+      "auc": 0.5767977493955546,
+      "f1": 0.047925472316095875,
+      "diseases": [
+        "Hernia",
+        "Pneumonia",
+        "Fibrosis",
+        "Edema"
+      ]
+    },
+    "moderate": {
+      "auc": 0.6226558714920503,
+      "f1": 0.06941462328672193,
+      "diseases": [
+        "Emphysema",
+        "Cardiomegaly",
+        "Pleural_Thickening"
+      ]
+    },
+    "common": {
+      "auc": 0.6654417881064679,
+      "f1": 0.21913043085330894,
+      "diseases": [
+        "Effusion",
+        "Infiltration",
+        "Mass",
+        "Nodule",
+        "Atelectasis",
+        "Pneumothorax",
+        "Consolidation"
+      ]
+    }
+  },
+  "rare_class_details": {
+    "Hernia": {
+      "auc": 0.286198977108068,
+      "f1": 0.0,
+      "recall": 0.0,
+      "precision": 0.0,
+      "threshold": 0.5,
+      "tp": 0,
+      "fp": 0,
+      "fn": 39
+    },
+    "Pneumonia": {
+      "auc": 0.6184761556065692,
+      "f1": 0.0462916874066699,
+      "recall": 0.3029315960912052,
+      "precision": 0.0250606305578011,
+      "threshold": 0.1,
+      "tp": 93,
+      "fp": 3618,
+      "fn": 214
+    },
+    "Fibrosis": {
+      "auc": 0.6505315963291827,
+      "f1": 0.0571428571428571,
+      "recall": 0.0917721518987341,
+      "precision": 0.0414878397711015,
+      "threshold": 0.15,
+      "tp": 29,
+      "fp": 670,
+      "fn": 287
+    },
+    "Edema": {
+      "auc": 0.7519842685383986,
+      "f1": 0.0882673447148565,
+      "recall": 0.5388026607538803,
+      "precision": 0.0480712166172106,
+      "threshold": 0.1,
+      "tp": 243,
+      "fp": 4812,
+      "fn": 208
+    }
+  },
+  "distribution_diagnostics": {},
+  "decision": {
+    "action": "CONTINUE_AUC_TRAINING",
+    "reasoning": "AUC critically low (0.6404 < 0.75) - recovering from iter12",
+    "stop_condition_met": false
+  },
+  "training_metadata": {
+    "actual_epochs": 35,
+    "thresholds": {
+      "Cardiomegaly": {
+        "threshold": 0.1,
+        "score": 0.05337078651685393,
+        "positive_samples": 413,
+        "status": "optimized"
+      },
+      "Emphysema": {
+        "threshold": 0.1,
+        "score": 0.0711864406779661,
+        "positive_samples": 416,
+        "status": "optimized"
+      },
+      "Effusion": {
+        "threshold": 0.1,
+        "score": 0.3331895622169506,
+        "positive_samples": 2146,
+        "status": "optimized"
+      },
+      "Hernia": {
+        "threshold": 0.5,
+        "score": 0.0,
+        "positive_samples": 32,
+        "status": "optimized"
+      },
+      "Infiltration": {
+        "threshold": 0.15,
+        "score": 0.35300948325914455,
+        "positive_samples": 3127,
+        "status": "optimized"
+      },
+      "Mass": {
+        "threshold": 0.1,
+        "score": 0.1516530178950561,
+        "positive_samples": 999,
+        "status": "optimized"
+      },
+      "Nodule": {
+        "threshold": 0.2,
+        "score": 0.1551155115511551,
+        "positive_samples": 1042,
+        "status": "optimized"
+      },
+      "Atelectasis": {
+        "threshold": 0.15,
+        "score": 0.22741966153261076,
+        "positive_samples": 1815,
+        "status": "optimized"
+      },
+      "Pneumothorax": {
+        "threshold": 0.15,
+        "score": 0.1978021978021978,
+        "positive_samples": 870,
+        "status": "optimized"
+      },
+      "Pleural_Thickening": {
+        "threshold": 0.15,
+        "score": 0.08375,
+        "positive_samples": 523,
+        "status": "optimized"
+      },
+      "Pneumonia": {
+        "threshold": 0.1,
+        "score": 0.044009779951100246,
+        "positive_samples": 234,
+        "status": "optimized"
+      },
+      "Fibrosis": {
+        "threshold": 0.15,
+        "score": 0.057007125890736345,
+        "positive_samples": 310,
+        "status": "optimized"
+      },
+      "Edema": {
+        "threshold": 0.1,
+        "score": 0.0794148380355277,
+        "positive_samples": 313,
+        "status": "optimized"
+      },
+      "Consolidation": {
+        "threshold": 0.9,
+        "score": 0.1295520464067032,
+        "positive_samples": 771,
+        "status": "optimized"
+      }
+    },
+    "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+    "early_stopping_monitor": "val_macro_auc",
+    "early_stopping_mode": "max",
+    "min_delta": 0.001,
+    "patience": 10,
+    "best_score": 0.6297321354356654
+  },
+  "ai_corrections": []
+}

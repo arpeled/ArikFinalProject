@@ -1,0 +1,41 @@
+Iteration 115 Failed
+================================================================================
+
+Error: linear(): input and weight.T shapes cannot be multiplied (32x1152 and 512x14)
+
+Traceback:
+Traceback (most recent call last):
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/auto_improvement_loop.py", line 1013, in run_single_iteration
+    test_model_pipeline(
+    ~~~~~~~~~~~~~~~~~~~^
+        model_file=model_file,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        head_config=head_config
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/chest_xray_test_pipeline.py", line 121, in test_model_pipeline
+    outputs = model(images, additional_features)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/dataset.py", line 186, in forward
+    out = self.final_fc(combined)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/linear.py", line 134, in forward
+    return F.linear(input, self.weight, self.bias)
+           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: linear(): input and weight.T shapes cannot be multiplied (32x1152 and 512x14)
+
+================================================================================
+Saved files:
+  - pipeline_model_20260205-090531.pth
+  - thresholds_20260205-090531.json
+  - config.yaml

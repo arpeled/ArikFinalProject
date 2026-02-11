@@ -1,0 +1,142 @@
+{
+  "Cardiomegaly": {
+    "TP": 254,
+    "FP": 5842,
+    "TN": 16037,
+    "FN": 291,
+    "Total_Positive": 545,
+    "Total_Negative": 21879,
+    "Predicted_Positive": 6096,
+    "Predicted_Negative": 16328
+  },
+  "Emphysema": {
+    "TP": 187,
+    "FP": 4588,
+    "TN": 17332,
+    "FN": 317,
+    "Total_Positive": 504,
+    "Total_Negative": 21920,
+    "Predicted_Positive": 4775,
+    "Predicted_Negative": 17649
+  },
+  "Effusion": {
+    "TP": 1550,
+    "FP": 4789,
+    "TN": 15003,
+    "FN": 1082,
+    "Total_Positive": 2632,
+    "Total_Negative": 19792,
+    "Predicted_Positive": 6339,
+    "Predicted_Negative": 16085
+  },
+  "Hernia": {
+    "TP": 19,
+    "FP": 3746,
+    "TN": 18639,
+    "FN": 20,
+    "Total_Positive": 39,
+    "Total_Negative": 22385,
+    "Predicted_Positive": 3765,
+    "Predicted_Negative": 18659
+  },
+  "Infiltration": {
+    "TP": 1817,
+    "FP": 5008,
+    "TN": 13433,
+    "FN": 2166,
+    "Total_Positive": 3983,
+    "Total_Negative": 18441,
+    "Predicted_Positive": 6825,
+    "Predicted_Negative": 15599
+  },
+  "Mass": {
+    "TP": 387,
+    "FP": 3970,
+    "TN": 17324,
+    "FN": 743,
+    "Total_Positive": 1130,
+    "Total_Negative": 21294,
+    "Predicted_Positive": 4357,
+    "Predicted_Negative": 18067
+  },
+  "Nodule": {
+    "TP": 385,
+    "FP": 4859,
+    "TN": 16297,
+    "FN": 883,
+    "Total_Positive": 1268,
+    "Total_Negative": 21156,
+    "Predicted_Positive": 5244,
+    "Predicted_Negative": 17180
+  },
+  "Atelectasis": {
+    "TP": 907,
+    "FP": 5048,
+    "TN": 15128,
+    "FN": 1341,
+    "Total_Positive": 2248,
+    "Total_Negative": 20176,
+    "Predicted_Positive": 5955,
+    "Predicted_Negative": 16469
+  },
+  "Pneumothorax": {
+    "TP": 532,
+    "FP": 5278,
+    "TN": 16120,
+    "FN": 494,
+    "Total_Positive": 1026,
+    "Total_Negative": 21398,
+    "Predicted_Positive": 5810,
+    "Predicted_Negative": 16614
+  },
+  "Pleural_Thickening": {
+    "TP": 269,
+    "FP": 5300,
+    "TN": 16469,
+    "FN": 386,
+    "Total_Positive": 655,
+    "Total_Negative": 21769,
+    "Predicted_Positive": 5569,
+    "Predicted_Negative": 16855
+  },
+  "Pneumonia": {
+    "TP": 144,
+    "FP": 5576,
+    "TN": 16541,
+    "FN": 163,
+    "Total_Positive": 307,
+    "Total_Negative": 22117,
+    "Predicted_Positive": 5720,
+    "Predicted_Negative": 16704
+  },
+  "Fibrosis": {
+    "TP": 138,
+    "FP": 6037,
+    "TN": 16071,
+    "FN": 178,
+    "Total_Positive": 316,
+    "Total_Negative": 22108,
+    "Predicted_Positive": 6175,
+    "Predicted_Negative": 16249
+  },
+  "Edema": {
+    "TP": 325,
+    "FP": 6018,
+    "TN": 15955,
+    "FN": 126,
+    "Total_Positive": 451,
+    "Total_Negative": 21973,
+    "Predicted_Positive": 6343,
+    "Predicted_Negative": 16081
+  },
+  "Consolidation": {
+    "TP": 484,
+    "FP": 5601,
+    "TN": 15920,
+    "FN": 419,
+    "Total_Positive": 903,
+    "Total_Negative": 21521,
+    "Predicted_Positive": 6085,
+    "Predicted_Negative": 16339
+  }
+}

@@ -1,0 +1,82 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-01-17 12:29:16
+Iteration: 77
+================================================================================
+
+## ANALYSIS
+
+### How iter77 compares to the last 3 iterations
+- **Iter75 → Iter76 → Iter77**
+  - **Macro F1:** 0.1386 → 0.1444 → **0.1445** (tiny improvement; essentially flat)
+  - **Macro AUC:** 0.6349 → **0.6411** → 0.6404 (flat)
+  - **Macro Recall:** 0.4070 → **0.4219** → 0.3753 (dropped)
+
+So the recent “gain” is mostly noise-level. The model is still in the **low-F1 regime**, and we should keep optimizing **F1 first** (per your rules) rather than pivoting to AUC.
+
+### Why F1/Recall are still poor (and why precision is collapsing)
+- Your **per-class threshold optimization is now Fβ with β=0.5**, which *should* increase precision, but:
+  - Many classes still have **very low precision** (e.g., Edema 0.043, Cardiomegaly 0.027), meaning the model is generating lots of false positives even when thresholds are higher.
+- **Hernia is completely dead**: AUC 0.294, Recall 0, and the “optimized threshold” is **0.5** (a red flag that the threshold search found no useful operating point; it likely predicts near-zero probabilities for all positives or ranks them incorrectly).
+- The threshold table shows suspicious “stuck” values:
+  - Many thresholds at **0.100 / 0.150 / 0.200**, and Consolidation at **0.900**. This pattern often happens when the score distributions are poorly separated, so the search picks edge-ish values without real gains.
+
+### Critical config issues (must fix)
+1. **Early stopping is monitoring `val_macro_auc`, not `val_f1`.**  
+   This violates your own mandatory requirements and directly harms F1 optimization because training may stop (or LR scheduling may react) based on the wrong signal.  
+   - Your scheduler already monitors `val_f1`, but early stopping does not—this is internally inconsistent and can cause premature stopping for F1.
+2. You requested “NO ACTIVE TASK”, but the current iteration is still effectively doing threshold-objective tuning. That’s fine, but the next task should be **single-focus** and measurable.
+
+### What hasn’t been properly tried yet (high-impact, single-change candidates)
+Given your “focus for this iteration” guidance and the current plateau around ~0.14 F1, the next clean experiment that doesn’t entangle many knobs is:
+- **Focal Loss gamma tuning** (you have gamma=2.0 now; your own rule says if F1 is low, decrease gamma to 1.5).
+
+This is also aligned with your pipeline’s “Next Untried Strategy: focal_loss_tuning”.
+
+---
+
+## NEXT FOCUSED TASK (suggested)
+
+**Task name:** `focal_loss_gamma_downshift_v1`  
+**Target metric:** `f1`  
+**Goal:** Improve sensitivity to positives without exploding false positives; recover some recall on rare classes (esp. Hernia) while keeping macro F1 moving upward.
+
+### Rationale
+With extreme imbalance + dynamic weights + per-class thresholding, **gamma=2.0 may be over-focusing on “hard” examples** early, which can destabilize learning for rare positives and yield poorly calibrated probabilities. Lowering gamma typically makes gradients less peaky and can increase positive learning signal, improving recall and often F1 (thresholding can later control precision).
+
+### One major change for the next iteration
+- **Change only:** `loss.gamma: 1.5`
+
+(Everything else stays the same to isolate the effect.)
+
+---
+
+## SUGGESTED_CHANGES (JSON)
+
+```json
+{
+  "task_name": "focal_loss_gamma_downshift_v1",
+  "target_metric": "f1",
+  "loss": {
+    "type": "FocalLoss",
+    "gamma": 1.5
+  },
+  "reasoning": "Macro F1 is stuck ~0.14 with persistent rare-class failure (Hernia AUC 0.29, recall 0). With dynamic weights + per-class thresholds already enabled, the clean next lever is focal loss hardness focusing. Lowering gamma from 2.0 to 1.5 reduces over-focusing on hard examples and can improve positive learning signal/recall under extreme imbalance, which should lift macro F1."
+}
+```
+
+---
+
+## Answers to your specific questions
+
+1. **Next focused task:** Focal loss gamma tuning (downshift).
+2. **Metric to target:** `f1` (per rule; F1 is far below 0.3).
+3. **Config changes needed:** `loss.gamma = 1.5` (single major change).
+4. **Critical issues in current config:** Early stopping monitors `val_macro_auc` instead of `val_f1` (mandatory requirement violation). This should be corrected, but per your “one major change” rule, do it in its own dedicated iteration if you want strict isolation.
+5. **Specific hyperparameter change that would help now:** `gamma: 2.0 → 1.5`.
+6. **Trends:** F1 is barely improving; AUC flat; recall fell from iter76 to iter77; precision remains very low; Hernia remains non-functional.
+7. **New approaches not yet tested:** The clean next untried strategy is **focal_loss_tuning** (gamma). After that, if still stuck, the next “single change” candidates would be **sampling strategy adjustments** (e.g., class-aware batch sampler) or **loss swap** (e.g., Asymmetric Loss), but do gamma first since it’s already in your roadmap.
+
+If you want the *very next* iteration to instead fix the mandatory early-stopping monitor, say so—but that would be a different task than focal gamma tuning, and should be run alone to keep attribution clean.

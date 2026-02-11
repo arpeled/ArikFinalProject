@@ -1,0 +1,41 @@
+{
+  "iteration": 14,
+  "timestamp": "20251229-163503",
+  "config_path": "config_iteration_014.yaml",
+  "model_file": "pipeline_model_20251229-163503.pth",
+  "results_file": "pipeline_results_20251229-163503.csv",
+  "comparison_file": "baseline_comparison_20251229-163503.csv",
+  "analysis_file": "auto_improvement_runs/iteration_014/ai_analysis_014.txt",
+  "avg_auc": 0.7771538557257542,
+  "avg_f1": 0.03320067631518842,
+  "avg_recall": 0.09294066772089403,
+  "avg_precision": 0.2085934008849619,
+  "suggested_changes": {
+    "model": {
+      "dropout_rate": 0.05
+    },
+    "training": {
+      "learning_rate": 1e-05,
+      "num_epochs": 80
+    },
+    "loss": {
+      "gamma": 3.0,
+      "alpha": 0.9
+    },
+    "evaluation": {
+      "threshold": "auto",
+      "threshold_optimization_metric": "f1_score"
+    },
+    "augmentation": {
+      "rare_class": {
+        "enabled": true,
+        "rotation_degrees": 30,
+        "horizontal_flip_prob": 1.0
+      }
+    },
+    "reasoning": "The model is still predicting almost all samples as negative. Reducing the dropout rate further could help the model learn more effectively from the data. A reduction in learning rate can provide more fine-grained learning, and increasing the number of epochs can provide more opportunity for the model to learn from the imbalanced data. Lowering the gamma value could reduce the focus on hard, misclassified examples, and increasing alpha to 0.9 might help the model focus more on the minority classes. Implementing auto threshold optimization based on F1 should improve recall/precision balance. More aggressive data augmentation for the rare classes can help to balance the dataset and provide more varied examples for the model to learn from."
+  },
+  "directory": "auto_improvement_runs/iteration_014",
+  "total_time": 7216.163889884949,
+  "ai_analysis_status": "completed"
+}

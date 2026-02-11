@@ -1,0 +1,35 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-07 05:05:51
+Iteration: 125
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "Next focused task (Phase-5 compliant) is to improve CLASS-SPECIFIC AUC for the weakest target disease (Pneumonia AUC=0.672; Fibrosis also low at 0.733) via stronger, more selective hard-negative suppression. Iteration 125 reverted to the same auc_improvement config as the earlier unstable setting (threshold=0.3, weight=1.5) and macro AUC fell back to ~baseline (0.7658 ≈ 0.7659), indicating the current setting is not producing consistent ranking gains. Overfitting warnings are not actionable in Phase 5 (regularization/augmentation/backbone/optimizer/loss changes are forbidden). Therefore the only valid new task is to adjust the auc_improvement block to concentrate gradient on the highest-scoring false positives (noise) for Pneumonia/Fibrosis/Edema while minimizing collateral impact on stable diseases. We must NOT repeat the same configuration, so we move to a higher threshold and higher weight than iteration 125.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis",
+    "Edema"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.45,
+    "hard_negative_weight": 2.2
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null,
+    "macro_auc": -0.0001
+  },
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

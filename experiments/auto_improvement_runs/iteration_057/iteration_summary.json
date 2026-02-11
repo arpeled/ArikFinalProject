@@ -1,0 +1,136 @@
+{
+  "iteration": 57,
+  "timestamp": "20260108-062211",
+  "config_path": "config_iteration_057.yaml",
+  "model_file": "pipeline_model_20260108-062211.pth",
+  "results_file": "pipeline_results_20260108-062211.csv",
+  "comparison_file": "baseline_comparison_20260108-062211.csv",
+  "analysis_file": "auto_improvement_runs/iteration_057/ai_analysis_057.txt",
+  "avg_auc": 0.7955239184972969,
+  "avg_f1": 0.2697248443515384,
+  "avg_recall": 0.45776446495894907,
+  "avg_precision": 0.2334378097667398,
+  "avg_accuracy": 0.8284299984710259,
+  "train_loss": 0.0021733328019324953,
+  "val_loss": 0.002767759044231339,
+  "suggested_changes": {
+    "training": {
+      "early_stopping": {
+        "enabled": true,
+        "monitor": "val_f1",
+        "mode": "max",
+        "patience": 10,
+        "min_delta": 0.001,
+        "warmup_epochs": 15
+      },
+      "num_epochs": 50
+    },
+    "loss": {
+      "type": "FocalLoss",
+      "gamma": 2.0,
+      "alpha": 0.7,
+      "use_class_weights": false
+    },
+    "evaluation": {
+      "threshold": "auto",
+      "threshold_optimization": "per_class_f1_score",
+      "threshold_optimization_metric": "f1_score"
+    },
+    "reasoning": "F1 has plateaued around 0.27 while AUC continues to improve, indicating that the model's score distributions are good but the loss weighting and decision rule are misaligned with F1. Current FocalLoss uses gamma=3.0, alpha=0.75, and use_class_weights=true with frequency-based weights, which strongly over-emphasizes positives for rare classes. This is causing extreme false-positive rates for labels like Hernia (Recall=1.0 but Precision=0.002, 20k+ FPs), dragging down macro F1 and precision. The focused task is to soften imbalance handling: reduce gamma to 2.0 and alpha to 0.7, and disable static class weights so that focal loss remains but with less extreme positive emphasis. This should reduce FPs for very rare labels, improving precision and macro F1 while preserving most of the recall gains. Early stopping is also aligned to val_f1 (monitor=max, patience=10, min_delta=0.001, warmup=15) so training optimizes the primary metric rather than val_loss."
+  },
+  "directory": "auto_improvement_runs/iteration_057",
+  "total_time": 14537.104758024216,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.3,
+      "score": 0.31956521739130433,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.3,
+      "score": 0.3790849673202614,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.25,
+      "score": 0.5010737294201861,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.95,
+      "score": 0.003893494096960563,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.36281384302194075,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.25,
+      "score": 0.36312849162011174,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.27029804727646456,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.2,
+      "score": 0.3582270795385549,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.2,
+      "score": 0.3650985122637716,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.2,
+      "score": 0.2,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.2,
+      "score": 0.06331877729257641,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.15,
+      "score": 0.1309328968903437,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.3,
+      "score": 0.1699867197875166,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.2,
+      "score": 0.21773444753946147,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Baseline configuration from v1.1 implementation",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5
+}

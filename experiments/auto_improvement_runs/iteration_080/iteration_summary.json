@@ -1,0 +1,122 @@
+{
+  "iteration": 80,
+  "timestamp": "20260122-214119",
+  "config_path": "config_iteration_080.yaml",
+  "model_file": "pipeline_model_20260122-214119.pth",
+  "results_file": "pipeline_results_20260122-214119.csv",
+  "comparison_file": "baseline_comparison_20260122-214119.csv",
+  "analysis_file": "auto_improvement_runs/iteration_080/ai_analysis_080.txt",
+  "avg_auc": 0.7612537328515065,
+  "avg_f1": 0.2623259564400042,
+  "avg_recall": 0.3266003075883669,
+  "avg_precision": 0.22431167735919538,
+  "avg_accuracy": 0.9094783650170735,
+  "train_loss": 0.00022054667554226746,
+  "val_loss": 0.2606228436665102,
+  "suggested_changes": {
+    "phase": "PHASE_1",
+    "decision": "STOP_AND_DEBUG",
+    "reasoning": "We are still in PHASE_1 (must exactly reproduce iteration 12, AUC anchor=0.8009; success if AUC>=0.7959). Iteration 80 test Macro AUC=0.7613, which is a clear reproduction failure (below 0.7959). Per protocol, we must STOP and debug reproducibility rather than propose new tasks or config changes. Also, the current config is not actually identical to iteration 12: it includes rare_class augmentation enabled with per-class thresholds, per-class threshold optimization is turned on, early stopping monitors val_macro_auc, scheduler is ReduceLROnPlateau(mode=min), and the model uses additional features=true\u2014any of these may differ from iteration 12 and invalidate reproduction. The reported extreme train/val loss gap (0.0002 vs 0.2606) further suggests a pipeline/config mismatch (e.g., loss reduction/averaging differences, eval-time transforms, label leakage, or different split) rather than a simple regularization issue. Until we confirm bitwise-equivalent iteration-12 settings (data split, transforms, model inputs, loss, optimizer, scheduler, early stopping, thresholding OFF for AUC evaluation), we cannot proceed.",
+    "parent_iteration": 12,
+    "next_config_action": "NONE",
+    "success": false
+  },
+  "directory": "auto_improvement_runs/iteration_080",
+  "total_time": 18304.530664920807,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 26,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.2,
+      "score": 0.26897470039946736,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.15,
+      "score": 0.3384253819036428,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.15,
+      "score": 0.49140752864157117,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.1,
+      "score": 0.23376623376623376,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.05,
+      "score": 0.34224359691309697,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.05,
+      "score": 0.31351351351351353,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.05,
+      "score": 0.21476040573627142,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.1,
+      "score": 0.31488372093023254,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.05,
+      "score": 0.3201524535493092,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.05,
+      "score": 0.157498552403011,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.05,
+      "score": 0.03875968992248062,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.05,
+      "score": 0.12484076433121019,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.17478510028653296,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.05,
+      "score": 0.16013628620102216,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "PHASE 1: Exact reproduction of iteration 12 (FROZEN CONFIG)",
+  "early_stopping_monitor": "val_macro_auc",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10,
+  "model_path": "auto_improvement_runs/iteration_080/pipeline_model_20260122-214119.pth",
+  "phase": "PHASE_1_REPRODUCE",
+  "role": "TRAIN_AUC"
+}

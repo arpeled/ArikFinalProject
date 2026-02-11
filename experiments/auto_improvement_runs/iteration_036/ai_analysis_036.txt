@@ -1,0 +1,28 @@
+**1. ANALYSIS**
+The model is currently predicting almost all samples as negative, mainly due to class imbalance in the training data. Some classes have fewer positive samples, and as a result, the model is biased towards predicting the majority class, i.e., negative. 
+
+The AUC is decent, which means the model is doing a reasonable job at ranking positive instances higher than negatives. This suggests that the model has learned some useful patterns from the data. 
+
+However, the F1-score, Precision, and Recall are still low, indicating the model is not sensitive enough to the positive cases and is failing to correctly identify them. 
+
+Although we implemented oversampling in the last iteration to combat class imbalance, it seems not to have improved the F1-score and Recall as expected. 
+
+Looking at the loss function configuration, we see that the gamma value for FocalLoss is set to 2.0, and dynamic class weights are used. This could imply that the model is paying too much attention to easy-to-classify instances and not enough to the hard ones, which are usually the positive instances in this case. 
+
+The F1-Score and Recall are the lowest for the 'Nodule', 'Infiltration', and 'Pneumonia' classes, suggesting that the model is struggling with these classes the most. 
+
+Comparing this iteration with the previous ones, the F1-score has decreased from 0.2391 to 0.1875, and Recall has also decreased from 0.4319 to 0.3728. This suggests that the changes in the last iteration, i.e., implementing oversampling, have not improved the model's performance. 
+
+**2. SUGGESTED CHANGES**
+Based on the above analysis, we should focus on improving the model's sensitivity to positive classes. To achieve this, we can try to adjust the FocalLoss parameters, i.e., decrease the gamma value to reduce the focus on easy-to-classify instances. 
+
+```json
+{
+  "loss": {
+    "gamma": 1.5
+  },
+  "reasoning": "The current F1-Score and Recall are still low, indicating that the model is not sensitive enough to positive classes. By decreasing the gamma value in the FocalLoss function, we can reduce the model's focus on easy-to-classify instances and increase its sensitivity to the hard ones, which are usually the positive instances in this case. This change should help improve the Recall and F1-score."
+}
+```
+
+For future iterations, we should also consider trying other class balancing techniques, such as SMOTE or ADASYN, that create synthetic samples instead of merely oversampling the minority class. We could also experiment with different loss functions that are designed to handle imbalanced classes, such as Weighted Cross-Entropy or Dice Loss.

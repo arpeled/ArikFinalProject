@@ -1,0 +1,5 @@
+{
+  "best_iteration": 92,
+  "best_metric_value": 0.8203534518361852,
+  "metric": "avg_auc"
+}

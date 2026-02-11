@@ -1,0 +1,156 @@
+{
+  "iteration": 137,
+  "timestamp": "20260208-073904",
+  "config_path": "config_iteration_137.yaml",
+  "model_file": "pipeline_model_20260208-073904.pth",
+  "results_file": "pipeline_results_20260208-073904.csv",
+  "comparison_file": "baseline_comparison_20260208-073904.csv",
+  "analysis_file": "auto_improvement_runs/iteration_137/ai_analysis_137.txt",
+  "avg_auc": 0.7500839140205792,
+  "avg_f1": 0.23535048998452274,
+  "avg_recall": 0.40945941293726046,
+  "avg_precision": 0.1878238933754532,
+  "avg_accuracy": 0.8341126853881045,
+  "per_class_auc": {
+    "Cardiomegaly": 0.8590438403714175,
+    "Emphysema": 0.8585709397810218,
+    "Effusion": 0.8312909233229231,
+    "Hernia": 0.683002583002583,
+    "Infiltration": 0.6537255776178958,
+    "Mass": 0.7823362516010575,
+    "Nodule": 0.6690668553208164,
+    "Atelectasis": 0.740522955377024,
+    "Pneumothorax": 0.8281175555748683,
+    "Pleural_Thickening": 0.7053822246706308,
+    "Pneumonia": 0.6141157206735456,
+    "Fibrosis": 0.7152344617791142,
+    "Edema": 0.845465554732915,
+    "Consolidation": 0.7152993524622966
+  },
+  "train_loss": 0.0008525048673463777,
+  "val_loss": 0.004250967681238597,
+  "suggested_changes": {
+    "phase": "PHASE_5",
+    "decision": "STOP_PHASE_5_AND_FREEZE",
+    "reasoning": "Iteration 137 is NOT Phase-5-interpretable and cannot be used to propose further Phase-5 tuning because it violates the Phase-5 guiding principle (ranking/AUC only): evaluation.threshold=auto AND threshold_optimization=per_class_f1_score are enabled, which is explicitly forbidden and can confound conclusions. Additionally, macro AUC=0.7501 is outside the mandatory \u00b10.01 stability band vs the Phase-5 baseline iteration 84 macro AUC=0.7659 (\u0394=-0.0158), which triggers a STOP condition regardless of per-class behavior. A new 'focused task' within Phase 5 is therefore: CLEAN EVAL ONLY (outside Phase-5 tunable knobs) to disable threshold optimization and re-run AUC-only evaluation against the fixed baseline; until then, any hard-negative tuning is invalid. Overfitting is noted but cannot be addressed in Phase 5 because dropout/weight_decay/augmentation/backbone/optimizer/lr/loss changes are forbidden.",
+    "target_diseases": [
+      "Pneumonia",
+      "Fibrosis",
+      "Edema"
+    ],
+    "auc_improvement_config": {
+      "hard_negative_threshold": 0.3,
+      "hard_negative_weight": 1.5
+    },
+    "per_class_auc_delta": {
+      "Pneumonia": null,
+      "Fibrosis": null,
+      "Edema": null,
+      "Effusion": null,
+      "Emphysema": null,
+      "Cardiomegaly": null,
+      "Hernia": null,
+      "Pneumothorax": null
+    },
+    "stable_diseases_check": "FAILED",
+    "success": false
+  },
+  "directory": "auto_improvement_runs/iteration_137",
+  "total_time": 8560.444677114487,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.2,
+      "score": 0.2672645739910314,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.25,
+      "score": 0.30071599045346065,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.15,
+      "score": 0.47441545238902066,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.95,
+      "score": 0.004011619864434915,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.3555105826798212,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.15,
+      "score": 0.2779497764017888,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.19712918660287082,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.3241491085899514,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.2,
+      "score": 0.31556728232189973,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.2,
+      "score": 0.13273842721695484,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.2,
+      "score": 0.060453400503778336,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.35,
+      "score": 0.14175654853620956,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.2,
+      "score": 0.163575042158516,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.15,
+      "score": 0.15418023887079263,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "PHASE 5: Class-specific AUC improvement (targets: Pneumonia, Fibrosis, Edema)",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5,
+  "model_path": "auto_improvement_runs/iteration_137/pipeline_model_20260208-073904.pth",
+  "phase": "PHASE_5_AUC_IMPROVEMENT",
+  "role": "TARGETED_AUC"
+}

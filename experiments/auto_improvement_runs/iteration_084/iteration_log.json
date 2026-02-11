@@ -1,0 +1,188 @@
+{
+  "iteration": 84,
+  "role": "TRAIN_AUC",
+  "parent_iteration": 12,
+  "timestamp": "2026-01-24T05:28:02.067075",
+  "macro_auc": 0.7658662798953749,
+  "macro_f1": 0.2659156169351554,
+  "auc_vs_iter12": -0.03503372010462502,
+  "f1_vs_iter58": -0.012384383064844573,
+  "per_group_metrics": {
+    "rare": {
+      "auc": 0.7637279289533926,
+      "f1": 0.16542722379675265,
+      "diseases": [
+        "Hernia",
+        "Pneumonia",
+        "Fibrosis",
+        "Edema"
+      ]
+    },
+    "moderate": {
+      "auc": 0.7970845632573802,
+      "f1": 0.2629172661081666,
+      "diseases": [
+        "Emphysema",
+        "Cardiomegaly",
+        "Pleural_Thickening"
+      ]
+    },
+    "common": {
+      "auc": 0.7537089304213623,
+      "f1": 0.3246225633686665,
+      "diseases": [
+        "Effusion",
+        "Infiltration",
+        "Mass",
+        "Nodule",
+        "Atelectasis",
+        "Pneumothorax",
+        "Consolidation"
+      ]
+    }
+  },
+  "rare_class_details": {
+    "Hernia": {
+      "auc": 0.8560540196903832,
+      "f1": 0.2857142857142857,
+      "recall": 0.2051282051282051,
+      "precision": 0.4705882352941176,
+      "threshold": 0.3999999999999999,
+      "tp": 8,
+      "fp": 9,
+      "fn": 31
+    },
+    "Pneumonia": {
+      "auc": 0.6395279531316942,
+      "f1": 0.0534262485481997,
+      "recall": 0.0749185667752443,
+      "precision": 0.0415162454873646,
+      "threshold": 0.05,
+      "tp": 23,
+      "fp": 531,
+      "fn": 284
+    },
+    "Fibrosis": {
+      "auc": 0.7226416406913816,
+      "f1": 0.0986301369863013,
+      "recall": 0.1139240506329113,
+      "precision": 0.0869565217391304,
+      "threshold": 0.1,
+      "tp": 36,
+      "fp": 378,
+      "fn": 280
+    },
+    "Edema": {
+      "auc": 0.8366881023001116,
+      "f1": 0.2239382239382239,
+      "recall": 0.2572062084257206,
+      "precision": 0.1982905982905982,
+      "threshold": 0.1,
+      "tp": 116,
+      "fp": 469,
+      "fn": 335
+    }
+  },
+  "distribution_diagnostics": {},
+  "decision": {
+    "action": "CONTINUE_AUC_TRAINING",
+    "reasoning": "PHASE 1: Reproducing iteration 12 - EXACT REPRODUCTION in progress - iteration 12 AUC required",
+    "stop_condition_met": false
+  },
+  "training_metadata": {
+    "actual_epochs": 25,
+    "thresholds": {
+      "Cardiomegaly": {
+        "threshold": 0.2,
+        "score": 0.25882352941176473,
+        "positive_samples": 413,
+        "status": "optimized"
+      },
+      "Emphysema": {
+        "threshold": 0.25,
+        "score": 0.3426395939086294,
+        "positive_samples": 416,
+        "status": "optimized"
+      },
+      "Effusion": {
+        "threshold": 0.15,
+        "score": 0.4918774419082871,
+        "positive_samples": 2146,
+        "status": "optimized"
+      },
+      "Hernia": {
+        "threshold": 0.39999999999999997,
+        "score": 0.20512820512820512,
+        "positive_samples": 32,
+        "status": "optimized"
+      },
+      "Infiltration": {
+        "threshold": 0.05,
+        "score": 0.35798247488779655,
+        "positive_samples": 3127,
+        "status": "optimized"
+      },
+      "Mass": {
+        "threshold": 0.2,
+        "score": 0.3179544191217343,
+        "positive_samples": 999,
+        "status": "optimized"
+      },
+      "Nodule": {
+        "threshold": 0.1,
+        "score": 0.20786749482401656,
+        "positive_samples": 1042,
+        "status": "optimized"
+      },
+      "Atelectasis": {
+        "threshold": 0.05,
+        "score": 0.31868131868131866,
+        "positive_samples": 1815,
+        "status": "optimized"
+      },
+      "Pneumothorax": {
+        "threshold": 0.05,
+        "score": 0.31487134757959007,
+        "positive_samples": 870,
+        "status": "optimized"
+      },
+      "Pleural_Thickening": {
+        "threshold": 0.05,
+        "score": 0.1423139598044541,
+        "positive_samples": 523,
+        "status": "optimized"
+      },
+      "Pneumonia": {
+        "threshold": 0.05,
+        "score": 0.06842923794712286,
+        "positive_samples": 234,
+        "status": "optimized"
+      },
+      "Fibrosis": {
+        "threshold": 0.1,
+        "score": 0.11607142857142858,
+        "positive_samples": 310,
+        "status": "optimized"
+      },
+      "Edema": {
+        "threshold": 0.1,
+        "score": 0.19021739130434784,
+        "positive_samples": 313,
+        "status": "optimized"
+      },
+      "Consolidation": {
+        "threshold": 0.05,
+        "score": 0.17037316245759518,
+        "positive_samples": 771,
+        "status": "optimized"
+      }
+    },
+    "description": "PHASE 1: Exact reproduction of iteration 12 (FROZEN CONFIG)",
+    "early_stopping_monitor": "val_macro_auc",
+    "early_stopping_mode": "max",
+    "min_delta": 0.001,
+    "patience": 10,
+    "best_score": 0.7582415738460201
+  },
+  "ai_corrections": []
+}

@@ -1,0 +1,120 @@
+{
+  "iteration": 77,
+  "timestamp": "20260117-055023",
+  "config_path": "config_iteration_077.yaml",
+  "model_file": "pipeline_model_20260117-055023.pth",
+  "results_file": "pipeline_results_20260117-055023.csv",
+  "comparison_file": "baseline_comparison_20260117-055023.csv",
+  "analysis_file": "auto_improvement_runs/iteration_077/ai_analysis_077.txt",
+  "avg_auc": 0.6404375864221878,
+  "avg_f1": 0.1445470629924739,
+  "avg_recall": 0.375344295560729,
+  "avg_precision": 0.0973406731646985,
+  "avg_accuracy": 0.7972803373936088,
+  "train_loss": 0.0054041738332916344,
+  "val_loss": 0.005645849272100763,
+  "suggested_changes": {
+    "task_name": "focal_loss_gamma_downshift_v1",
+    "target_metric": "f1",
+    "loss": {
+      "type": "FocalLoss",
+      "gamma": 1.5
+    },
+    "reasoning": "Macro F1 is stuck ~0.14 with persistent rare-class failure (Hernia AUC 0.29, recall 0). With dynamic weights + per-class thresholds already enabled, the clean next lever is focal loss hardness focusing. Lowering gamma from 2.0 to 1.5 reduces over-focusing on hard examples and can improve positive learning signal/recall under extreme imbalance, which should lift macro F1."
+  },
+  "directory": "auto_improvement_runs/iteration_077",
+  "total_time": 23932.797528028488,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 34,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.05356055995130858,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.07308460003070781,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.34117406422581303,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.3472025662798377,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.16053706946876825,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.1749804126403761,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.27490500578225674,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.2161594963273872,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.10073452256033578,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.04299175500588928,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.15,
+      "score": 0.0709849157054126,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.1,
+      "score": 0.0728403286697757,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.9,
+      "score": 0.13446519524617997,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_macro_auc",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

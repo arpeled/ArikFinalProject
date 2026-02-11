@@ -1,0 +1,140 @@
+{
+  "iteration": 119,
+  "timestamp": "20260205-170426",
+  "config_path": "auto_improvement_runs/iteration_118/config.yaml",
+  "model_file": "pipeline_model_20260205-170426.pth",
+  "results_file": "pipeline_results_20260205-170426.csv",
+  "comparison_file": "baseline_comparison_20260205-170426.csv",
+  "analysis_file": "auto_improvement_runs/iteration_119/ai_analysis_119.txt",
+  "avg_auc": 0.8181350919633494,
+  "avg_f1": 0.28856332302632126,
+  "avg_recall": 0.3864364568715212,
+  "avg_precision": 0.23941356055360727,
+  "avg_accuracy": 0.910332042199684,
+  "per_class_auc": {
+    "Cardiomegaly": 0.909628058575711,
+    "Emphysema": 0.9091594796373536,
+    "Effusion": 0.8741300098532334,
+    "Hernia": 0.7591748137202684,
+    "Infiltration": 0.6974257140213185,
+    "Mass": 0.8605714061296089,
+    "Nodule": 0.7494303060694388,
+    "Atelectasis": 0.8008922284607201,
+    "Pneumothorax": 0.8808160233225782,
+    "Pleural_Thickening": 0.7842517846128274,
+    "Pneumonia": 0.7465170055784172,
+    "Fibrosis": 0.7938307171010894,
+    "Edema": 0.8856779278499728,
+    "Consolidation": 0.8023858125543554
+  },
+  "train_loss": 0.13901198584269087,
+  "val_loss": 0.1606119778481397,
+  "suggested_changes": {
+    "phase": "SMOTE_HEAD",
+    "decision": "PROBE_AGAIN",
+    "reasoning": "We are still in the feature-space SMOTE phase and the primary objective (non-zero Hernia F1) is not met: Hernia F1=0 with TP=0. Macro AUC is stable versus the recent SMOTE ratio=4 probes (117: 0.8175, 118: 0.8176, 119: 0.8181) and does not show a >0.003 drop from the ~0.818\u20130.820 neighborhood, so we are allowed to run the second and final SMOTE probe. Per rules: after probe 1 at ratio=4, if Hernia F1 is still 0 and macro AUC is stable, increase smote.sampling_ratio to 8. No other changes are permitted in this phase.",
+    "smote_config": {
+      "sampling_ratio": 8
+    },
+    "hernia_metrics_summary": "Iteration 119 (ratio=4): Hernia F1=0.0000, Recall=0.0000, Precision=0.0000 with TP=0, FP=0, FN=39, TN=22385. Hernia AUC=0.7592 indicates some ranking signal exists, but the model still produces no usable positive predictions (threshold remains 0.500 with validation F1=0). Next task: final SMOTE probe at ratio=8 to attempt to induce non-zero Hernia F1.",
+    "macro_metrics_summary": "Iteration 119: Macro AUC=0.8181, Macro F1=0.2886, Macro Recall=0.3864, Macro Precision=0.2394. Versus 117\u2013118, macro AUC is slightly improved (+0.0005\u20130.0006), while macro F1 dipped modestly (118: 0.2916 \u2192 119: 0.2886). This is not a macro-AUC drop >0.003, so continuing to the final ratio=8 probe is justified; after ratio=8, we must stop per the 2-probe limit."
+  },
+  "directory": "auto_improvement_runs/iteration_119",
+  "total_time": 288.1463360786438,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 18,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.2,
+      "score": 0.3284671532846715,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.15,
+      "score": 0.4080338266384778,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.3,
+      "score": 0.5216473072861668,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.40162224797219004,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.2,
+      "score": 0.3940102948058025,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.1,
+      "score": 0.2585089141004862,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.36599474145486416,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.1,
+      "score": 0.40091743119266054,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.1,
+      "score": 0.1882793017456359,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.05,
+      "score": 0.07916666666666666,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.05,
+      "score": 0.17691659646166807,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.22439024390243903,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.25,
+      "score": 0.23212735166425472,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "SMOTE_HEAD - Multi-layer MLP head (1024->256) for Hernia",
+  "early_stopping_monitor": null,
+  "early_stopping_mode": null,
+  "min_delta": null,
+  "patience": null,
+  "model_path": "auto_improvement_runs/iteration_119/pipeline_model_20260205-170426.pth",
+  "phase": "PHASE_5_AUC_IMPROVEMENT",
+  "role": "UNKNOWN"
+}

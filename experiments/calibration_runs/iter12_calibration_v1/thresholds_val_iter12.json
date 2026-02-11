@@ -1,0 +1,128 @@
+{
+  "Cardiomegaly": {
+    "threshold": 0.21,
+    "precision": 0.3703,
+    "recall": 0.2833,
+    "f1": 0.321,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Cardiomegaly"
+  },
+  "Emphysema": {
+    "threshold": 0.21,
+    "precision": 0.3609,
+    "recall": 0.4399,
+    "f1": 0.3965,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Emphysema"
+  },
+  "Effusion": {
+    "threshold": 0.17,
+    "precision": 0.4536,
+    "recall": 0.61,
+    "f1": 0.5203,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Effusion"
+  },
+  "Hernia": {
+    "threshold": 0.01,
+    "precision": 0.0018,
+    "recall": 1.0,
+    "f1": 0.0036,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_recall>=0.1",
+    "disease": "Hernia"
+  },
+  "Infiltration": {
+    "threshold": 0.17,
+    "precision": 0.3102,
+    "recall": 0.5699,
+    "f1": 0.4017,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Infiltration"
+  },
+  "Mass": {
+    "threshold": 0.18,
+    "precision": 0.3435,
+    "recall": 0.4294,
+    "f1": 0.3817,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Mass"
+  },
+  "Nodule": {
+    "threshold": 0.18,
+    "precision": 0.2522,
+    "recall": 0.2716,
+    "f1": 0.2616,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Nodule"
+  },
+  "Atelectasis": {
+    "threshold": 0.19,
+    "precision": 0.3113,
+    "recall": 0.459,
+    "f1": 0.371,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Atelectasis"
+  },
+  "Pneumothorax": {
+    "threshold": 0.2,
+    "precision": 0.2999,
+    "recall": 0.5253,
+    "f1": 0.3818,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Pneumothorax"
+  },
+  "Pleural_Thickening": {
+    "threshold": 0.2,
+    "precision": 0.1324,
+    "recall": 0.3499,
+    "f1": 0.1921,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Pleural_Thickening"
+  },
+  "Pneumonia": {
+    "threshold": 0.21,
+    "precision": 0.053,
+    "recall": 0.2949,
+    "f1": 0.0898,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_recall>=0.1",
+    "disease": "Pneumonia"
+  },
+  "Fibrosis": {
+    "threshold": 0.21,
+    "precision": 0.1322,
+    "recall": 0.3032,
+    "f1": 0.1841,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_recall>=0.1",
+    "disease": "Fibrosis"
+  },
+  "Edema": {
+    "threshold": 0.25,
+    "precision": 0.1483,
+    "recall": 0.4633,
+    "f1": 0.2246,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_recall>=0.1",
+    "disease": "Edema"
+  },
+  "Consolidation": {
+    "threshold": 0.2,
+    "precision": 0.1629,
+    "recall": 0.4228,
+    "f1": 0.2352,
+    "constraint_met": true,
+    "rule_used": "max_f1_with_precision>=0.1",
+    "disease": "Consolidation"
+  }
+}

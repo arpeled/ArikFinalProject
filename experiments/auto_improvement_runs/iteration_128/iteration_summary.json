@@ -1,0 +1,41 @@
+{
+  "iteration": 128,
+  "timestamp": "20260207-110748",
+  "config_path": "config_iteration_126.yaml",
+  "model_file": "pipeline_model_20260207-110748.pth",
+  "results_file": "pipeline_results_20260207-110748.csv",
+  "comparison_file": "baseline_comparison_20260207-110748.csv",
+  "analysis_file": "auto_improvement_runs/iteration_128/ai_analysis_128.txt",
+  "avg_auc": 0.8174,
+  "avg_f1": 0.1317,
+  "avg_recall": 0.0927,
+  "avg_precision": 0.3576,
+  "avg_accuracy": 0.9494,
+  "per_class_auc": {
+    "Cardiomegaly": 0.9105,
+    "Emphysema": 0.9095,
+    "Effusion": 0.8752,
+    "Hernia": 0.7411,
+    "Infiltration": 0.7015,
+    "Mass": 0.8599,
+    "Nodule": 0.7506,
+    "Atelectasis": 0.8023,
+    "Pneumothorax": 0.8842,
+    "Pleural_Thickening": 0.7836,
+    "Pneumonia": 0.7469,
+    "Fibrosis": 0.7934,
+    "Edema": 0.8885,
+    "Consolidation": 0.8029
+  },
+  "train_loss": 0.137,
+  "val_loss": 0.158,
+  "directory": "auto_improvement_runs/iteration_128",
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Hernia": {"threshold": 0.142, "tp": 4, "fp": 255, "status": "optimized_constrained"}
+  },
+  "description": "HERNIA_THRESHOLD_STABILIZATION - Continued",
+  "phase": "HERNIA_THRESHOLD_STABILIZATION",
+  "model_path": "auto_improvement_runs/iteration_128/pipeline_model_20260207-110748.pth"
+}

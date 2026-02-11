@@ -1,0 +1,119 @@
+{
+  "iteration": 79,
+  "timestamp": "20260117-235009",
+  "config_path": "config_iteration_078.yaml",
+  "model_file": "pipeline_model_20260117-235009.pth",
+  "results_file": "pipeline_results_20260117-235009.csv",
+  "comparison_file": "baseline_comparison_20260117-235009.csv",
+  "analysis_file": "auto_improvement_runs/iteration_079/ai_analysis_079.txt",
+  "avg_auc": 0.6380900080469702,
+  "avg_f1": 0.14135251329112633,
+  "avg_recall": 0.3630053401190288,
+  "avg_precision": 0.09945478406603767,
+  "avg_accuracy": 0.8052978951123796,
+  "train_loss": 0.005429998335778607,
+  "val_loss": 0.005664267402819612,
+  "suggested_changes": {
+    "task_name": "train_auc_true_disable_dynamic_weights_v2",
+    "target_metric": "auc",
+    "loss": {
+      "use_dynamic_weights": false
+    },
+    "reasoning": "Macro AUC (~0.63) is far below the TRAIN_AUC anchor (0.8009), indicating ranking quality collapse that thresholds cannot fix. Dynamic weighting in multi-label extreme imbalance can distort probability ranking and calibration, harming macro AUC. Previous iteration notes indicate an attempt to disable it, but current YAML still has use_dynamic_weights=true; this iteration makes the disable explicit and isolated to measure AUC recovery cleanly while keeping thresholds/augmentations/model fixed."
+  },
+  "directory": "auto_improvement_runs/iteration_079",
+  "total_time": 33238.106665849686,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 35,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.04717655468191565,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.07819011708672356,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3438588605461288,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.3547346819114629,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.1688334200034668,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.16758544652701213,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.22630213530233487,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.2010163749294184,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.09683426443202979,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.04704254583189208,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.1,
+      "score": 0.054266100032690424,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.1,
+      "score": 0.08038181361466969,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.9,
+      "score": 0.1311787072243346,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_macro_auc",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

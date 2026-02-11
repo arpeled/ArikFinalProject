@@ -1,0 +1,119 @@
+{
+  "iteration": 76,
+  "timestamp": "20260117-000040",
+  "config_path": "config_iteration_075.yaml",
+  "model_file": "pipeline_model_20260117-000040.pth",
+  "results_file": "pipeline_results_20260117-000040.csv",
+  "comparison_file": "baseline_comparison_20260117-000040.csv",
+  "analysis_file": "auto_improvement_runs/iteration_076/ai_analysis_076.txt",
+  "avg_auc": 0.6410526618010982,
+  "avg_f1": 0.14439287905438625,
+  "avg_recall": 0.42186876411107793,
+  "avg_precision": 0.09281735232317342,
+  "avg_accuracy": 0.7709756128637684,
+  "train_loss": 0.005408192450157532,
+  "val_loss": 0.005668383533643051,
+  "suggested_changes": {
+    "evaluation": {
+      "threshold_optimization": "per_class_fbeta_score",
+      "fbeta": 0.5,
+      "threshold_optimization_metric": "fbeta_score"
+    },
+    "reasoning": "Current macro F1 is limited by precision collapse (avg precision ~0.093 with huge FP counts). Per-class F1 thresholding tends to favor recall under extreme imbalance + dynamic weights. Switching threshold optimization objective to per-class F0.5 directly penalizes false positives more, which should raise precision and improve macro F1 even if recall drops slightly. This is a single isolated change (no retraining behavior altered) and is properly loggable with your existing threshold_search + save/load thresholds."
+  },
+  "directory": "auto_improvement_runs/iteration_076",
+  "total_time": 20983.062347888947,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 30,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.06714364336818933,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.06653620352250489,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3371091102720496,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.34790045326263574,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.15313898633119633,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.18525441329179648,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.29658907919777483,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.2270042194092827,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.11533934876422126,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.04416913546997037,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.15,
+      "score": 0.07116788321167883,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.1,
+      "score": 0.06843800322061191,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.9,
+      "score": 0.12671660424469414,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_macro_auc",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

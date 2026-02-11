@@ -1,0 +1,40 @@
+AI Analysis Failed
+Error: Error code: 400 - {'error': {'message': "This model's maximum context length is 8192 tokens. However, you requested 9266 tokens (7266 in the messages, 2000 in the completion). Please reduce the length of the messages or completion.", 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}
+
+Traceback (most recent call last):
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/auto_improvement_loop.py", line 476, in run_single_iteration
+    analysis, suggested_changes = self.ai_advisor.analyze_results(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        config=trainer.config,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+        iteration_analysis=iteration_analysis  # Pass detailed iteration analysis
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 86, in analyze_results
+    response = self._call_openai_with_retry(prompt)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 162, in _call_openai_with_retry
+    response = self.client.chat.completions.create(
+        model=self.model,
+    ...<11 lines>...
+        max_tokens=2000
+    )
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 286, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1192, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<47 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1259, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1047, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'error': {'message': "This model's maximum context length is 8192 tokens. However, you requested 9266 tokens (7266 in the messages, 2000 in the completion). Please reduce the length of the messages or completion.", 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}

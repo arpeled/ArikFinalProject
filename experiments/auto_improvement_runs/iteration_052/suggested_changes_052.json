@@ -1,0 +1,30 @@
+{
+  "training": {
+    "learning_rate": 0.00005,
+    "num_epochs": 35,
+    "optimizer": {
+      "type": "Adam",
+      "weight_decay": 0.001
+    },
+    "early_stopping": {
+      "enabled": true,
+      "monitor": "val_f1",
+      "mode": "max",
+      "patience": 10,
+      "min_delta": 0.001,
+      "warmup_epochs": 15
+    }
+  },
+  "model": {
+    "dropout_rate": 0.4
+  },
+  "augmentation": {
+    "rare_class": {
+      "enabled": true,
+      "rotation_degrees": 15,
+      "horizontal_flip_prob": 0.8,
+      "gaussian_noise": 0.02
+    }
+  },
+  "reasoning": "Current F1=0.2548 shows threshold optimization worked, but severe overfitting (val_loss 202% > train_loss) prevents further improvement. Key fixes: (1) Reduce learning rate to 0.00005 to slow learning, (2) Add weight_decay=0.001 for regularization, (3) Increase dropout to 0.4, (4) Fix early stopping to monitor val_f1 with correct mode/min_delta, (5) Increase augmentation to reduce overfitting. This should maintain F1 gains while improving generalization."
+}

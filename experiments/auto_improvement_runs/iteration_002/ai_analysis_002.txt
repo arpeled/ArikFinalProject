@@ -1,0 +1,34 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-07 11:07:48
+Iteration: 2
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "Phase 5 rules are currently being violated by the active config: auc_improvement is disabled, hernia_oversample is enabled, and threshold optimization is active (hernia-only). These are out-of-scope for Phase 5 (ranking/AUC only; only auc_improvement block may change). Also, the request asks for a new focused task: given lowest-AUC/highest-upside targets (Pneumonia/Fibrosis/Edema) and the key insight that AUC gains come from noise suppression, the next task should be to actually enable hard-negative emphasis and slightly increase its strength versus the prior proposal so it can suppress high-scoring negatives for these targets without destabilizing stable diseases. We cannot compute per-class ΔAUC vs iteration 84 because baseline per-class AUCs are not provided in this message; therefore deltas are marked null and must be filled after evaluation against iteration 84 outputs. Proceed with a modestly stronger setting (higher threshold and weight) to focus on the most egregious hard negatives while minimizing unintended shifts in non-target classes.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis",
+    "Edema"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.35,
+    "hard_negative_weight": 1.8
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

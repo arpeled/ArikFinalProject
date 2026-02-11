@@ -1,0 +1,37 @@
+## ANALYSIS
+
+1. **Why is the model predicting almost all samples as negative?**
+The model is predicting almost all samples as negative because of the imbalanced dataset, where the number of negative (healthy) samples is significantly higher than the number of positive (disease) samples. This bias in the data can lead the model to predict the majority class to minimize the loss. In our case, this leads to a high number of false negatives, resulting in a low recall. The gamma value in the FocalLoss function controls how much the model focuses on hard, misclassified examples. A higher gamma will decrease the loss contribution from easy examples and focus the training on hard negatives. However, increasing gamma excessively (e.g., to 4.0 as in the current iteration) could make the model too focused on hard examples, causing it to miss other positive cases and predict almost all samples as negative.
+
+2. **How can we improve recall while maintaining a good AUC?**
+The Recall metric is sensitive to the number of true positives. If the model is predicting almost all samples as negative, it's not detecting enough true positives, which results in a low Recall score. To improve Recall, we need the model to correctly identify more positive instances. This can be achieved by adjusting the prediction threshold and optimizing it for each class based on the F1-score or Youden's index. However, lowering the threshold too much could increase the number of false positives and affect the AUC negatively. Therefore, it's crucial to find an optimal balance. 
+
+3. **What specific hyperparameter changes would help?**
+We have tried various gamma values for the FocalLoss function in different iterations, but none has led to a significant improvement in the F1-score or Recall. In the last iteration, the gamma value was set to 4.0, which may have made the model too focused on hard negatives. Reducing the gamma value may help the model predict more positive instances, thus improving the Recall and F1-score. Also, implementing per-class threshold optimization could significantly improve these metrics.
+
+4. **Should we implement per-class threshold optimization?**
+Definitely, yes. Given the highly imbalanced nature of our multi-label classification problem, a common threshold for all classes is not suitable. Some classes have a very low positive sample ratio, and using a high threshold (like 0.5) would cause the model to predict almost all samples as negative for these classes. Therefore, implementing per-class threshold optimization based on the F1-score would allow the model to adapt the threshold for each class according to its characteristics, which would likely improve the Recall and F1-score significantly.
+
+5. **Are there issues with the loss function configuration?**
+The FocalLoss function is designed to handle class imbalance by giving more weight to hard, misclassified examples. In the current configuration, we are using dynamic class weights and have set the gamma parameter to 4.0. However, this high gamma value might be causing the model to focus too much on hard negatives, leading it to predict almost all samples as negative. Reducing the gamma value could alleviate this issue.
+
+6. **How does this iteration compare to previous ones? What trends do you see?**
+The current iteration has a lower F1-score and Recall than some of the previous iterations, despite having a similar AUC. This suggests that the model's ability to correctly identify positive instances has degraded. The major change in the current iteration was increasing the gamma value in the FocalLoss function to 4.0, which seems to have negatively impacted the model's performance.
+
+7. **What new approaches should we try that haven't been tested yet?**
+So far, we have tried adjusting the loss function parameters and training length, among other things. However, we haven't implemented per-class threshold optimization yet, which could have a significant impact on the model's performance given the imbalanced nature of our problem. Also, we could try data augmentation techniques or oversampling of minority classes to make the dataset more balanced and improve the model's ability to detect positive instances.
+
+
+## SUGGESTED CHANGES
+
+```json
+{
+  "loss": {
+    "gamma": 2.5
+  },
+  "evaluation": {
+    "threshold_optimization": "per_class_f1_score"
+  },
+  "reasoning": "The model is currently predicting almost all samples as negative, which is likely due to the high gamma value in the FocalLoss function causing it to focus too much on hard negatives. Reducing the gamma value to 2.5 should help the model predict more positive instances, improving the Recall and F1-score. Also, implementing per-class threshold optimization based on the F1-score should allow the model to adapt the prediction threshold for each class according to its characteristics, which is expected to further improve these metrics."
+}
+```

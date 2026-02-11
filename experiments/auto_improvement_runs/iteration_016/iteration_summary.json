@@ -1,0 +1,48 @@
+{
+  "iteration": 16,
+  "timestamp": "20251230-004726",
+  "config_path": "config_iteration_016.yaml",
+  "model_file": "pipeline_model_20251230-004726.pth",
+  "results_file": "pipeline_results_20251230-004726.csv",
+  "comparison_file": "baseline_comparison_20251230-004726.csv",
+  "analysis_file": "auto_improvement_runs/iteration_016/ai_analysis_016.txt",
+  "avg_auc": 0.7550028571223031,
+  "avg_f1": 0.05258007321136164,
+  "avg_recall": 0.1032531303149079,
+  "avg_precision": 0.3022812506924649,
+  "train_loss": 0.002043607259885051,
+  "val_loss": 0.005903186892074618,
+  "suggested_changes": {
+    "model": {
+      "dropout_rate": 0.3
+    },
+    "training": {
+      "learning_rate": 1e-05,
+      "num_epochs": 100
+    },
+    "loss": {
+      "gamma": 3.0,
+      "alpha": 0.7,
+      "use_class_weights": true
+    },
+    "evaluation": {
+      "threshold": "optimal",
+      "threshold_optimization_metric": "f1_score"
+    },
+    "augmentation": {
+      "rare_class": {
+        "enabled": true,
+        "rotation_degrees": 30,
+        "horizontal_flip_prob": 1.0,
+        "affine_translate": [
+          0.1,
+          0.1
+        ]
+      }
+    },
+    "reasoning": "Overfitting was observed in the last iteration, so increasing the dropout rate to 0.3 may help regularize the model. Reducing the learning rate to 1e-05 can provide more fine-grained learning. Increasing the number of epochs to 100 can provide more opportunity for the model to learn from the imbalanced data. Increasing gamma to 3.0 can increase the focus on hard, misclassified examples. Increasing alpha to 0.7 can increase the weight to minority classes. Implementing per-class threshold optimization based on F1 should improve recall/precision balance. Data augmentation for rare classes can help the model learn more from minority classes."
+  },
+  "directory": "auto_improvement_runs/iteration_016",
+  "total_time": 7168.454519987106,
+  "ai_analysis_status": "completed"
+}

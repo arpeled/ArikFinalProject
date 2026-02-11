@@ -1,0 +1,117 @@
+{
+  "iteration": 45,
+  "timestamp": "20260104-142247",
+  "config_path": "config_iteration_045.yaml",
+  "model_file": "pipeline_model_20260104-142247.pth",
+  "results_file": "pipeline_results_20260104-142247.csv",
+  "comparison_file": "baseline_comparison_20260104-142247.csv",
+  "analysis_file": "auto_improvement_runs/iteration_045/ai_analysis_045.txt",
+  "avg_auc": 0.707067732603028,
+  "avg_f1": 0.15709053226127503,
+  "avg_recall": 0.3982127093886521,
+  "avg_precision": 0.11092996895604704,
+  "avg_accuracy": 0.8100090464298456,
+  "train_loss": 0.004192012270123216,
+  "val_loss": 0.005237125503745946,
+  "suggested_changes": {
+    "evaluation": {
+      "threshold_optimization": "per_class_f1_score"
+    },
+    "reasoning": "The model is currently predicting almost all samples as negative, likely due to the fixed threshold of 0.5 being inappropriate for the imbalanced data. By enabling per-class threshold optimization based on F1-score, we can improve the model's sensitivity to positive samples, thereby improving the recall and F1-score while maintaining a decent AUC."
+  },
+  "directory": "auto_improvement_runs/iteration_045",
+  "total_time": 7201.578902721405,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.07087596705764912,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.15,
+      "score": 0.10541310541310542,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.15,
+      "score": 0.38809483773331094,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.05,
+      "score": 0.015384615384615385,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.2,
+      "score": 0.3687845303867403,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.15,
+      "score": 0.1310888252148997,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.12377970160250507,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.26984280065580096,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.2,
+      "score": 0.24105865522174535,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.2,
+      "score": 0.1144578313253012,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.05103110800419434,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.15,
+      "score": 0.07782101167315175,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.128214685054044,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.85,
+      "score": 0.16383701188455008,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "This iteration corrects a major issue where a fixed threshold of 0.5 was applied to all classes. Instead, we apply per-class optimized thresholds based on F1-score, which allows the model to detect more true positives for imbalanced and low-signal diseases. FocalLoss gamma was increased to 3.5 to increase focus on hard samples, and training length was extended to 60 epochs. Dropout was reduced to 0.2 to reduce underfitting.\n",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5
+}

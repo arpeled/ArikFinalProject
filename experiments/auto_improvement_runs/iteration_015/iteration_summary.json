@@ -1,0 +1,48 @@
+{
+  "iteration": 15,
+  "timestamp": "20251229-224746",
+  "config_path": "config_iteration_014.yaml",
+  "model_file": "pipeline_model_20251229-224746.pth",
+  "results_file": "pipeline_results_20251229-224746.csv",
+  "comparison_file": "baseline_comparison_20251229-224746.csv",
+  "analysis_file": "auto_improvement_runs/iteration_015/ai_analysis_015.txt",
+  "avg_auc": 0.7844173281715439,
+  "avg_f1": 0.017975859857327168,
+  "avg_recall": 0.0811748450677294,
+  "avg_precision": 0.14880149444174243,
+  "train_loss": 0.00048778170599715273,
+  "val_loss": 0.0010400978549891574,
+  "suggested_changes": {
+    "model": {
+      "dropout_rate": 0.2
+    },
+    "training": {
+      "learning_rate": 5e-05,
+      "num_epochs": 90
+    },
+    "loss": {
+      "gamma": 2.0,
+      "alpha": 0.6,
+      "use_class_weights": true
+    },
+    "evaluation": {
+      "threshold": "auto",
+      "threshold_optimization_metric": "f1_score"
+    },
+    "augmentation": {
+      "rare_class": {
+        "enabled": true,
+        "rotation_degrees": 30,
+        "horizontal_flip_prob": 1.0,
+        "affine_translate": [
+          0.1,
+          0.1
+        ]
+      }
+    },
+    "reasoning": "The model is overfitting, so increasing the dropout rate can help to regularize the model. Reducing the gamma value to 2.0 can help to lessen the focus on hard, misclassified examples and could improve the model's performance on minority classes. Decreasing alpha to 0.6 can reduce the bias towards the minority class. Implementing auto threshold optimization based on F1 should improve recall/precision balance. More aggressive data augmentation for the rare classes can help to balance the dataset and provide more varied examples for the model to learn from."
+  },
+  "directory": "auto_improvement_runs/iteration_015",
+  "total_time": 7179.053828001022,
+  "ai_analysis_status": "completed"
+}

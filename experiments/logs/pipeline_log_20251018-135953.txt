@@ -1,0 +1,314 @@
+2025-10-18 13:59:53,150 - pipeline - 🚀 Starting Chest X-Ray Classification Pipeline
+2025-10-18 13:59:53,150 - pipeline - This will run training, testing, and baseline comparison
+2025-10-18 13:59:53,150 - pipeline - Estimated time: 1-3 hours depending on hardware
+2025-10-18 13:59:53,150 - pipeline - ------------------------------------------------------------
+2025-10-18 13:59:53,150 - pipeline - Starting Chest X-Ray Classification Pipeline
+2025-10-18 13:59:53,150 - pipeline - Timestamp: 20251018-135953
+2025-10-18 13:59:53,150 - pipeline - Model file: pipeline_model_20251018-135953.pth
+2025-10-18 13:59:53,150 - pipeline - Results file: pipeline_results_20251018-135953.csv
+2025-10-18 13:59:53,150 - pipeline - Starting training phase...
+2025-10-18 13:59:54,923 - pipeline - ✅ Using Apple M4 Pro GPU (20 cores) with MPS acceleration
+2025-10-18 13:59:54,990 - pipeline - Train samples: 72156, Validation samples: 17540
+2025-10-18 13:59:55,179 - pipeline - 🚀 MPS optimizations enabled for M4 Pro
+2025-10-18 13:59:55,180 - pipeline - Starting training...
+2025-10-18 14:00:39,635 - pipeline - Batch 50/1128 - Loss: 0.0078
+2025-10-18 14:01:09,686 - pipeline - Batch 100/1128 - Loss: 0.0091
+2025-10-18 14:01:40,633 - pipeline - Batch 150/1128 - Loss: 0.0073
+2025-10-18 14:02:10,915 - pipeline - Batch 200/1128 - Loss: 0.0061
+2025-10-18 14:02:41,392 - pipeline - Batch 250/1128 - Loss: 0.0061
+2025-10-18 14:03:11,416 - pipeline - Batch 300/1128 - Loss: 0.0051
+2025-10-18 14:03:41,291 - pipeline - Batch 350/1128 - Loss: 0.0042
+2025-10-18 14:04:11,125 - pipeline - Batch 400/1128 - Loss: 0.0044
+2025-10-18 14:04:40,990 - pipeline - Batch 450/1128 - Loss: 0.0040
+2025-10-18 14:05:10,867 - pipeline - Batch 500/1128 - Loss: 0.0058
+2025-10-18 14:05:40,713 - pipeline - Batch 550/1128 - Loss: 0.0039
+2025-10-18 14:06:10,560 - pipeline - Batch 600/1128 - Loss: 0.0049
+2025-10-18 14:06:40,453 - pipeline - Batch 650/1128 - Loss: 0.0044
+2025-10-18 14:07:10,435 - pipeline - Batch 700/1128 - Loss: 0.0056
+2025-10-18 14:07:40,319 - pipeline - Batch 750/1128 - Loss: 0.0049
+2025-10-18 14:08:10,364 - pipeline - Batch 800/1128 - Loss: 0.0046
+2025-10-18 14:08:40,408 - pipeline - Batch 850/1128 - Loss: 0.0055
+2025-10-18 14:09:10,893 - pipeline - Batch 900/1128 - Loss: 0.0051
+2025-10-18 14:09:41,476 - pipeline - Batch 950/1128 - Loss: 0.0053
+2025-10-18 14:10:11,527 - pipeline - Batch 1000/1128 - Loss: 0.0053
+2025-10-18 14:10:41,583 - pipeline - Batch 1050/1128 - Loss: 0.0040
+2025-10-18 14:11:11,535 - pipeline - Batch 1100/1128 - Loss: 0.0034
+2025-10-18 14:11:29,083 - pipeline - Batch 1128/1128 - Loss: 0.0034
+2025-10-18 14:11:29,084 - pipeline - Running validation...
+2025-10-18 14:12:26,152 - pipeline - Epoch [1/20] - Train Loss: 0.0061, Val Loss: 0.0045, Time: 750.97s
+2025-10-18 14:12:56,583 - pipeline - Batch 50/1128 - Loss: 0.0038
+2025-10-18 14:13:26,462 - pipeline - Batch 100/1128 - Loss: 0.0045
+2025-10-18 14:13:56,325 - pipeline - Batch 150/1128 - Loss: 0.0036
+2025-10-18 14:14:27,252 - pipeline - Batch 200/1128 - Loss: 0.0046
+2025-10-18 14:14:57,304 - pipeline - Batch 250/1128 - Loss: 0.0041
+2025-10-18 14:15:27,899 - pipeline - Batch 300/1128 - Loss: 0.0048
+2025-10-18 14:15:58,157 - pipeline - Batch 350/1128 - Loss: 0.0050
+2025-10-18 14:16:28,592 - pipeline - Batch 400/1128 - Loss: 0.0043
+2025-10-18 14:16:59,182 - pipeline - Batch 450/1128 - Loss: 0.0051
+2025-10-18 14:17:30,081 - pipeline - Batch 500/1128 - Loss: 0.0039
+2025-10-18 14:18:00,653 - pipeline - Batch 550/1128 - Loss: 0.0052
+2025-10-18 14:18:31,078 - pipeline - Batch 600/1128 - Loss: 0.0042
+2025-10-18 14:19:01,632 - pipeline - Batch 650/1128 - Loss: 0.0044
+2025-10-18 14:19:32,026 - pipeline - Batch 700/1128 - Loss: 0.0043
+2025-10-18 14:20:02,595 - pipeline - Batch 750/1128 - Loss: 0.0058
+2025-10-18 14:20:32,782 - pipeline - Batch 800/1128 - Loss: 0.0043
+2025-10-18 14:21:02,884 - pipeline - Batch 850/1128 - Loss: 0.0056
+2025-10-18 14:21:33,014 - pipeline - Batch 900/1128 - Loss: 0.0040
+2025-10-18 14:22:03,422 - pipeline - Batch 950/1128 - Loss: 0.0042
+2025-10-18 14:22:33,996 - pipeline - Batch 1000/1128 - Loss: 0.0049
+2025-10-18 14:23:04,479 - pipeline - Batch 1050/1128 - Loss: 0.0049
+2025-10-18 14:23:35,737 - pipeline - Batch 1100/1128 - Loss: 0.0039
+2025-10-18 14:23:52,276 - pipeline - Batch 1128/1128 - Loss: 0.0075
+2025-10-18 14:23:52,276 - pipeline - Running validation...
+2025-10-18 14:24:36,779 - pipeline - Epoch [2/20] - Train Loss: 0.0044, Val Loss: 0.2056, Time: 730.63s
+2025-10-18 14:25:08,339 - pipeline - Batch 50/1128 - Loss: 0.0040
+2025-10-18 14:25:39,051 - pipeline - Batch 100/1128 - Loss: 0.0042
+2025-10-18 14:26:09,655 - pipeline - Batch 150/1128 - Loss: 0.0043
+2025-10-18 14:26:39,943 - pipeline - Batch 200/1128 - Loss: 0.0046
+2025-10-18 14:27:10,215 - pipeline - Batch 250/1128 - Loss: 0.0064
+2025-10-18 14:27:40,563 - pipeline - Batch 300/1128 - Loss: 0.0062
+2025-10-18 14:28:10,985 - pipeline - Batch 350/1128 - Loss: 0.0038
+2025-10-18 14:28:41,348 - pipeline - Batch 400/1128 - Loss: 0.0033
+2025-10-18 14:29:11,919 - pipeline - Batch 450/1128 - Loss: 0.0029
+2025-10-18 14:29:42,035 - pipeline - Batch 500/1128 - Loss: 0.0042
+2025-10-18 14:30:11,932 - pipeline - Batch 550/1128 - Loss: 0.0054
+2025-10-18 14:30:41,875 - pipeline - Batch 600/1128 - Loss: 0.0050
+2025-10-18 14:31:11,994 - pipeline - Batch 650/1128 - Loss: 0.0037
+2025-10-18 14:31:41,981 - pipeline - Batch 700/1128 - Loss: 0.0052
+2025-10-18 14:32:11,924 - pipeline - Batch 750/1128 - Loss: 0.0029
+2025-10-18 14:32:41,846 - pipeline - Batch 800/1128 - Loss: 0.0028
+2025-10-18 14:33:11,789 - pipeline - Batch 850/1128 - Loss: 0.0034
+2025-10-18 14:33:41,771 - pipeline - Batch 900/1128 - Loss: 0.0055
+2025-10-18 14:34:11,672 - pipeline - Batch 950/1128 - Loss: 0.0039
+2025-10-18 14:34:41,672 - pipeline - Batch 1000/1128 - Loss: 0.0030
+2025-10-18 14:35:11,786 - pipeline - Batch 1050/1128 - Loss: 0.0038
+2025-10-18 14:35:41,848 - pipeline - Batch 1100/1128 - Loss: 0.0042
+2025-10-18 14:35:58,627 - pipeline - Batch 1128/1128 - Loss: 0.0039
+2025-10-18 14:35:58,627 - pipeline - Running validation...
+2025-10-18 14:36:42,117 - pipeline - Epoch [3/20] - Train Loss: 0.0043, Val Loss: 0.0063, Time: 725.34s
+2025-10-18 14:37:12,375 - pipeline - Batch 50/1128 - Loss: 0.0048
+2025-10-18 14:37:42,480 - pipeline - Batch 100/1128 - Loss: 0.0033
+2025-10-18 14:38:12,533 - pipeline - Batch 150/1128 - Loss: 0.0038
+2025-10-18 14:38:42,619 - pipeline - Batch 200/1128 - Loss: 0.0034
+2025-10-18 14:39:12,926 - pipeline - Batch 250/1128 - Loss: 0.0034
+2025-10-18 14:39:43,108 - pipeline - Batch 300/1128 - Loss: 0.0032
+2025-10-18 14:40:12,731 - pipeline - Batch 350/1128 - Loss: 0.0035
+2025-10-18 14:40:42,375 - pipeline - Batch 400/1128 - Loss: 0.0044
+2025-10-18 14:41:12,006 - pipeline - Batch 450/1128 - Loss: 0.0040
+2025-10-18 14:41:41,664 - pipeline - Batch 500/1128 - Loss: 0.0033
+2025-10-18 14:42:11,318 - pipeline - Batch 550/1128 - Loss: 0.0046
+2025-10-18 14:42:40,946 - pipeline - Batch 600/1128 - Loss: 0.0042
+2025-10-18 14:43:10,607 - pipeline - Batch 650/1128 - Loss: 0.0050
+2025-10-18 14:43:40,312 - pipeline - Batch 700/1128 - Loss: 0.0039
+2025-10-18 14:44:09,958 - pipeline - Batch 750/1128 - Loss: 0.0051
+2025-10-18 14:44:39,632 - pipeline - Batch 800/1128 - Loss: 0.0062
+2025-10-18 14:45:09,617 - pipeline - Batch 850/1128 - Loss: 0.0031
+2025-10-18 14:45:39,253 - pipeline - Batch 900/1128 - Loss: 0.0042
+2025-10-18 14:46:08,921 - pipeline - Batch 950/1128 - Loss: 0.0057
+2025-10-18 14:46:38,592 - pipeline - Batch 1000/1128 - Loss: 0.0034
+2025-10-18 14:47:08,270 - pipeline - Batch 1050/1128 - Loss: 0.0052
+2025-10-18 14:47:38,021 - pipeline - Batch 1100/1128 - Loss: 0.0067
+2025-10-18 14:47:54,285 - pipeline - Batch 1128/1128 - Loss: 0.0040
+2025-10-18 14:47:54,285 - pipeline - Running validation...
+2025-10-18 14:48:37,196 - pipeline - Epoch [4/20] - Train Loss: 0.0042, Val Loss: 0.0048, Time: 715.08s
+2025-10-18 14:49:06,871 - pipeline - Batch 50/1128 - Loss: 0.0033
+2025-10-18 14:49:36,412 - pipeline - Batch 100/1128 - Loss: 0.0038
+2025-10-18 14:50:05,935 - pipeline - Batch 150/1128 - Loss: 0.0029
+2025-10-18 14:50:35,472 - pipeline - Batch 200/1128 - Loss: 0.0045
+2025-10-18 14:51:05,023 - pipeline - Batch 250/1128 - Loss: 0.0038
+2025-10-18 14:51:34,586 - pipeline - Batch 300/1128 - Loss: 0.0039
+2025-10-18 14:52:04,112 - pipeline - Batch 350/1128 - Loss: 0.0051
+2025-10-18 14:52:33,701 - pipeline - Batch 400/1128 - Loss: 0.0043
+2025-10-18 14:53:03,300 - pipeline - Batch 450/1128 - Loss: 0.0045
+2025-10-18 14:53:32,856 - pipeline - Batch 500/1128 - Loss: 0.0043
+2025-10-18 14:54:02,596 - pipeline - Batch 550/1128 - Loss: 0.0041
+2025-10-18 14:54:33,543 - pipeline - Batch 600/1128 - Loss: 0.0041
+2025-10-18 14:55:03,719 - pipeline - Batch 650/1128 - Loss: 0.0036
+2025-10-18 14:55:33,822 - pipeline - Batch 700/1128 - Loss: 0.0029
+2025-10-18 14:56:04,110 - pipeline - Batch 750/1128 - Loss: 0.0035
+2025-10-18 14:56:35,072 - pipeline - Batch 800/1128 - Loss: 0.0052
+2025-10-18 14:57:05,266 - pipeline - Batch 850/1128 - Loss: 0.0047
+2025-10-18 14:57:36,082 - pipeline - Batch 900/1128 - Loss: 0.0042
+2025-10-18 14:58:06,345 - pipeline - Batch 950/1128 - Loss: 0.0035
+2025-10-18 14:58:36,628 - pipeline - Batch 1000/1128 - Loss: 0.0048
+2025-10-18 14:59:06,797 - pipeline - Batch 1050/1128 - Loss: 0.0033
+2025-10-18 14:59:36,772 - pipeline - Batch 1100/1128 - Loss: 0.0037
+2025-10-18 14:59:53,521 - pipeline - Batch 1128/1128 - Loss: 0.0076
+2025-10-18 14:59:53,522 - pipeline - Running validation...
+2025-10-18 15:00:36,886 - pipeline - Epoch [5/20] - Train Loss: 0.0042, Val Loss: 0.0046, Time: 719.69s
+2025-10-18 15:01:06,968 - pipeline - Batch 50/1128 - Loss: 0.0050
+2025-10-18 15:01:36,973 - pipeline - Batch 100/1128 - Loss: 0.0047
+2025-10-18 15:02:06,933 - pipeline - Batch 150/1128 - Loss: 0.0037
+2025-10-18 15:02:36,849 - pipeline - Batch 200/1128 - Loss: 0.0036
+2025-10-18 15:03:06,873 - pipeline - Batch 250/1128 - Loss: 0.0033
+2025-10-18 15:03:36,930 - pipeline - Batch 300/1128 - Loss: 0.0031
+2025-10-18 15:04:06,979 - pipeline - Batch 350/1128 - Loss: 0.0035
+2025-10-18 15:04:37,029 - pipeline - Batch 400/1128 - Loss: 0.0048
+2025-10-18 15:05:07,050 - pipeline - Batch 450/1128 - Loss: 0.0050
+2025-10-18 15:05:37,063 - pipeline - Batch 500/1128 - Loss: 0.0053
+2025-10-18 15:06:07,222 - pipeline - Batch 550/1128 - Loss: 0.0039
+2025-10-18 15:06:37,291 - pipeline - Batch 600/1128 - Loss: 0.0036
+2025-10-18 15:07:07,140 - pipeline - Batch 650/1128 - Loss: 0.0045
+2025-10-18 15:07:36,948 - pipeline - Batch 700/1128 - Loss: 0.0049
+2025-10-18 15:08:06,817 - pipeline - Batch 750/1128 - Loss: 0.0035
+2025-10-18 15:08:36,825 - pipeline - Batch 800/1128 - Loss: 0.0048
+2025-10-18 15:09:06,775 - pipeline - Batch 850/1128 - Loss: 0.0040
+2025-10-18 15:09:36,563 - pipeline - Batch 900/1128 - Loss: 0.0045
+2025-10-18 15:10:06,439 - pipeline - Batch 950/1128 - Loss: 0.0051
+2025-10-18 15:10:36,367 - pipeline - Batch 1000/1128 - Loss: 0.0043
+2025-10-18 15:11:06,243 - pipeline - Batch 1050/1128 - Loss: 0.0049
+2025-10-18 15:11:36,214 - pipeline - Batch 1100/1128 - Loss: 0.0044
+2025-10-18 15:11:52,746 - pipeline - Batch 1128/1128 - Loss: 0.0059
+2025-10-18 15:11:52,747 - pipeline - Running validation...
+2025-10-18 15:12:35,689 - pipeline - Epoch [6/20] - Train Loss: 0.0042, Val Loss: 0.0046, Time: 718.80s
+2025-10-18 15:13:05,467 - pipeline - Batch 50/1128 - Loss: 0.0045
+2025-10-18 15:13:35,100 - pipeline - Batch 100/1128 - Loss: 0.0043
+2025-10-18 15:14:04,731 - pipeline - Batch 150/1128 - Loss: 0.0053
+2025-10-18 15:14:34,379 - pipeline - Batch 200/1128 - Loss: 0.0047
+2025-10-18 15:15:04,036 - pipeline - Batch 250/1128 - Loss: 0.0038
+2025-10-18 15:15:33,695 - pipeline - Batch 300/1128 - Loss: 0.0040
+2025-10-18 15:16:03,388 - pipeline - Batch 350/1128 - Loss: 0.0038
+2025-10-18 15:16:32,994 - pipeline - Batch 400/1128 - Loss: 0.0044
+2025-10-18 15:17:02,663 - pipeline - Batch 450/1128 - Loss: 0.0026
+2025-10-18 15:17:32,393 - pipeline - Batch 500/1128 - Loss: 0.0056
+2025-10-18 15:18:02,118 - pipeline - Batch 550/1128 - Loss: 0.0050
+2025-10-18 15:18:31,917 - pipeline - Batch 600/1128 - Loss: 0.0043
+2025-10-18 15:19:01,631 - pipeline - Batch 650/1128 - Loss: 0.0045
+2025-10-18 15:19:31,386 - pipeline - Batch 700/1128 - Loss: 0.0042
+2025-10-18 15:20:01,076 - pipeline - Batch 750/1128 - Loss: 0.0040
+2025-10-18 15:20:30,869 - pipeline - Batch 800/1128 - Loss: 0.0041
+2025-10-18 15:21:00,579 - pipeline - Batch 850/1128 - Loss: 0.0032
+2025-10-18 15:21:30,301 - pipeline - Batch 900/1128 - Loss: 0.0043
+2025-10-18 15:22:00,030 - pipeline - Batch 950/1128 - Loss: 0.0036
+2025-10-18 15:22:29,757 - pipeline - Batch 1000/1128 - Loss: 0.0038
+2025-10-18 15:22:59,453 - pipeline - Batch 1050/1128 - Loss: 0.0037
+2025-10-18 15:23:29,147 - pipeline - Batch 1100/1128 - Loss: 0.0023
+2025-10-18 15:23:45,471 - pipeline - Batch 1128/1128 - Loss: 0.0020
+2025-10-18 15:23:45,471 - pipeline - Running validation...
+2025-10-18 15:24:28,373 - pipeline - Epoch [7/20] - Train Loss: 0.0041, Val Loss: 0.0042, Time: 712.68s
+2025-10-18 15:24:58,445 - pipeline - Batch 50/1128 - Loss: 0.0028
+2025-10-18 15:25:28,254 - pipeline - Batch 100/1128 - Loss: 0.0025
+2025-10-18 15:25:57,909 - pipeline - Batch 150/1128 - Loss: 0.0038
+2025-10-18 15:26:27,498 - pipeline - Batch 200/1128 - Loss: 0.0038
+2025-10-18 15:26:57,107 - pipeline - Batch 250/1128 - Loss: 0.0038
+2025-10-18 15:27:26,649 - pipeline - Batch 300/1128 - Loss: 0.0042
+2025-10-18 15:27:56,212 - pipeline - Batch 350/1128 - Loss: 0.0045
+2025-10-18 15:28:25,875 - pipeline - Batch 400/1128 - Loss: 0.0051
+2025-10-18 15:28:55,507 - pipeline - Batch 450/1128 - Loss: 0.0032
+2025-10-18 15:29:25,136 - pipeline - Batch 500/1128 - Loss: 0.0049
+2025-10-18 15:29:54,739 - pipeline - Batch 550/1128 - Loss: 0.0043
+2025-10-18 15:30:24,408 - pipeline - Batch 600/1128 - Loss: 0.0050
+2025-10-18 15:30:53,988 - pipeline - Batch 650/1128 - Loss: 0.0037
+2025-10-18 15:31:23,642 - pipeline - Batch 700/1128 - Loss: 0.0036
+2025-10-18 15:31:53,355 - pipeline - Batch 750/1128 - Loss: 0.0030
+2025-10-18 15:32:22,975 - pipeline - Batch 800/1128 - Loss: 0.0050
+2025-10-18 15:32:52,617 - pipeline - Batch 850/1128 - Loss: 0.0049
+2025-10-18 15:33:22,274 - pipeline - Batch 900/1128 - Loss: 0.0043
+2025-10-18 15:33:51,902 - pipeline - Batch 950/1128 - Loss: 0.0038
+2025-10-18 15:34:21,649 - pipeline - Batch 1000/1128 - Loss: 0.0039
+2025-10-18 15:34:51,319 - pipeline - Batch 1050/1128 - Loss: 0.0048
+2025-10-18 15:35:20,999 - pipeline - Batch 1100/1128 - Loss: 0.0055
+2025-10-18 15:35:37,303 - pipeline - Batch 1128/1128 - Loss: 0.0031
+2025-10-18 15:35:37,303 - pipeline - Running validation...
+2025-10-18 15:36:20,225 - pipeline - Epoch [8/20] - Train Loss: 0.0040, Val Loss: 0.0042, Time: 711.85s
+2025-10-18 15:36:50,064 - pipeline - Batch 50/1128 - Loss: 0.0038
+2025-10-18 15:37:19,898 - pipeline - Batch 100/1128 - Loss: 0.0028
+2025-10-18 15:52:58,624 - pipeline - Batch 150/1128 - Loss: 0.0032
+2025-10-18 16:02:52,563 - pipeline - Batch 200/1128 - Loss: 0.0038
+2025-10-18 16:03:22,814 - pipeline - Batch 250/1128 - Loss: 0.0038
+2025-10-18 16:03:53,004 - pipeline - Batch 300/1128 - Loss: 0.0031
+2025-10-18 16:04:23,265 - pipeline - Batch 350/1128 - Loss: 0.0038
+2025-10-18 16:04:53,481 - pipeline - Batch 400/1128 - Loss: 0.0056
+2025-10-18 16:05:23,767 - pipeline - Batch 450/1128 - Loss: 0.0044
+2025-10-18 16:05:54,248 - pipeline - Batch 500/1128 - Loss: 0.0033
+2025-10-18 16:06:24,669 - pipeline - Batch 550/1128 - Loss: 0.0040
+2025-10-18 16:06:55,125 - pipeline - Batch 600/1128 - Loss: 0.0055
+2025-10-18 16:07:25,571 - pipeline - Batch 650/1128 - Loss: 0.0045
+2025-10-18 16:07:56,004 - pipeline - Batch 700/1128 - Loss: 0.0035
+2025-10-18 16:08:26,402 - pipeline - Batch 750/1128 - Loss: 0.0025
+2025-10-18 16:08:56,774 - pipeline - Batch 800/1128 - Loss: 0.0045
+2025-10-18 16:09:26,939 - pipeline - Batch 850/1128 - Loss: 0.0034
+2025-10-18 16:09:57,024 - pipeline - Batch 900/1128 - Loss: 0.0034
+2025-10-18 16:10:27,157 - pipeline - Batch 950/1128 - Loss: 0.0023
+2025-10-18 16:10:57,292 - pipeline - Batch 1000/1128 - Loss: 0.0034
+2025-10-18 16:11:27,423 - pipeline - Batch 1050/1128 - Loss: 0.0033
+2025-10-18 16:11:57,616 - pipeline - Batch 1100/1128 - Loss: 0.0032
+2025-10-18 16:12:14,161 - pipeline - Batch 1128/1128 - Loss: 0.0051
+2025-10-18 16:12:14,161 - pipeline - Running validation...
+2025-10-18 16:12:57,776 - pipeline - Epoch [9/20] - Train Loss: 0.0040, Val Loss: 0.0063, Time: 2197.55s
+2025-10-18 16:13:28,086 - pipeline - Batch 50/1128 - Loss: 0.0042
+2025-10-18 16:13:58,393 - pipeline - Batch 100/1128 - Loss: 0.0040
+2025-10-18 16:14:28,519 - pipeline - Batch 150/1128 - Loss: 0.0043
+2025-10-18 16:14:58,794 - pipeline - Batch 200/1128 - Loss: 0.0032
+2025-10-18 16:15:29,110 - pipeline - Batch 250/1128 - Loss: 0.0034
+2025-10-18 16:15:59,401 - pipeline - Batch 300/1128 - Loss: 0.0028
+2025-10-18 16:16:29,378 - pipeline - Batch 350/1128 - Loss: 0.0039
+2025-10-18 16:16:59,317 - pipeline - Batch 400/1128 - Loss: 0.0037
+2025-10-18 16:17:29,267 - pipeline - Batch 450/1128 - Loss: 0.0037
+2025-10-18 16:17:59,158 - pipeline - Batch 500/1128 - Loss: 0.0027
+2025-10-18 16:18:29,018 - pipeline - Batch 550/1128 - Loss: 0.0053
+2025-10-18 16:18:58,850 - pipeline - Batch 600/1128 - Loss: 0.0033
+2025-10-18 16:19:28,735 - pipeline - Batch 650/1128 - Loss: 0.0047
+2025-10-18 16:19:59,172 - pipeline - Batch 700/1128 - Loss: 0.0041
+2025-10-18 16:20:30,058 - pipeline - Batch 750/1128 - Loss: 0.0046
+2025-10-18 16:21:00,987 - pipeline - Batch 800/1128 - Loss: 0.0031
+2025-10-18 16:21:31,702 - pipeline - Batch 850/1128 - Loss: 0.0038
+2025-10-18 16:22:02,770 - pipeline - Batch 900/1128 - Loss: 0.0050
+2025-10-18 16:22:33,409 - pipeline - Batch 950/1128 - Loss: 0.0034
+2025-10-18 16:23:04,425 - pipeline - Batch 1000/1128 - Loss: 0.0034
+2025-10-18 16:23:35,142 - pipeline - Batch 1050/1128 - Loss: 0.0045
+2025-10-18 16:24:05,700 - pipeline - Batch 1100/1128 - Loss: 0.0036
+2025-10-18 16:24:22,626 - pipeline - Batch 1128/1128 - Loss: 0.0038
+2025-10-18 16:24:22,626 - pipeline - Running validation...
+2025-10-18 16:25:06,206 - pipeline - Epoch [10/20] - Train Loss: 0.0039, Val Loss: 0.0041, Time: 728.43s
+2025-10-18 16:25:06,206 - pipeline - Early stopping at epoch 10
+2025-10-18 16:25:06,206 - pipeline - Training complete. Saving model...
+2025-10-18 16:25:06,353 - pipeline - Model saved as pipeline_model_20251018-135953.pth
+2025-10-18 16:25:06,353 - pipeline - Training completed in 8711.17 seconds
+2025-10-18 16:26:26,393 - pipeline - Training completed successfully
+2025-10-18 16:26:26,393 - pipeline - Starting testing phase...
+2025-10-18 16:26:26,831 - pipeline - Running evaluation on 22424 test samples...
+2025-10-18 16:27:56,169 - pipeline - Cardiomegaly: True positives: 545.0, Predicted positives: 6, AUC: 0.9058
+2025-10-18 16:27:56,198 - pipeline - Emphysema: True positives: 504.0, Predicted positives: 3, AUC: 0.8225
+2025-10-18 16:27:56,228 - pipeline - Effusion: True positives: 2632.0, Predicted positives: 0, AUC: 0.8527
+2025-10-18 16:27:56,256 - pipeline - Hernia: True positives: 39.0, Predicted positives: 22424, AUC: 0.7327
+2025-10-18 16:27:56,286 - pipeline - Infiltration: True positives: 3983.0, Predicted positives: 0, AUC: 0.6887
+2025-10-18 16:27:56,315 - pipeline - Mass: True positives: 1130.0, Predicted positives: 0, AUC: 0.7998
+2025-10-18 16:27:56,344 - pipeline - Nodule: True positives: 1268.0, Predicted positives: 0, AUC: 0.6852
+2025-10-18 16:27:56,373 - pipeline - Atelectasis: True positives: 2248.0, Predicted positives: 0, AUC: 0.7301
+2025-10-18 16:27:56,404 - pipeline - Pneumothorax: True positives: 1026.0, Predicted positives: 0, AUC: 0.8324
+2025-10-18 16:27:56,435 - pipeline - Pleural_Thickening: True positives: 655.0, Predicted positives: 0, AUC: 0.7518
+2025-10-18 16:27:56,465 - pipeline - Pneumonia: True positives: 307.0, Predicted positives: 0, AUC: 0.7216
+2025-10-18 16:27:56,494 - pipeline - Fibrosis: True positives: 316.0, Predicted positives: 0, AUC: 0.7409
+2025-10-18 16:27:56,522 - pipeline - Edema: True positives: 451.0, Predicted positives: 0, AUC: 0.8772
+2025-10-18 16:27:56,552 - pipeline - Consolidation: True positives: 903.0, Predicted positives: 0, AUC: 0.7826
+2025-10-18 16:27:56,557 - pipeline - Results saved to pipeline_results_20251018-135953.csv
+2025-10-18 16:27:56,558 - pipeline - 
+Test Results Summary:
+2025-10-18 16:27:56,559 - pipeline - 
+             Label      AUC  Threshold  Accuracy  Specificity   Recall  Precision  Sensitivity  F1_Score
+      Cardiomegaly 0.905801        0.5  0.975696     0.999863 0.005505   0.500000     0.005505  0.010889
+         Emphysema 0.822517        0.5  0.977658     1.000000 0.005952   1.000000     0.005952  0.011834
+          Effusion 0.852684        0.5  0.882626     1.000000 0.000000   0.000000     0.000000  0.000000
+            Hernia 0.732668        0.5  0.001739     0.000000 1.000000   0.001739     1.000000  0.003472
+      Infiltration 0.688678        0.5  0.822378     1.000000 0.000000   0.000000     0.000000  0.000000
+              Mass 0.799812        0.5  0.949608     1.000000 0.000000   0.000000     0.000000  0.000000
+            Nodule 0.685236        0.5  0.943453     1.000000 0.000000   0.000000     0.000000  0.000000
+       Atelectasis 0.730103        0.5  0.899750     1.000000 0.000000   0.000000     0.000000  0.000000
+      Pneumothorax 0.832399        0.5  0.954245     1.000000 0.000000   0.000000     0.000000  0.000000
+Pleural_Thickening 0.751828        0.5  0.970790     1.000000 0.000000   0.000000     0.000000  0.000000
+         Pneumonia 0.721600        0.5  0.986309     1.000000 0.000000   0.000000     0.000000  0.000000
+          Fibrosis 0.740854        0.5  0.985908     1.000000 0.000000   0.000000     0.000000  0.000000
+             Edema 0.877152        0.5  0.979888     1.000000 0.000000   0.000000     0.000000  0.000000
+     Consolidation 0.782629        0.5  0.959731     1.000000 0.000000   0.000000     0.000000  0.000000
+2025-10-18 16:27:56,561 - pipeline - Testing completed successfully
+2025-10-18 16:27:56,561 - pipeline - Comparing results with baseline...
+2025-10-18 16:27:56,564 - pipeline - Comparison completed. Results saved to baseline_comparison_20251018-135953.csv
+2025-10-18 16:27:56,564 - pipeline - Summary: 0 better, 14 worse, 0 equal
+2025-10-18 16:27:56,564 - pipeline - Pipeline completed successfully in 8883.41 seconds
+2025-10-18 16:27:56,564 - pipeline - Generated files:
+2025-10-18 16:27:56,564 - pipeline -   - Model: pipeline_model_20251018-135953.pth
+2025-10-18 16:27:56,564 - pipeline -   - Results: pipeline_results_20251018-135953.csv
+2025-10-18 16:27:56,564 - pipeline -   - Comparison: baseline_comparison_20251018-135953.csv
+2025-10-18 16:27:56,564 - pipeline -   - Log: pipeline_log_20251018-135953.txt
+2025-10-18 16:27:56,564 - pipeline - ✅ Pipeline completed successfully!

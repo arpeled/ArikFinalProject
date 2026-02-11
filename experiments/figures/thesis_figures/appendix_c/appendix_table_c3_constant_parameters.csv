@@ -1,0 +1,11 @@
+Parameter,Value
+architecture,ModifiedDenseNetWithDropOut
+backbone,densenet121
+head_type,mlp
+head_dropout,0.2000
+batch_size,64
+scheduler_type,ReduceLROnPlateau
+scheduler_factor,0.5000
+auc_improvement_strategy,hard_negative_emphasis
+hernia_oversample_enabled,Yes
+hernia_oversample_factor,10

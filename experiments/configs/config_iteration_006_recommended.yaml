@@ -1,0 +1,210 @@
+# Recommended Configuration for Iteration 6
+# Based on analysis of iterations 1-5
+# Hybrid approach combining best elements from iterations 2 and 4
+
+metadata:
+  config_version: "1.0"
+  description: "Hybrid config - combines best from iter 2 (high AUC) and iter 4 (high Recall)"
+  created_at: "2025-12-28"
+  iteration: 6
+  parent_config: "Analysis of iterations 1-5"
+  rationale: |
+    This config combines successful elements from previous iterations:
+    - Learning rate 0.0005 from iter 2 (best AUC: 0.795)
+    - Per-class threshold optimization from iter 4 (best Recall: 0.138)
+    - Midpoint dropout (0.4) to avoid oscillation
+    - Midpoint gamma (2.5) for balanced FocalLoss
+    - More aggressive augmentation (suggested but never implemented)
+    - Weight decay for regularization
+
+# Model Architecture
+model:
+  architecture: "ModifiedDenseNetWithDropOut"
+  backbone: "densenet121"
+  num_classes: 14
+  use_additional_features: true
+  dropout_rate: 0.4  # Midpoint between 0.3 (iter 4) and 0.5 (iter 2)
+  pretrained: true
+
+# Training Hyperparameters
+training:
+  batch_size: 64
+  learning_rate: 0.0005  # Same as best iteration (iter 2)
+  num_epochs: 50  # Reasonable duration
+  num_workers: 8
+  use_mixed_precision: false
+
+  # Optimizer settings
+  optimizer:
+    type: "Adam"
+    betas: [0.9, 0.999]
+    eps: 1.0e-08
+    weight_decay: 0.01  # Add regularization (suggested in iter 2, never properly used)
+
+  # Learning rate scheduler
+  scheduler:
+    type: "ReduceLROnPlateau"
+    mode: "min"
+    factor: 0.5
+    patience: 7  # Slightly more patience
+    min_lr: 1.0e-05
+
+  # Early stopping
+  early_stopping:
+    enabled: true
+    patience: 15  # More patience to allow convergence
+    min_delta: 0.005  # Less strict
+    warmup_epochs: 5
+
+# Loss Function Configuration
+loss:
+  type: "FocalLoss"
+  gamma: 2.5  # Midpoint between iter 2 (3.0) and iter 4 (2.0)
+  use_class_weights: true
+
+  # Class frequencies for weight calculation
+  class_frequencies:
+    - 0.0342  # Cardiomegaly
+    - 0.0310  # Emphysema
+    - 0.1641  # Effusion
+    - 0.0028  # Hernia
+    - 0.2451  # Infiltration
+    - 0.0712  # Mass
+    - 0.0780  # Nodule
+    - 0.1424  # Atelectasis
+    - 0.0653  # Pneumothorax
+    - 0.0417  # Pleural_Thickening
+    - 0.0176  # Pneumonia
+    - 0.0208  # Fibrosis
+    - 0.0284  # Edema
+    - 0.0575  # Consolidation
+
+# Data Augmentation - MORE AGGRESSIVE (suggested 3 times, never implemented!)
+augmentation:
+  # Base transform (applied to all samples)
+  base:
+    resize: [224, 224]
+    normalize:
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+
+  # Rare class augmentation - INCREASED
+  rare_class:
+    enabled: true
+    rotation_degrees: 15  # Increased from 10 (suggested in iter 5)
+    horizontal_flip_prob: 0.7  # Increased from 0.5 (suggested in iter 5)
+    affine_translate: [0.1, 0.1]  # Increased from [0.05, 0.05]
+    color_jitter:
+      brightness: 0.3  # Increased from 0.2
+      contrast: 0.3  # Increased from 0.2
+
+    # Thresholds for rare class detection (same as before)
+    thresholds:
+      Hernia: 0.003
+      Pneumonia: 0.01
+      Fibrosis: 0.012
+      Edema: 0.016
+      Emphysema: 0.018
+      Cardiomegaly: 0.02
+      Pleural_Thickening: 0.025
+      Consolidation: 0.035
+      Pneumothorax: 0.045
+
+# Data Splitting
+data_split:
+  method: "GroupShuffleSplit"  # Patient-level split
+  train_ratio: 0.8
+  val_ratio: 0.2
+  random_state: 42
+
+# Data Paths
+data:
+  train_csv: "./ChestX-ray14/train_data.csv"
+  test_csv: "./ChestX-ray14/test_data.csv"
+  images_dir: "./ChestX-ray14/images224"
+
+# Evaluation Settings
+evaluation:
+  threshold: "auto"
+  threshold_optimization: "per_class_f1_score"  # Keep from iter 4
+  metrics:
+    - "AUC"
+    - "Accuracy"
+    - "Specificity"
+    - "Recall"
+    - "Precision"
+    - "Sensitivity"
+    - "F1_Score"
+
+# Hardware Settings
+hardware:
+  device: "auto"  # auto, cuda, mps, cpu
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+
+# Logging
+logging:
+  log_interval: 300  # batches
+  save_model: true
+  save_results: true
+
+# Reasoning for this configuration
+reasoning: |
+  HYBRID STRATEGY - Combining Best Elements:
+
+  1. Learning Rate (0.0005):
+     - Same as iteration 2, which achieved best AUC (0.795)
+     - Not too low (avoided the 0.00005 death spiral from iter 5)
+     - Proven to work well with this dataset
+
+  2. Dropout (0.4):
+     - Midpoint between 0.3 (iter 4) and 0.5 (iter 2)
+     - Avoids oscillation between extremes
+     - Should provide good regularization without underfitting
+
+  3. Gamma (2.5):
+     - Midpoint between iter 2 (3.0) and iter 4 (2.0)
+     - Balances focus on hard examples vs learning from all examples
+     - Should handle class imbalance well without being too aggressive
+
+  4. Per-Class Threshold Optimization:
+     - Kept from iter 4 (best F1/Recall)
+     - Critical for handling class imbalance
+     - Each class gets its own optimal threshold
+
+  5. More Aggressive Augmentation:
+     - FINALLY implementing this (suggested 3 times, never done!)
+     - rotation_degrees: 10 → 15
+     - horizontal_flip_prob: 0.5 → 0.7
+     - affine_translate: [0.05, 0.05] → [0.1, 0.1]
+     - color_jitter brightness/contrast: 0.2 → 0.3
+     - Should help model generalize better on rare classes
+
+  6. Weight Decay (0.01):
+     - Suggested in iter 2, added briefly, then removed
+     - Now properly implemented for regularization
+     - Should help prevent overfitting
+
+  7. Increased Patience:
+     - early_stopping.patience: 5 → 15
+     - scheduler.patience: 5 → 7
+     - Gives model more room to improve before stopping
+     - Avoids premature convergence
+
+  8. Epochs (50):
+     - Not too long (avoided 100 from iter 5)
+     - Not too short (more than 20 from baseline)
+     - With early stopping, will stop when optimal
+
+  EXPECTED OUTCOMES:
+  - AUC: Should approach iter 2's 0.795 (learning rate proven to work)
+  - Recall: Should approach iter 4's 0.138 (per-class thresholds)
+  - F1: Should improve with better augmentation
+  - More balanced metrics overall
+
+  This config provides a stable foundation for further optimization.
+  If successful, next steps would be:
+  - Try DenseNet169 (deeper architecture)
+  - Experiment with different loss functions
+  - Try class-weighted sampling

@@ -1,0 +1,125 @@
+file chest-x-ray-classifier-densenet121-train_v04  # Model training script
+Validation Loss: 4.6727
+Epoch: 32, Validation Loss: 4.6727
+Early stopping at epoch 32
+Training complete.
+Loss history:  [1.617294897816398, 1.5704323092373935, 1.5626034751805393, 1.6213412950255655, 1.724498925859278, 2.010019777254625, 2.08323143937371, 2.370457106286829, 2.4867236456004056, 2.629302834814245, 2.773909654183821, 2.9279380124265497, 2.984419078393416, 3.20398867520419, 3.412253344709223, 3.6436257375370373, 3.723904822956432, 3.85010808988051, 4.253168832605535, 4.028169666203586, 4.098066383708607, 4.070364972894842, 4.2968426704406735, 4.314735464182767, 4.454586559208956, 4.452900746518916, 4.494623517990112, 4.480554406859658, 4.578330962007696, 4.644880491603504, 4.6243334609811955, 4.6727457245913415]
+Training complete in 25593.20 seconds
+
+# Parameters
+num_classes = 14
+batch_size = 64
+learning_rate = 0.0001
+num_epochs = 50
+use_additional_features = True  # Toggle for using additional features
+    model = ModifiedDenseNetWithDropOut(num_classes=num_classes, use_additional_features=use_additional_features).to(device)
+    class_weights = torch.tensor([
+        1.42, 2.12, 2.44, 4.47, 4.89, 5.33, 6.06,
+        8.36, 10.20, 11.23, 12.27, 16.80, 19.80, 50.00
+    ], dtype=torch.float32).to(device)
+split data by patient id:
+gss = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+train_idx, val_idx = next(gss.split(df, groups=df["Patient ID"]))
+
+
+class ModifiedDenseNetWithDropOut(nn.Module):
+    def __init__(self, num_classes=14, use_additional_features=False):
+        super(ModifiedDenseNetWithDropOut, self).__init__()
+        weights = DenseNet121_Weights.IMAGENET1K_V1
+        model = densenet121(weights=weights)
+        self.base_model = model
+        self.base_model.classifier = nn.Identity()  # Remove DenseNet's classifier
+        self.dropout = nn.Dropout(0.3)  # Dropout חדש!
+
+        self.use_additional_features = use_additional_features
+        if self.use_additional_features:
+            self.additional_fc = nn.Linear(4, 128)
+            self.final_fc = nn.Linear(1024 + 128, num_classes)
+        else:
+            self.final_fc = nn.Linear(1024, num_classes)
+# add dropout layer
+class ModifiedDenseNetWithDropOut(nn.Module):
+    def __init__(self, num_classes=14, use_additional_features=False):
+        super(ModifiedDenseNetWithDropOut, self).__init__()
+        weights = DenseNet121_Weights.IMAGENET1K_V1
+        model = densenet121(weights=weights)
+        self.base_model = model
+        self.base_model.classifier = nn.Identity()  # Remove DenseNet's classifier
+        self.dropout = nn.Dropout(0.3)  # Dropout חדש!
+
+        self.use_additional_features = use_additional_features
+        if self.use_additional_features:
+            self.additional_fc = nn.Linear(4, 128)
+            self.final_fc = nn.Linear(1024 + 128, num_classes)
+        else:
+            self.final_fc = nn.Linear(1024, num_classes)
+
+
+model saved:
+model_with_features_v4_batch64_epoch50_scheduler_lr0001_images224_weighted_bce_with_logits_loss_early_stop_warmup25_pat7_ModifiedDenseNetWithDropOut_fix_val_test_split.pth
+
+
+class EarlyStopping:
+    def __init__(self, patience=7, min_delta=0.01, warmup_epochs=25):
+
+results:
+/usr/bin/python3 /Users/arikpeled/PycharmProjects/ArikFinalProject/chest-x-ray-classifier-densenet121-test_v03.py
+Using device: mps
+/Users/arikpeled/PycharmProjects/ArikFinalProject/chest-x-ray-classifier-densenet121-test_v03.py:39: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(model_save_path, map_location=device))
+Starting evaluation...
+Processed batch [1/351]
+Processed batch [11/351]
+Processed batch [21/351]
+Processed batch [31/351]
+Processed batch [41/351]
+Processed batch [51/351]
+Processed batch [61/351]
+Processed batch [71/351]
+Processed batch [81/351]
+Processed batch [91/351]
+Processed batch [101/351]
+Processed batch [111/351]
+Processed batch [121/351]
+Processed batch [131/351]
+Processed batch [141/351]
+Processed batch [151/351]
+Processed batch [161/351]
+Processed batch [171/351]
+Processed batch [181/351]
+Processed batch [191/351]
+Processed batch [201/351]
+Processed batch [211/351]
+Processed batch [221/351]
+Processed batch [231/351]
+Processed batch [241/351]
+Processed batch [251/351]
+Processed batch [261/351]
+Processed batch [271/351]
+Processed batch [281/351]
+Processed batch [291/351]
+Processed batch [301/351]
+Processed batch [311/351]
+Processed batch [321/351]
+Processed batch [331/351]
+Processed batch [341/351]
+Processed batch [351/351]
+Evaluation complete.
+Metrics saved to ./ChestX-ray14/test_metrics_model_with_features_v4_batch64_epoch50_scheduler_lr0001_images224_weighted_bce_with_logits_loss_early_stop_warmup25_pat7_ModifiedDenseNetWithDropOut_fix_val_test_split.csv
+                 Label       AUC  Threshold  ...  Precision    Recall  F1-Score
+0         Cardiomegaly  0.825124   0.004552  ...   0.072877  0.744954  0.132767
+1            Emphysema  0.846554   0.007947  ...   0.108627  0.684524  0.187500
+2             Effusion  0.812056   0.004120  ...   0.276605  0.746581  0.403657
+3               Hernia  0.851133   0.000136  ...   0.007019  0.820513  0.013919
+4         Infiltration  0.641953   0.000599  ...   0.248966  0.604318  0.352648
+5                 Mass  0.781375   0.000365  ...   0.157291  0.630973  0.251810
+6               Nodule  0.683117   0.000275  ...   0.116764  0.503155  0.189542
+7          Atelectasis  0.728042   0.000178  ...   0.197598  0.651246  0.303200
+8         Pneumothorax  0.821390   0.000064  ...   0.160128  0.680312  0.259239
+9   Pleural_Thickening  0.674882   0.000012  ...   0.054366  0.589313  0.099549
+10           Pneumonia  0.618400   0.000015  ...   0.024691  0.442997  0.046776
+11            Fibrosis  0.659478   0.000019  ...   0.034287  0.439873  0.063616
+12               Edema  0.765908   0.000027  ...   0.076723  0.587583  0.135723
+13       Consolidation  0.692446   0.000008  ...   0.093940  0.530454  0.159613
+
+[14 rows x 9 columns]

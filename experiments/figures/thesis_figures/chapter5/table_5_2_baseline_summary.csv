@@ -1,0 +1,10 @@
+Metric,Value
+Mean AUC (Macro),0.8204
+Median AUC,0.8039
+AUC Standard Deviation,0.0681
+Mean F1 Score,0.2930
+Mean Precision,0.2401
+Mean Recall,0.4047
+Number of Classes,14
+Classes with AUC > 0.8,8
+Classes with AUC < 0.7,0

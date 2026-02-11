@@ -1,0 +1,16 @@
+Disease,BCE_AUC,Focal_AUC,Difference,Better
+Infiltration,0.7034,0.6970,+0.0064,BCE
+Effusion,0.8759,0.8719,+0.0040,BCE
+Atelectasis,0.8037,0.7886,+0.0151,BCE
+Nodule,0.7510,0.7443,+0.0067,BCE
+Mass,0.8600,0.8544,+0.0055,BCE
+Pneumothorax,0.8849,0.8773,+0.0076,BCE
+Consolidation,0.8041,0.7942,+0.0098,BCE
+Pleural_Thickening,0.7828,0.7739,+0.0088,BCE
+Cardiomegaly,0.9114,0.9032,+0.0082,BCE
+Emphysema,0.9102,0.8962,+0.0140,BCE
+Edema,0.8926,0.8895,+0.0031,BCE
+Fibrosis,0.7953,0.7603,+0.0350,BCE
+Pneumonia,0.7442,0.7474,-0.0032,Focal
+Hernia,0.7656,0.6049,+0.1606,BCE
+Mean (Macro),0.8204,0.8002,+0.0201,BCE

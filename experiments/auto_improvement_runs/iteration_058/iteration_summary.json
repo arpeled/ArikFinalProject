@@ -1,0 +1,114 @@
+{
+  "iteration": 58,
+  "timestamp": "20260108-133418",
+  "config_path": "config_iteration_057.yaml",
+  "model_file": "pipeline_model_20260108-133418.pth",
+  "results_file": "pipeline_results_20260108-133418.csv",
+  "comparison_file": "baseline_comparison_20260108-133418.csv",
+  "analysis_file": "auto_improvement_runs/iteration_058/ai_analysis_058.txt",
+  "avg_auc": 0.7903619466860595,
+  "avg_f1": 0.27831535758572,
+  "avg_recall": 0.462596723517374,
+  "avg_precision": 0.23225753508011077,
+  "avg_accuracy": 0.8323830334845319,
+  "train_loss": 0.0022012404221273523,
+  "val_loss": 0.0024407633029940455,
+  "suggested_changes": {
+    "reasoning": "Could not parse suggestions from response"
+  },
+  "directory": "auto_improvement_runs/iteration_058",
+  "total_time": 7407.249892950058,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.25,
+      "score": 0.32281553398058255,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.2,
+      "score": 0.3988919667590028,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.15,
+      "score": 0.5084427767354597,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.95,
+      "score": 0.0037802717070289427,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.38372202813709755,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.2,
+      "score": 0.3748792270531401,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.15,
+      "score": 0.2693176683235427,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.2,
+      "score": 0.3492702566683442,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.2,
+      "score": 0.3953287197231834,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.16893894487255484,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.2,
+      "score": 0.0698967434471803,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.2,
+      "score": 0.17406143344709898,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.25,
+      "score": 0.2123585726718886,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.2,
+      "score": 0.2140270003292723,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Baseline configuration from v1.1 implementation",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5
+}

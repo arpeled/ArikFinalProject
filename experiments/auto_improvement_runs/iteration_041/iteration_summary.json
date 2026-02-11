@@ -1,0 +1,117 @@
+{
+  "iteration": 41,
+  "timestamp": "20260103-203455",
+  "config_path": "config_iteration_041.yaml",
+  "model_file": "pipeline_model_20260103-203455.pth",
+  "results_file": "pipeline_results_20260103-203455.csv",
+  "comparison_file": "baseline_comparison_20260103-203455.csv",
+  "analysis_file": "auto_improvement_runs/iteration_041/ai_analysis_041.txt",
+  "avg_auc": 0.7095863599435497,
+  "avg_f1": 0.14412213701647109,
+  "avg_recall": 0.4949028091359211,
+  "avg_precision": 0.09977903817908386,
+  "avg_accuracy": 0.7338820651342948,
+  "train_loss": 0.005422079459688104,
+  "val_loss": 0.006737662699412216,
+  "suggested_changes": {
+    "loss": {
+      "gamma": 4.0
+    },
+    "reasoning": "Given the model's tendency to predict almost all samples as negative, we need to increase its focus on hard negatives. Increasing the gamma parameter in Focal Loss from 2.0 to 4.0 should help improve the model's sensitivity to positives, thereby improving the recall and F1-score. This change is more aggressive than previous iterations, but it might be necessary given the model's persistent bias towards negative predictions."
+  },
+  "directory": "auto_improvement_runs/iteration_041",
+  "total_time": 7135.785678863525,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.09135399673735727,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.07793438351296933,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.33518253400143166,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.05,
+      "score": 0.01380897583429229,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.3665034280117532,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.1277927684835402,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.12595837897042717,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.2656298600311042,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.22787136294027566,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.10692951015531661,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.056818181818181816,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.2,
+      "score": 0.07932692307692307,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.1,
+      "score": 0.11061728395061729,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.85,
+      "score": 0.13700397892246477,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "This iteration corrects a major issue where a fixed threshold of 0.5 was applied to all classes. Instead, we apply per-class optimized thresholds based on F1-score, which allows the model to detect more true positives for imbalanced and low-signal diseases. FocalLoss gamma was increased to 3.5 to increase focus on hard samples, and training length was extended to 60 epochs. Dropout was reduced to 0.2 to reduce underfitting.\n",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5
+}

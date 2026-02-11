@@ -1,0 +1,137 @@
+{
+  "iteration": 49,
+  "timestamp": "20260107-022737",
+  "config_path": "config_iteration_049.yaml",
+  "model_file": "pipeline_model_20260107-022737.pth",
+  "results_file": "pipeline_results_20260107-022737.csv",
+  "comparison_file": "baseline_comparison_20260107-022737.csv",
+  "analysis_file": "auto_improvement_runs/iteration_049/ai_analysis_049.txt",
+  "avg_auc": 0.7763271950346751,
+  "avg_f1": 0.274612494353461,
+  "avg_recall": 0.3701119822798452,
+  "avg_precision": 0.2291547247761146,
+  "avg_accuracy": 0.8970936751439783,
+  "train_loss": 0.0008628269653305036,
+  "val_loss": 0.026259424070065672,
+  "suggested_changes": {
+    "augmentation": {
+      "base": {
+        "rotation_degrees": 15,
+        "horizontal_flip_prob": 0.5,
+        "affine_translate": [
+          0.1,
+          0.1
+        ],
+        "color_jitter": {
+          "brightness": 0.2,
+          "contrast": 0.2,
+          "saturation": 0.2,
+          "hue": 0.02
+        }
+      },
+      "rare_class": {
+        "enabled": true
+      }
+    },
+    "data_balancing": {
+      "strategy": "oversample",
+      "target_frequency": 0.1
+    },
+    "reasoning": "To combat overfitting, data augmentation techniques are applied to make the model more robust. Brightness, contrast, saturation, and hue variations are added to the existing augmentation pipeline. Also, increasing the target frequency to 0.1 in oversampling may help improve the model's sensitivity to the positive classes."
+  },
+  "directory": "auto_improvement_runs/iteration_049",
+  "total_time": 9148.073519945145,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.39999999999999997,
+      "score": 0.2818955042527339,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.49999999999999994,
+      "score": 0.3862559241706161,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.35,
+      "score": 0.48036858974358976,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.25,
+      "score": 0.26666666666666666,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.39999999999999997,
+      "score": 0.3577590480912246,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.3,
+      "score": 0.2910321489001692,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.35,
+      "score": 0.19859402460456943,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.44999999999999996,
+      "score": 0.3291341731653669,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.44999999999999996,
+      "score": 0.3386550556361877,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.3,
+      "score": 0.1540785498489426,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.25,
+      "score": 0.050468637346791634,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.39999999999999997,
+      "score": 0.12634408602150538,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.35,
+      "score": 0.1575492341356674,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.9,
+      "score": 0.17110694183864916,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "This iteration corrects a major issue where a fixed threshold of 0.5 was applied to all classes. Instead, we apply per-class optimized thresholds based on F1-score, which allows the model to detect more true positives for imbalanced and low-signal diseases. FocalLoss gamma was increased to 3.5 to increase focus on hard samples, and training length was extended to 60 epochs. Dropout was reduced to 0.2 to reduce underfitting.\n",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5
+}

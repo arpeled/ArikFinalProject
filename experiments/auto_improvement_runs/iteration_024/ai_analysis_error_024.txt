@@ -1,0 +1,30 @@
+AI Analysis Failed
+Error: Invalid format specifier ' 0.0001,
+    "num_epochs": 30
+  ' for object of type 'str'
+
+Traceback (most recent call last):
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/auto_improvement_loop.py", line 391, in run_single_iteration
+    analysis, suggested_changes = self.ai_advisor.analyze_results(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        config=trainer.config,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        val_loss=val_loss  # Pass final validation loss
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 79, in analyze_results
+    response = self._call_openai_with_retry(prompt)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 160, in _call_openai_with_retry
+    "content": self._get_system_prompt()
+               ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 364, in _get_system_prompt
+    "training": {
+                ^
+    ...<2 lines>...
+    },
+    ^
+ValueError: Invalid format specifier ' 0.0001,
+    "num_epochs": 30
+  ' for object of type 'str'

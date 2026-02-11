@@ -1,0 +1,155 @@
+{
+  "iteration": 99,
+  "timestamp": "20260204-210926",
+  "config_path": "auto_improvement_runs/iteration_096/config.yaml",
+  "model_file": "pipeline_model_20260204-210926.pth",
+  "results_file": "pipeline_results_20260204-210926.csv",
+  "comparison_file": "baseline_comparison_20260204-210926.csv",
+  "analysis_file": "auto_improvement_runs/iteration_099/ai_analysis_099.txt",
+  "avg_auc": 0.8195310336128284,
+  "avg_f1": 0.28739729131433617,
+  "avg_recall": 0.3850003901995932,
+  "avg_precision": 0.23898079540745765,
+  "avg_accuracy": 0.9157471586565414,
+  "per_class_auc": {
+    "Cardiomegaly": 0.912403205117722,
+    "Emphysema": 0.909587261759935,
+    "Effusion": 0.8729909600882614,
+    "Hernia": 0.7708744981472254,
+    "Infiltration": 0.7012556333344647,
+    "Mass": 0.859600984447819,
+    "Nodule": 0.7493929353404751,
+    "Atelectasis": 0.803567716638069,
+    "Pneumothorax": 0.8821598118058436,
+    "Pleural_Thickening": 0.7828654024789786,
+    "Pneumonia": 0.7409683385030073,
+    "Fibrosis": 0.7963842775282673,
+    "Edema": 0.8879388663147667,
+    "Consolidation": 0.8034445790747641
+  },
+  "train_loss": 0.1377928595848922,
+  "val_loss": 0.1623014586892995,
+  "suggested_changes": {
+    "phase": "PHASE_5",
+    "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+    "reasoning": "NEXT focused task: run a CLEAN Phase-5-compliant AUC-only iteration anchored to iteration 84 by enabling auc_improvement (hard_negative_emphasis) and disabling all forbidden/irrelevant components currently active (SMOTE, freeze_backbone, per-class F1 threshold optimization). The current run is not Phase 5 compliant, so its AUC cannot be used for \u0394AUC vs iteration 84. For the first clean attempt, apply a new (not previously tried) hard-negative setting that is moderate and less likely to cause collateral regressions in stable diseases while still suppressing high-scoring negatives for the weakest AUC targets. Also refine focus by removing Edema from the target list because it is already strong (AUC ~0.888) and could introduce unnecessary shifts; concentrate on Pneumonia and Fibrosis where AUC is weak/mid and improvement potential is highest.",
+    "target_diseases": [
+      "Pneumonia",
+      "Fibrosis"
+    ],
+    "auc_improvement_config": {
+      "hard_negative_threshold": 0.33,
+      "hard_negative_weight": 1.9
+    },
+    "per_class_auc_delta": {
+      "Pneumonia": null,
+      "Fibrosis": null,
+      "Edema": null,
+      "Effusion": null,
+      "Emphysema": null,
+      "Cardiomegaly": null,
+      "Hernia": null,
+      "Pneumothorax": null
+    },
+    "stable_diseases_check": "PASSED",
+    "success": false
+  },
+  "directory": "auto_improvement_runs/iteration_099",
+  "total_time": 244.22646403312683,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 13,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.32222222222222224,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.15,
+      "score": 0.4137191854233655,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.25,
+      "score": 0.5191011235955056,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.39919678714859436,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.15,
+      "score": 0.39466421343146274,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.1,
+      "score": 0.26017699115044246,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.37013536379018613,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.4067495559502664,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.1,
+      "score": 0.1880912632164719,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.08042895442359249,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.05,
+      "score": 0.17860016090104586,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.1,
+      "score": 0.22202327663384064,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.3,
+      "score": 0.2343420126671358,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "SMOTE_HEAD - Feature-space SMOTE for Hernia, ratio=4x",
+  "early_stopping_monitor": null,
+  "early_stopping_mode": null,
+  "min_delta": null,
+  "patience": null,
+  "model_path": "auto_improvement_runs/iteration_099/pipeline_model_20260204-210926.pth",
+  "phase": "PHASE_5_AUC_IMPROVEMENT",
+  "role": "UNKNOWN"
+}

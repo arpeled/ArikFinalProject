@@ -1,0 +1,86 @@
+{
+  "Cardiomegaly": {
+    "threshold": 0.3,
+    "score": 0.23619371282922685,
+    "positive_samples": 413,
+    "status": "optimized"
+  },
+  "Emphysema": {
+    "threshold": 0.5499999999999999,
+    "score": 0.3233779608650875,
+    "positive_samples": 416,
+    "status": "optimized"
+  },
+  "Effusion": {
+    "threshold": 0.35,
+    "score": 0.49699321047526673,
+    "positive_samples": 2146,
+    "status": "optimized"
+  },
+  "Hernia": {
+    "threshold": 0.39999999999999997,
+    "score": 0.24390243902439024,
+    "positive_samples": 32,
+    "status": "optimized"
+  },
+  "Infiltration": {
+    "threshold": 0.44999999999999996,
+    "score": 0.3827052293309962,
+    "positive_samples": 3127,
+    "status": "optimized"
+  },
+  "Mass": {
+    "threshold": 0.39999999999999997,
+    "score": 0.31089459698848537,
+    "positive_samples": 999,
+    "status": "optimized"
+  },
+  "Nodule": {
+    "threshold": 0.49999999999999994,
+    "score": 0.20444824636441403,
+    "positive_samples": 1042,
+    "status": "optimized"
+  },
+  "Atelectasis": {
+    "threshold": 0.39999999999999997,
+    "score": 0.32771462171697374,
+    "positive_samples": 1815,
+    "status": "optimized"
+  },
+  "Pneumothorax": {
+    "threshold": 0.44999999999999996,
+    "score": 0.3162995594713656,
+    "positive_samples": 870,
+    "status": "optimized"
+  },
+  "Pleural_Thickening": {
+    "threshold": 0.35,
+    "score": 0.1292671825216204,
+    "positive_samples": 523,
+    "status": "optimized"
+  },
+  "Pneumonia": {
+    "threshold": 0.35,
+    "score": 0.07701283547257877,
+    "positive_samples": 234,
+    "status": "optimized"
+  },
+  "Fibrosis": {
+    "threshold": 0.49999999999999994,
+    "score": 0.13590033975084936,
+    "positive_samples": 310,
+    "status": "optimized"
+  },
+  "Edema": {
+    "threshold": 0.44999999999999996,
+    "score": 0.18562874251497005,
+    "positive_samples": 313,
+    "status": "optimized"
+  },
+  "Consolidation": {
+    "threshold": 0.95,
+    "score": 0.15198107628622118,
+    "positive_samples": 771,
+    "status": "optimized"
+  }
+}

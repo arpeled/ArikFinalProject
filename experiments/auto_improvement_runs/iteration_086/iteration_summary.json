@@ -1,0 +1,132 @@
+{
+  "iteration": 86,
+  "timestamp": "20260131-221735",
+  "config_path": "config_iteration_086.yaml",
+  "model_file": "pipeline_model_20260131-221735.pth",
+  "results_file": "pipeline_results_20260131-221735.csv",
+  "comparison_file": "baseline_comparison_20260131-221735.csv",
+  "analysis_file": null,
+  "avg_auc": 0.7481539086049311,
+  "avg_f1": 0.22268055591353778,
+  "avg_recall": 0.4643557329720725,
+  "avg_precision": 0.1763921602469888,
+  "avg_accuracy": 0.7880300443402477,
+  "per_class_auc": {
+    "Cardiomegaly": 0.8400157496757605,
+    "Emphysema": 0.8209106346309814,
+    "Effusion": 0.842944318480587,
+    "Hernia": 0.4924984106802288,
+    "Infiltration": 0.676947263383615,
+    "Mass": 0.7492223909514584,
+    "Nodule": 0.6610158769495406,
+    "Atelectasis": 0.7603496040889989,
+    "Pneumothorax": 0.8230197498919121,
+    "Pleural_Thickening": 0.7400593111781968,
+    "Pneumonia": 0.6952170563448549,
+    "Fibrosis": 0.7261520974136173,
+    "Edema": 0.8711510790858725,
+    "Consolidation": 0.7746511777134113
+  },
+  "train_loss": 0.0024007320224888728,
+  "val_loss": 0.002633983152495189,
+  "suggested_changes": null,
+  "directory": "auto_improvement_runs/iteration_086",
+  "total_time": 7369.676748037338,
+  "ai_analysis_status": "failed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.2,
+      "score": 0.20812182741116753,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.2,
+      "score": 0.26109660574412535,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.2,
+      "score": 0.45629762438368443,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.95,
+      "score": 0.0036645697184388933,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.3685243663053683,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.15,
+      "score": 0.2143009605122732,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.15,
+      "score": 0.15806945863125638,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.3109566051306641,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.2,
+      "score": 0.27819118488838007,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.2,
+      "score": 0.14997202014549524,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.2,
+      "score": 0.05951448707909162,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.2,
+      "score": 0.12951167728237792,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.25,
+      "score": 0.19160583941605838,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.2,
+      "score": 0.21714990746452806,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "PHASE 5: Class-specific AUC improvement (targets: Pneumonia, Fibrosis, Edema)",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5,
+  "model_path": "auto_improvement_runs/iteration_086/pipeline_model_20260131-221735.pth",
+  "phase": "PHASE_5_AUC_IMPROVEMENT",
+  "role": "TARGETED_AUC",
+  "ai_error": "name 'PHASE_5_BASELINE_MODEL_PATH' is not defined"
+}

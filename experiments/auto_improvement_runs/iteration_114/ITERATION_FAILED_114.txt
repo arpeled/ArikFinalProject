@@ -1,0 +1,33 @@
+Iteration 114 Failed
+================================================================================
+
+Error: Error(s) in loading state_dict for ModifiedDenseNetWithDropOut:
+	Unexpected key(s) in state_dict: "mlp_head.0.weight", "mlp_head.0.bias", "mlp_head.3.weight", "mlp_head.3.bias", "mlp_head.6.weight", "mlp_head.6.bias". 
+
+Traceback:
+Traceback (most recent call last):
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/auto_improvement_loop.py", line 1013, in run_single_iteration
+    test_model_pipeline(
+    ~~~~~~~~~~~~~~~~~~~^
+        model_file=model_file,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        head_config=head_config
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/chest_xray_test_pipeline.py", line 68, in test_model_pipeline
+    model.load_state_dict(torch.load(model_file, map_location=device, weights_only=True))
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: Error(s) in loading state_dict for ModifiedDenseNetWithDropOut:
+	Unexpected key(s) in state_dict: "mlp_head.0.weight", "mlp_head.0.bias", "mlp_head.3.weight", "mlp_head.3.bias", "mlp_head.6.weight", "mlp_head.6.bias". 
+
+================================================================================
+Saved files:
+  - pipeline_model_20260205-083431.pth
+  - thresholds_20260205-083431.json
+  - config.yaml

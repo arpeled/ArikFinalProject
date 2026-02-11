@@ -1,0 +1,33 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-04 22:01:34
+Iteration: 106
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "Phase-5 rules require that we ONLY change the auc_improvement block (no SMOTE, no freeze_backbone toggles, no threshold optimization changes). Iter-106 is currently invalid for Phase-5 attribution because auc_improvement is disabled while SMOTE is enabled, backbone is frozen, and per-class F1 threshold optimization is active. The next focused task is therefore a CLEAN Phase-5-compliant run anchored to Iter-84 that targets ranking (AUC) via noise suppression on the weakest target classes. Based on current test AUCs, Pneumonia (0.739) remains the primary target; Fibrosis is mid (0.794) and still a target; Edema is strong (0.890) and should remain excluded to minimize collateral drift. We must not repeat prior suggested settings (0.48/2.4 and 0.50/2.0). Use a new, slightly less selective hard-negative filter to capture more confusing negatives for Pneumonia/Fibrosis while keeping weight moderate to protect stable classes.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.44,
+    "hard_negative_weight": 1.8
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

@@ -1,0 +1,126 @@
+{
+  "iteration": 71,
+  "timestamp": "20260115-114511",
+  "config_path": "config_iteration_071.yaml",
+  "model_file": "pipeline_model_20260115-114511.pth",
+  "results_file": "pipeline_results_20260115-114511.csv",
+  "comparison_file": "baseline_comparison_20260115-114511.csv",
+  "analysis_file": "auto_improvement_runs/iteration_071/ai_analysis_071.txt",
+  "avg_auc": 0.638525598969399,
+  "avg_f1": 0.14099431234781876,
+  "avg_recall": 0.4302864732992054,
+  "avg_precision": 0.09254413519521008,
+  "avg_accuracy": 0.7555425309617245,
+  "train_loss": 0.005446501757374945,
+  "val_loss": 0.005676988248967311,
+  "suggested_changes": {
+    "training": {
+      "scheduler": {
+        "type": "ReduceLROnPlateau",
+        "monitor": "val_f1",
+        "mode": "max",
+        "factor": 0.5,
+        "patience": 5,
+        "min_lr": 1e-05,
+        "threshold": 0.001,
+        "threshold_mode": "abs"
+      }
+    },
+    "reasoning": "Last 3 iterations show unstable/regressing F1 (0.1212 -> 0.1496 -> 0.1410) and collapsing precision due to excessive false positives. A critical config issue is ReduceLROnPlateau using mode=min while early stopping optimizes val_f1 (max). This mismatch can reduce LR at the wrong time and degrade score separation, worsening threshold behavior (many classes stuck at 0.100). Aligning the scheduler to monitor val_f1 with mode=max is a single high-impact fix that should stabilize training and improve F1/precision without changing loss/threshold logic yet."
+  },
+  "directory": "auto_improvement_runs/iteration_071",
+  "total_time": 18162.969940185547,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 25,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.0625,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.06649874055415617,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3276024938598148,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.3428199707269475,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.15127582017010935,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.17468354430379746,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.28829337094499297,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.20865384615384616,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.10770059235325795,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.04456824512534819,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.1,
+      "score": 0.04870441458733205,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.1,
+      "score": 0.07248552434055329,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.9,
+      "score": 0.12834224598930483,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

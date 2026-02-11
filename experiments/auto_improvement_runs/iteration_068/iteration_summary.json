@@ -1,0 +1,129 @@
+{
+  "iteration": 68,
+  "timestamp": "20260111-184721",
+  "config_path": "auto_improvement_runs/iteration_067/config.yaml",
+  "model_file": "pipeline_model_20260111-184721.pth",
+  "results_file": "pipeline_results_20260111-184721.csv",
+  "comparison_file": "baseline_comparison_20260111-184721.csv",
+  "analysis_file": "auto_improvement_runs/iteration_068/ai_analysis_068.txt",
+  "avg_auc": 0.6527402060741286,
+  "avg_f1": 0.12973041312779826,
+  "avg_recall": 0.490467317109548,
+  "avg_precision": 0.08014768910979572,
+  "avg_accuracy": 0.685333953417257,
+  "train_loss": 0.0042645364268253565,
+  "val_loss": 0.004439086817543615,
+  "suggested_changes": {
+    "evaluation": {
+      "threshold": "auto",
+      "threshold_optimization": "per_class_f1_score",
+      "threshold_optimization_metric": "f1_score",
+      "threshold_search": {
+        "enabled": true,
+        "min_threshold": 0.001,
+        "max_threshold": 0.999,
+        "num_thresholds": 999,
+        "space": "probability",
+        "apply_sigmoid_before_search": true
+      },
+      "save_thresholds": true,
+      "load_thresholds": false
+    },
+    "reasoning": "F1 is low because precision is collapsing from massive false positives, consistent with thresholds being too low and suspiciously stuck at 0.100 for most classes. The most likely blocker is stale thresholds being loaded and reused (load_thresholds=true), preventing real per-run optimization. Disable loading to force a fresh per-class F1 threshold search, widen resolution (999 steps) and allow very small thresholds for classes that truly need them while still permitting higher thresholds for most classes to reduce FP and raise precision/F1. No training/loss changes this iteration to isolate threshold-search impact."
+  },
+  "directory": "auto_improvement_runs/iteration_068",
+  "total_time": 17631.646144866943,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 25,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.06295264623955432,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.06018054162487462,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3318655353882505,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.9,
+      "score": 0.009478672985781991,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.1,
+      "score": 0.314972411858225,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.13446113460697098,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.1,
+      "score": 0.1176923076923077,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.1,
+      "score": 0.22820081671871248,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.1,
+      "score": 0.162054775081595,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.1,
+      "score": 0.07683230628031991,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.15,
+      "score": 0.04081632653061224,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.1,
+      "score": 0.04009122554315208,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.09302325581395349,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.1,
+      "score": 0.13875667099379776,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

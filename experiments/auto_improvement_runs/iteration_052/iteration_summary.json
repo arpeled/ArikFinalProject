@@ -1,0 +1,137 @@
+{
+  "iteration": 52,
+  "timestamp": "20260107-184043",
+  "config_path": "config_iteration_051.yaml",
+  "model_file": "pipeline_model_20260107-184043.pth",
+  "results_file": "pipeline_results_20260107-184043.csv",
+  "comparison_file": "baseline_comparison_20260107-184043.csv",
+  "analysis_file": null,
+  "avg_auc": 0.7695694991345066,
+  "avg_f1": 0.254783581845886,
+  "avg_recall": 0.46221060286978943,
+  "avg_precision": 0.21063485545237515,
+  "avg_accuracy": 0.8191860761429081,
+  "train_loss": 0.0011790573696237627,
+  "val_loss": 0.003570376631634479,
+  "suggested_changes": {
+    "training": {
+      "early_stopping": {
+        "enabled": true,
+        "monitor": "val_f1",
+        "mode": "max",
+        "patience": 10,
+        "min_delta": 0.001,
+        "warmup_epochs": 15
+      }
+    },
+    "model": {
+      "dropout_rate": 0.4
+    },
+    "augmentation": {
+      "rare_class": {
+        "enabled": true,
+        "rotation_degrees": 15,
+        "horizontal_flip_prob": 0.8,
+        "gaussian_noise": 0.02
+      }
+    },
+    "reasoning": "Current F1=0.2548 shows threshold optimization worked, but severe overfitting (val_loss 202% > train_loss) prevents further improvement. Key fixes: (1) Reduce learning rate to 0.00005 to slow learning, (2) Add weight_decay=0.001 for regularization, (3) Increase dropout to 0.4, (4) Fix early stopping to monitor val_f1 with correct mode/min_delta, (5) Increase augmentation to reduce overfitting. This should maintain F1 gains while improving generalization."
+  },
+  "directory": "auto_improvement_runs/iteration_052",
+  "total_time": 7697.06312084198,
+  "ai_analysis_status": "failed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.15,
+      "score": 0.2737306843267108,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.25,
+      "score": 0.3404255319148936,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.2,
+      "score": 0.500697350069735,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.95,
+      "score": 0.004160236194054888,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.3938223938223938,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.2,
+      "score": 0.32941176470588235,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.2518891687657431,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.3328395061728395,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.25,
+      "score": 0.348063284233497,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.14677419354838708,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.05,
+      "score": 0.04638655462184874,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.15,
+      "score": 0.13382899628252787,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.2,
+      "score": 0.18028846153846154,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.15,
+      "score": 0.18036241045090604,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Baseline configuration from v1.1 implementation",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5,
+  "ai_error": "Error code: 400 - {'error': {'message': \"This model's maximum context length is 8192 tokens. However, you requested 9266 tokens (7266 in the messages, 2000 in the completion). Please reduce the length of the messages or completion.\", 'type': 'invalid_request_error', 'param': 'messages', 'code': 'context_length_exceeded'}}",
+  "ai_analysis_completed": true
+}

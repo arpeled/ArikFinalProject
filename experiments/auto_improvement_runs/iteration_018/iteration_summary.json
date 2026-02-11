@@ -1,0 +1,40 @@
+{
+  "iteration": 18,
+  "timestamp": "20251230-081816",
+  "config_path": "config_iteration_017.yaml",
+  "model_file": "pipeline_model_20251230-081816.pth",
+  "results_file": "pipeline_results_20251230-081816.csv",
+  "comparison_file": "baseline_comparison_20251230-081816.csv",
+  "analysis_file": "auto_improvement_runs/iteration_018/ai_analysis_018.txt",
+  "avg_auc": 0.7801880603983522,
+  "avg_f1": 0.00534641437672195,
+  "avg_recall": 0.07404668289334082,
+  "avg_precision": 0.09893375295176936,
+  "train_loss": 0.002085238487289637,
+  "val_loss": 0.0024230341977355156,
+  "suggested_changes": {
+    "model": {
+      "dropout_rate": 0.4
+    },
+    "training": {
+      "learning_rate": 1e-05,
+      "num_epochs": 120,
+      "early_stopping": {
+        "enabled": true,
+        "patience": 10
+      }
+    },
+    "loss": {
+      "gamma": 2.5,
+      "alpha": 0.8
+    },
+    "evaluation": {
+      "threshold": "auto",
+      "threshold_optimization_metric": "f1_score"
+    },
+    "reasoning": "The model is overfitting, so increasing the dropout rate to 0.4 may help regularize the model. Reducing the learning rate to 0.00001 can provide more fine-grained learning. Increasing the number of epochs to 120 can provide more opportunity for the model to learn from the imbalanced data. Reducing gamma to 2.5 can lessen the focus on hard, misclassified examples and could improve the model's performance on the majority class. Increasing alpha to 0.8 can give more weight to the minority class, potentially improving recall. Implementing auto threshold optimization based on F1 should improve recall/precision balance and address the issue of the model predicting almost all samples as negative. Increasing the patience for early stopping to 10 can allow the model to train for longer before stopping due to lack of improvement."
+  },
+  "directory": "auto_improvement_runs/iteration_018",
+  "total_time": 7191.0906138420105,
+  "ai_analysis_status": "completed"
+}

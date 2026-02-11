@@ -1,0 +1,18 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-05 17:14:02
+Iteration: 120
+================================================================================
+
+{
+  "phase": "SMOTE_HEAD",
+  "decision": "PROBE_AGAIN",
+  "reasoning": "We are still in the feature-space SMOTE experiment and the primary objective (non-zero Hernia F1) is not met: Hernia F1 remains 0 with TP=0. Macro AUC appears stable versus the recent SMOTE runs (118: 0.8176, 119: 0.8181, 120: 0.8160). The drop from the local baseline (~0.8181) is ~0.0021, which is within the allowed tolerance (not >0.003), so we should proceed to the second and final allowed SMOTE probe by increasing smote.sampling_ratio from 4 to 8. This is also consistent with the rule: if Hernia F1 is still 0 after the ratio=4 probe and macro AUC is stable, try ratio=8. No other changes are permitted in this phase, and after the ratio=8 probe we must stop (2-probe limit / ratio=8 tested).",
+  "smote_config": {
+    "sampling_ratio": 8
+  },
+  "hernia_metrics_summary": "Iteration 120 (ratio=4): Hernia F1=0.0000, Recall=0.0000, Precision=0.0000, AUC=0.7420 with TP=0, FP=0, FN=39, TN=22385. Threshold optimizer still selects 0.500 with F1=0, indicating the model produces no actionable positive predictions for Hernia under this setup.",
+  "macro_metrics_summary": "Iteration 120: Avg AUC=0.8160, Avg F1=0.2874, Avg Recall=0.3891, Avg Precision=0.2397. Compared to 119, macro AUC decreased by ~0.0021 and macro F1 decreased by ~0.0012—small degradations but not a >0.003 macro-AUC drop, so a final ratio=8 SMOTE probe is justified per rules."
+}

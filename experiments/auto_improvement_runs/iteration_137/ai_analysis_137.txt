@@ -1,0 +1,34 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-08 10:01:44
+Iteration: 137
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "STOP_PHASE_5_AND_FREEZE",
+  "reasoning": "Iteration 137 is NOT Phase-5-interpretable and cannot be used to propose further Phase-5 tuning because it violates the Phase-5 guiding principle (ranking/AUC only): evaluation.threshold=auto AND threshold_optimization=per_class_f1_score are enabled, which is explicitly forbidden and can confound conclusions. Additionally, macro AUC=0.7501 is outside the mandatory ±0.01 stability band vs the Phase-5 baseline iteration 84 macro AUC=0.7659 (Δ=-0.0158), which triggers a STOP condition regardless of per-class behavior. A new 'focused task' within Phase 5 is therefore: CLEAN EVAL ONLY (outside Phase-5 tunable knobs) to disable threshold optimization and re-run AUC-only evaluation against the fixed baseline; until then, any hard-negative tuning is invalid. Overfitting is noted but cannot be addressed in Phase 5 because dropout/weight_decay/augmentation/backbone/optimizer/lr/loss changes are forbidden.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis",
+    "Edema"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.3,
+    "hard_negative_weight": 1.5
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "FAILED",
+  "success": false
+}

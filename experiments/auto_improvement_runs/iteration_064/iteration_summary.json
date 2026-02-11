@@ -1,0 +1,161 @@
+{
+  "iteration": 64,
+  "timestamp": "20260110-053014",
+  "config_path": "config_iteration_064.yaml",
+  "model_file": "pipeline_model_20260110-053014.pth",
+  "results_file": "pipeline_results_20260110-053014.csv",
+  "comparison_file": "baseline_comparison_20260110-053014.csv",
+  "analysis_file": "auto_improvement_runs/iteration_064/ai_analysis_064.txt",
+  "avg_auc": 0.475453086738053,
+  "avg_f1": 0.09271694609431591,
+  "avg_recall": 0.6832266253236338,
+  "avg_precision": 0.05279787819218253,
+  "avg_accuracy": 0.3393749044391213,
+  "train_loss": 0.05320517601220743,
+  "val_loss": 0.0588577239215374,
+  "suggested_changes": {
+    "training": {
+      "learning_rate": 0.0005,
+      "num_epochs": 35,
+      "optimizer": {
+        "type": "Adam",
+        "weight_decay": 0.0001
+      }
+    },
+    "model": {
+      "dropout_rate": 0.3
+    },
+    "loss": {
+      "type": "FocalLoss",
+      "gamma": 2.0,
+      "alpha": 0.7,
+      "use_class_weights": true
+    },
+    "training_regularization": {
+      "label_smoothing": 0.0,
+      "mixup_alpha": 0.0
+    },
+    "augmentation": {
+      "base": {
+        "resize": [
+          224,
+          224
+        ],
+        "normalize": {
+          "mean": [
+            0.485,
+            0.456,
+            0.406
+          ],
+          "std": [
+            0.229,
+            0.224,
+            0.225
+          ]
+        },
+        "additional_transforms": {
+          "random_horizontal_flip": 0.5
+        }
+      }
+    },
+    "evaluation": {
+      "threshold_optimization": "per_class_f1_score"
+    },
+    "reasoning": "EMERGENCY RECOVERY NEEDED. Current iteration shows catastrophic failure with F1 collapsed from 0.27\u21920.09 and AUC from 0.76\u21920.48. The aggressive regularization (mixup, label smoothing, high dropout, strong weight decay) destroyed the model's ability to distinguish classes. REVERTING to iteration 32-38 successful configuration: (1) Remove mixup_alpha=0 and label_smoothing=0 which broke class boundaries, (2) Reduce dropout from 0.5\u21920.3, (3) Reduce weight_decay from 0.01\u21920.0001, (4) Simplify augmentation to basic horizontal flip only, (5) Restore learning_rate to 0.0005 for faster recovery, (6) Keep successful FocalLoss+threshold_optimization that achieved F1~0.25-0.27 in iterations 32-63. Goal: Recover F1 to \u22650.20 and AUC to \u22650.75 before attempting new improvements."
+  },
+  "directory": "auto_improvement_runs/iteration_064",
+  "total_time": 18015.738921880722,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 25,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.25,
+      "score": 0.05573558003888529,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.05,
+      "score": 0.04633548674537759,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.2,
+      "score": 0.21936099189318073,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.05,
+      "score": 0.002579861901509978,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.25,
+      "score": 0.3036664551091149,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.10786589645305836,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.1,
+      "score": 0.11218173009635571,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.05,
+      "score": 0.18754843709635752,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.25,
+      "score": 0.09897750511247444,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.1,
+      "score": 0.05801135730987641,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.35,
+      "score": 0.03723404255319149,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.05,
+      "score": 0.03437043693137145,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.25,
+      "score": 0.0424695241840346,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.2,
+      "score": 0.08462847419171866,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

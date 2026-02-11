@@ -1,0 +1,33 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-04 21:36:08
+Iteration: 101
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "NEXT focused task (Phase 5 compliant): stop all non-Phase-5 components currently active (SMOTE, freeze_backbone, per-class F1 threshold optimization) and run a CLEAN AUC-only iteration anchored to Iteration 84 using ONLY auc_improvement.hard_negative_emphasis. Iteration 101 is still non-compliant (auc_improvement disabled; SMOTE enabled; freeze_backbone=true; threshold_optimization=per_class_f1_score), so its AUC/F1/recall trends cannot be used for Phase-5 ΔAUC conclusions. Given target classes Pneumonia/Fibrosis are still low AUC (Pneumonia ~0.74, Fibrosis ~0.80) and stable diseases must not regress, choose a NEW (not previously used) hard-negative setting that is slightly more selective than 0.38 but with a modestly higher weight to suppress only the highest-scoring negatives (noise) in the target classes while minimizing collateral shifts in stable diseases.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.42,
+    "hard_negative_weight": 1.8
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

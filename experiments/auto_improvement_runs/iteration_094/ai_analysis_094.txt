@@ -1,0 +1,30 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-04 13:03:25
+Iteration: 94
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "Next focused task: run a CLEAN Phase-5 iteration anchored to iteration 84 (baseline) and improve AUC via noise suppression for the target diseases (Pneumonia/Fibrosis/Edema) using ONLY the auc_improvement block. Current iteration data (91–93/this run) is invalid for Phase 5 because it changes head width, freezes backbone, uses a different anchor/backbone source, disables auc_improvement, and uses per-class F1 threshold optimization (out of scope). Since we must not repeat prior suggested hard-negative configs (0.27/2.7 and 0.35/2.0, and previously mentioned 0.22/2.4, 0.28/1.8, 0.32/2.1), choose a new, conservative-but-distinct setting: slightly lower threshold with moderate weight to penalize only the most egregious high-scoring negatives while minimizing regression risk on stable diseases.",
+  "target_diseases": ["Pneumonia", "Fibrosis", "Edema"],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.25,
+    "hard_negative_weight": 2.2
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": 0.0,
+    "Fibrosis": 0.0,
+    "Edema": 0.0,
+    "Effusion": 0.0,
+    "Emphysema": 0.0,
+    "Cardiomegaly": 0.0,
+    "Hernia": 0.0,
+    "Pneumothorax": 0.0
+  },
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

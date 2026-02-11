@@ -1,0 +1,21 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-07 10:19:12
+Iteration: 1
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "Next focused task: enable Phase-5 hard-negative emphasis to improve class-specific AUC via noise suppression (ranking), targeting the lowest-AUC/highest-upside diseases (Pneumonia, Fibrosis, Edema). Metric to target is AUC (per-class + macro stability); ignore F1/recall/threshold behavior in this phase. Critical issues in the provided config: it violates Phase-5 constraints (threshold optimization, hernia oversampling, and auc_improvement disabled). For Phase 5 we must not do threshold optimization or oversampling; only auc_improvement block may change. Proposed change is minimal and compliant: turn on auc_improvement with moderate threshold/weight to penalize high-scoring negatives for target classes without destabilizing stable diseases.",
+  "target_diseases": ["Pneumonia", "Fibrosis", "Edema"],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.3,
+    "hard_negative_weight": 1.5
+  },
+  "per_class_auc_delta": {},
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

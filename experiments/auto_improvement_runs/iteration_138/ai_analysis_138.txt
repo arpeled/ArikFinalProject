@@ -1,0 +1,34 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-08 12:04:17
+Iteration: 138
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "STOP_PHASE_5_AND_FREEZE",
+  "reasoning": "Iteration 138 cannot be used to continue Phase-5 tuning because it violates the Phase-5 guiding principle (ranking/AUC only): evaluation.threshold=auto and threshold_optimization=per_class_f1_score are enabled, which can change reported F1/recall/precision and can also indirectly bias model-selection/early-stopping decisions if tied to those metrics. Additionally, mandatory Phase-5 checks cannot be completed: per-class ΔAUC vs baseline iteration 84 is not provided (for target diseases and stable diseases), so we cannot verify (a) meaningful improvements >=+0.01 on Pneumonia/Fibrosis/Edema, (b) no regression worse than -0.01 on stable diseases (Effusion/Emphysema/Cardiomegaly/Hernia/Pneumothorax), and (c) that changes only affected the target group. Although macro AUC=0.7647 is within the ±0.01 stability band vs baseline 0.7659 (Δ=-0.0012, which is acceptable), the evaluation-threshold optimization violation and missing per-class ΔAUC make this iteration non-compliant and non-actionable for further Phase-5 adjustments. The only valid 'next focused task' is to freeze Phase 5 and run a CLEAN AUC-only evaluation pipeline (outside the auc_improvement knob changes) to compute per-class AUC deltas vs iteration 84; only after that can we safely choose the next hard-negative threshold/weight change without risking stable-disease regression.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis",
+    "Edema"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.3,
+    "hard_negative_weight": 1.5
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "FAILED",
+  "success": false
+}

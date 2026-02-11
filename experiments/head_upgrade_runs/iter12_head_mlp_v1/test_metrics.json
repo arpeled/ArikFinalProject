@@ -1,0 +1,21 @@
+{
+  "test_macro_auc": 0.8197636605892917,
+  "baseline_macro_auc": 0.8009,
+  "auc_delta": 0.018863660589291786,
+  "per_class_auc": {
+    "Cardiomegaly": 0.9129900021427275,
+    "Emphysema": 0.9082049805932104,
+    "Effusion": 0.8755520847666797,
+    "Hernia": 0.7668402032038396,
+    "Infiltration": 0.7011301883119847,
+    "Mass": 0.8574993288233589,
+    "Nodule": 0.7465302443080186,
+    "Atelectasis": 0.8015071463646601,
+    "Pneumothorax": 0.8852832477648619,
+    "Pleural_Thickening": 0.7842160870963296,
+    "Pneumonia": 0.7473742322993838,
+    "Fibrosis": 0.7955344505568751,
+    "Edema": 0.8919426714281375,
+    "Consolidation": 0.8020863805900164
+  }
+}

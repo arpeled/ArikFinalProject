@@ -1,0 +1,46 @@
+Iteration 1 Failed
+================================================================================
+
+Error: Can't get local object 'HerniaAugmentTransform.__init__.<locals>.<lambda>'
+
+Traceback:
+Traceback (most recent call last):
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/auto_improvement_loop.py", line 1013, in run_single_iteration
+    model, train_loss, val_loss, training_metadata = trainer.train()
+                                                     ~~~~~~~~~~~~~^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/config_based_pipeline.py", line 1200, in train
+    for batch_idx, batch in enumerate(dataloader_train, start=1):
+                            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 489, in __iter__
+    self._iterator = self._get_iterator()
+                     ~~~~~~~~~~~~~~~~~~^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 427, in _get_iterator
+    return _MultiProcessingDataLoaderIter(self)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/.venv/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1170, in __init__
+    w.start()
+    ~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/process.py", line 121, in start
+    self._popen = self._Popen(self)
+                  ~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/context.py", line 224, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/context.py", line 289, in _Popen
+    return Popen(process_obj)
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/popen_fork.py", line 20, in __init__
+    self._launch(process_obj)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/popen_spawn_posix.py", line 47, in _launch
+    reduction.dump(process_obj, fp)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/multiprocessing/reduction.py", line 60, in dump
+    ForkingPickler(file, protocol).dump(obj)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+AttributeError: Can't get local object 'HerniaAugmentTransform.__init__.<locals>.<lambda>'
+
+================================================================================
+Saved files:
+  - config.yaml

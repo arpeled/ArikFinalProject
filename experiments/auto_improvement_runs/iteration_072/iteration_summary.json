@@ -1,0 +1,121 @@
+{
+  "iteration": 72,
+  "timestamp": "20260115-164754",
+  "config_path": "config_iteration_072.yaml",
+  "model_file": "pipeline_model_20260115-164754.pth",
+  "results_file": "pipeline_results_20260115-164754.csv",
+  "comparison_file": "baseline_comparison_20260115-164754.csv",
+  "analysis_file": "auto_improvement_runs/iteration_072/ai_analysis_072.txt",
+  "avg_auc": 0.6329965126289239,
+  "avg_f1": 0.1354395905084795,
+  "avg_recall": 0.35964130378600895,
+  "avg_precision": 0.09372219836932157,
+  "avg_accuracy": 0.7861666072065645,
+  "train_loss": 0.005476071434062476,
+  "val_loss": 0.0056859537298706445,
+  "suggested_changes": {
+    "evaluation": {
+      "threshold": "auto",
+      "threshold_optimization": "per_class_f1_score",
+      "threshold_optimization_metric": "f1_score",
+      "save_thresholds": true,
+      "load_thresholds": false
+    },
+    "reasoning": "Last 3 iterations show degrading F1/Recall (0.1496 -> 0.1410 -> 0.1354). Current threshold optimization uses per-class Fbeta with beta=0.5, which prioritizes precision and can produce brittle/extreme thresholds for rare classes (e.g., Hernia=0.5, Consolidation=0.9) while overall precision remains ~0.09 due to poor score separation. Switching to per-class F1 directly optimizes the primary metric and should yield more balanced thresholds, improving average F1 and stabilizing recall/precision tradeoffs without changing training dynamics."
+  },
+  "directory": "auto_improvement_runs/iteration_072",
+  "total_time": 18070.160440683365,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 25,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.06207324643078833,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.07118711473453967,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3624043167273184,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.36091324200913244,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.1518943343760862,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.1707707067476815,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.1,
+      "score": 0.2331858407079646,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.199203187250996,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.09552969993876301,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.04889779559118237,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.1,
+      "score": 0.04880149275154299,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.08813559322033898,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.9,
+      "score": 0.12235449735449735,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

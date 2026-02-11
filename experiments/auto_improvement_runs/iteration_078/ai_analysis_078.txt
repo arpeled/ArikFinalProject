@@ -1,0 +1,67 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-01-17 20:35:34
+Iteration: 78
+================================================================================
+
+## ANALYSIS
+
+### 1) What should be the NEXT focused task?
+**Task: AUC recovery by fixing the training objective mismatch introduced by dynamic weighting + focal loss.**  
+Right now you’re in **TRAIN_AUC role**, but the current setup is behaving like an aggressive imbalance/decision-quality setup: **FocalLoss + `use_dynamic_weights: true`** is likely distorting probability calibration and hurting ranking quality (AUC), especially for rare classes.
+
+Your recent trend confirms this:
+- **AUC is sliding**: 0.6411 → 0.6404 → **0.6309**
+- **F1 is also sliding**: 0.1444 → 0.1445 → **0.1381**
+- Losses are balanced (train≈val), so this isn’t classic overfitting; it’s more consistent with **objective/optimization mismatch**.
+
+### 2) Which metric should this task target?
+**Target metric: `auc` (macro AUC).**  
+That’s mandated by role and also the metric currently degrading the most relative to the AUC anchor (iter12 AUC=0.8009). Threshold tweaks won’t fix AUC because AUC is threshold-independent.
+
+### 3) What config changes are needed?
+Make **one major change**: **disable dynamic class weights** for TRAIN_AUC recovery.
+
+Why:
+- Dynamic weights can improve recall/F1 sometimes, but often **reduce AUC** by pushing the model to over-score positives and inflate false positives (you see precision collapse across many classes).
+- Your per-class thresholds are already being optimized; for TRAIN_AUC, we want the model’s *ranking* to be clean first.
+
+### 4) Critical issues with current configuration
+- **Scheduler monitors `val_f1` while early stopping monitors `val_macro_auc`.** This creates competing optimization signals (LR reductions triggered by F1 fluctuations can hurt AUC recovery). I’m *not* suggesting changing it here because that would be a second major change, but it is a real issue to address later.
+- **Hernia threshold got “optimized” to 0.5 with F1=0**: that usually means the model outputs are not separable at all for that class (or the search objective can’t find any threshold yielding TP>0). That’s a modeling/data signal problem, not a threshold problem.
+
+### 5) Specific hyperparameter change that would help (single change)
+- **Set `loss.use_dynamic_weights: false`** (keep FocalLoss gamma at 2.0 as-is to avoid multiple major changes).
+
+Expected effect:
+- **AUC should improve** (cleaner probability ranking).
+- Precision may improve slightly due to less aggressive positive pushing.
+- F1 might dip short-term; that’s acceptable in TRAIN_AUC as long as AUC recovers (later RECOVER_F1 can reintroduce imbalance handling carefully).
+
+### 6) Comparison to previous iterations / trends
+- Iter76/77/78 are all clustered around **AUC ~0.64** and **F1 ~0.14**, far below your historical best region (iter50–58 had AUC ~0.77–0.80 and F1 ~0.27).
+- The big structural difference between the “good era” (50–58) and now is that you’re in a regime that looks like **precision collapse + low AUC**, consistent with overcompensation for imbalance and/or training signal distortion.
+
+### 7) New approaches not yet tested (but NOT for this iteration)
+To keep to one major change, these are “next after next” ideas:
+- **Align scheduler monitor with AUC** during TRAIN_AUC (change scheduler.monitor to `val_macro_auc`).
+- **Switch loss to `WeightedBCE` (no focal) for AUC recovery**, then reintroduce focal later for RECOVER_F1.
+- **Rare-class oversampling / class-balanced sampler** (true data-level balancing tends to preserve AUC better than extreme loss reweighting).
+- **Logit adjustment / prior correction** (helps calibration + ranking under imbalance).
+
+---
+
+## SUGGESTED_CHANGES (one major change)
+
+```json
+{
+  "task_name": "auc_recovery_disable_dynamic_weights_v1",
+  "target_metric": "auc",
+  "loss": {
+    "use_dynamic_weights": false
+  },
+  "reasoning": "AUC is degrading across the last 3 iterations (0.6411→0.6404→0.6309) while losses are balanced, indicating an objective mismatch rather than overfitting. Dynamic class weights with FocalLoss often distort probability ranking under extreme imbalance, harming macro AUC and contributing to precision collapse. Disabling dynamic weights is a single isolated change appropriate for TRAIN_AUC recovery; thresholds remain per-class optimized for evaluation."
+}
+```

@@ -1,0 +1,135 @@
+auc_improvement:
+  enabled: true
+  hard_negative_threshold: 0.3
+  hard_negative_weight: 1.5
+  strategy: hard_negative_emphasis
+  target_classes: &id001
+  - Pneumonia
+  - Fibrosis
+  - Edema
+augmentation:
+  base:
+    normalize:
+      mean:
+      - 0.485
+      - 0.456
+      - 0.406
+      std:
+      - 0.229
+      - 0.224
+      - 0.225
+    resize:
+    - 224
+    - 224
+  rare_class:
+    affine_translate:
+    - 0.05
+    - 0.05
+    color_jitter:
+      brightness: 0.2
+      contrast: 0.2
+    enabled: true
+    horizontal_flip_prob: 0.7
+    rotation_degrees: 10
+    thresholds:
+      Cardiomegaly: 0.02
+      Consolidation: 0.035
+      Edema: 0.016
+      Emphysema: 0.018
+      Fibrosis: 0.012
+      Hernia: 0.003
+      Pleural_Thickening: 0.025
+      Pneumonia: 0.01
+      Pneumothorax: 0.045
+data:
+  images_dir: ./ChestX-ray14/images224
+  test_csv: ./ChestX-ray14/test_data.csv
+  train_csv: ./ChestX-ray14/train_data.csv
+data_split:
+  method: GroupShuffleSplit
+  random_state: 42
+  train_ratio: 0.8
+  val_ratio: 0.2
+evaluation:
+  metrics:
+  - AUC
+  - Accuracy
+  - Specificity
+  - Recall
+  - Precision
+  - Sensitivity
+  - F1_Score
+  threshold: auto
+  threshold_optimization: per_class_f1_score
+  threshold_optimization_metric: f1_score
+hardware:
+  device: auto
+  persistent_workers: true
+  pin_memory: true
+  prefetch_factor: 2
+logging:
+  log_interval: 300
+  save_model: true
+  save_results: true
+loss:
+  alpha: 0.75
+  class_frequencies:
+  - 0.0342
+  - 0.031
+  - 0.1641
+  - 0.0028
+  - 0.2451
+  - 0.0712
+  - 0.078
+  - 0.1424
+  - 0.0653
+  - 0.0417
+  - 0.0176
+  - 0.0208
+  - 0.0284
+  - 0.0575
+  gamma: 3.0
+  type: FocalLoss
+  use_class_weights: true
+metadata:
+  baseline_iteration: 84
+  config_version: '1.0'
+  created_at: '2026-01-31 22:17:35'
+  description: 'PHASE 5: Class-specific AUC improvement (targets: Pneumonia, Fibrosis,
+    Edema)'
+  iteration: 86
+  parent_config: iteration_084/config.yaml
+  parent_iteration: 84
+  phase: PHASE_5_AUC_IMPROVEMENT
+  target_diseases: *id001
+model:
+  architecture: ModifiedDenseNetWithDropOut
+  backbone: densenet121
+  dropout_rate: 0.3
+  num_classes: 14
+  pretrained: true
+  use_additional_features: true
+training:
+  batch_size: 64
+  early_stopping:
+    enabled: true
+    min_delta: 0.01
+    patience: 5
+    warmup_epochs: 5
+  learning_rate: 0.0005
+  num_epochs: 50
+  num_workers: 8
+  optimizer:
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-08
+    type: Adam
+    weight_decay: 0.0
+  scheduler:
+    factor: 0.5
+    min_lr: 1.0e-05
+    mode: min
+    patience: 5
+    type: ReduceLROnPlateau
+  use_mixed_precision: false

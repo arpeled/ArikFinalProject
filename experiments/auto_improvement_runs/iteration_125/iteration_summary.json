@@ -1,0 +1,157 @@
+{
+  "iteration": 125,
+  "timestamp": "20260207-030730",
+  "config_path": "config_iteration_125.yaml",
+  "model_file": "pipeline_model_20260207-030730.pth",
+  "results_file": "pipeline_results_20260207-030730.csv",
+  "comparison_file": "baseline_comparison_20260207-030730.csv",
+  "analysis_file": "auto_improvement_runs/iteration_125/ai_analysis_125.txt",
+  "avg_auc": 0.7657774963446473,
+  "avg_f1": 0.24003627510665823,
+  "avg_recall": 0.39665772178515685,
+  "avg_precision": 0.19202081585078065,
+  "avg_accuracy": 0.8559738290607003,
+  "per_class_auc": {
+    "Cardiomegaly": 0.8466357711365805,
+    "Emphysema": 0.8299574661829452,
+    "Effusion": 0.8517439271155579,
+    "Hernia": 0.6701877974605247,
+    "Infiltration": 0.6697569177980986,
+    "Mass": 0.8167823459348308,
+    "Nodule": 0.7121202276553982,
+    "Atelectasis": 0.7594088833214333,
+    "Pneumothorax": 0.8442233174039147,
+    "Pleural_Thickening": 0.7124728455163674,
+    "Pneumonia": 0.6719907851625329,
+    "Fibrosis": 0.7329243752762618,
+    "Edema": 0.861179558908368,
+    "Consolidation": 0.7415007299522478
+  },
+  "train_loss": 0.0011948891440637622,
+  "val_loss": 0.0037581316390159457,
+  "suggested_changes": {
+    "phase": "PHASE_5",
+    "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+    "reasoning": "Next focused task (Phase-5 compliant) is to improve CLASS-SPECIFIC AUC for the weakest target disease (Pneumonia AUC=0.672; Fibrosis also low at 0.733) via stronger, more selective hard-negative suppression. Iteration 125 reverted to the same auc_improvement config as the earlier unstable setting (threshold=0.3, weight=1.5) and macro AUC fell back to ~baseline (0.7658 \u2248 0.7659), indicating the current setting is not producing consistent ranking gains. Overfitting warnings are not actionable in Phase 5 (regularization/augmentation/backbone/optimizer/loss changes are forbidden). Therefore the only valid new task is to adjust the auc_improvement block to concentrate gradient on the highest-scoring false positives (noise) for Pneumonia/Fibrosis/Edema while minimizing collateral impact on stable diseases. We must NOT repeat the same configuration, so we move to a higher threshold and higher weight than iteration 125.",
+    "target_diseases": [
+      "Pneumonia",
+      "Fibrosis",
+      "Edema"
+    ],
+    "auc_improvement_config": {
+      "hard_negative_threshold": 0.45,
+      "hard_negative_weight": 2.2
+    },
+    "per_class_auc_delta": {
+      "Pneumonia": null,
+      "Fibrosis": null,
+      "Edema": null,
+      "Effusion": null,
+      "Emphysema": null,
+      "Cardiomegaly": null,
+      "Hernia": null,
+      "Pneumothorax": null,
+      "macro_auc": -0.0001
+    },
+    "stable_diseases_check": "PASSED",
+    "success": false
+  },
+  "directory": "auto_improvement_runs/iteration_125",
+  "total_time": 7100.683453083038,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.2,
+      "score": 0.24470134874759153,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.25,
+      "score": 0.21347331583552057,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.2,
+      "score": 0.48493259318001586,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.95,
+      "score": 0.005239991616013414,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.37105558917610443,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.25,
+      "score": 0.325668700140779,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.20292590844738084,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.2,
+      "score": 0.3367528991971454,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.2,
+      "score": 0.3138033763654419,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.1331521739130435,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.15,
+      "score": 0.06095791001451379,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.2,
+      "score": 0.13649289099526066,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.3,
+      "score": 0.18777292576419213,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.2,
+      "score": 0.17617617617617617,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "PHASE 5: Class-specific AUC improvement (targets: Pneumonia, Fibrosis, Edema)",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5,
+  "model_path": "auto_improvement_runs/iteration_125/pipeline_model_20260207-030730.pth",
+  "phase": "PHASE_5_AUC_IMPROVEMENT",
+  "role": "TARGETED_AUC"
+}

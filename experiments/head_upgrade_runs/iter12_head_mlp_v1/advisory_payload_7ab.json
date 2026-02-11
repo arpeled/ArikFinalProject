@@ -1,0 +1,13 @@
+{
+  "phase": "PHASE_7A_B_FULL_EVAL",
+  "iteration": 86,
+  "macro_auc_head_mlp": 0.8197636605892917,
+  "macro_f1_head_mlp": 0.2914697117595867,
+  "macro_f1_iter12": 0.0028660317373975287,
+  "macro_f1_delta": 0.28860368002218917,
+  "macro_precision_head_mlp": 0.23870724806421098,
+  "macro_recall_head_mlp": 0.40713180345857225,
+  "confusion_matrices": "confusion_matrices_head_mlp.json",
+  "comparison_csv": "baseline_comparison_iter12_vs_head_mlp_full.csv",
+  "decision_request": "Proceed to further AUC optimization or stop and finalize results?"
+}

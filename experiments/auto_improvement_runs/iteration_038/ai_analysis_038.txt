@@ -1,0 +1,32 @@
+**1. ANALYSIS**
+
+From the information provided, it can be seen that the average AUC is decent at 0.7993, indicating that the model can distinguish between the classes reasonably well. However, the Recall (0.3993), Precision (0.2066), and consequently, the F1-Score (0.2532) are still low. 
+
+The low Recall indicates that the model is missing a significant number of positive instances, possibly due to the imbalanced nature of the dataset where some classes have less than 1% positive samples. The model seems to be predicting almost all samples as negative, especially for the rare classes. 
+
+Comparing with previous iterations, it is observed that iteration 37 achieved a higher F1-Score of 0.2274 compared to iteration 36 which had an F1-Score of 0.1846. This improvement could be due to the per-class threshold optimization that was implemented in iteration 37.
+
+Looking at the class performances, it is clear that the model performs poorly for Infiltration, Pneumonia, and Nodule classes, suggesting that the model might need more training examples or specific class handling for these categories.
+
+**2. SUGGESTED_CHANGES**
+
+Since the model is currently predicting almost all samples as negative, especially for the rare classes, one approach to consider is to apply class balancing using oversampling. This will provide the model with more positive examples during training and could potentially improve the Recall and F1-Score.
+
+Additionally, it is important to ensure that the loss function is properly configured to handle class imbalance. As such, enabling dynamic class weights should help the model pay more attention to the rare classes.
+
+Here is the suggested configuration change:
+
+```json
+{
+  "data_balancing": {
+    "strategy": "oversampling",
+    "target_frequency": 0.20
+  },
+  "loss": {
+    "use_dynamic_weights": true
+  },
+  "reasoning": "The model is currently predicting almost all samples as negative, especially for rare classes. By applying class balancing via oversampling, the model can be exposed to more positive examples during training which should help it improve its Recall and F1-score. Furthermore, by enabling dynamic class weights in the loss function, the model can pay more attention to the rare classes, thus improving its performance on them."
+}
+```
+
+This change is different from previous iterations as it incorporates dynamic class weights along with a higher target frequency for class balancing via oversampling. It is hoped that this combination will help address the issues observed with the model's performance.

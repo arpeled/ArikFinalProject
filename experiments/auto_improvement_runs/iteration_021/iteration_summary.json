@@ -1,0 +1,41 @@
+{
+  "iteration": 21,
+  "timestamp": "20251230-213750",
+  "config_path": "config_iteration_020.yaml",
+  "model_file": "pipeline_model_20251230-213750.pth",
+  "results_file": "pipeline_results_20251230-213750.csv",
+  "comparison_file": "baseline_comparison_20251230-213750.csv",
+  "analysis_file": "auto_improvement_runs/iteration_021/ai_analysis_021.txt",
+  "avg_auc": 0.7595744705076893,
+  "avg_f1": 0.019186752040695313,
+  "avg_recall": 0.08216963017230956,
+  "avg_precision": 0.16470459976172255,
+  "train_loss": 0.0014110763629705228,
+  "val_loss": 0.0031769145203923636,
+  "suggested_changes": {
+    "training": {
+      "learning_rate": 1e-05,
+      "num_epochs": 200
+    },
+    "model": {
+      "dropout_rate": 0.5
+    },
+    "loss": {
+      "type": "focal",
+      "gamma": 2.0,
+      "alpha": 0.8,
+      "use_class_weights": true
+    },
+    "evaluation": {
+      "threshold": "optimal",
+      "threshold_optimization_metric": "f1_score"
+    },
+    "optimizer": {
+      "weight_decay": 0.02
+    },
+    "reasoning": "Reduce learning rate to improve stability of training and increase epochs to allow more time for the model to converge. Increase dropout rate to combat overfitting. Adjust FocalLoss parameters by reducing gamma to decrease focus on hard examples and increasing alpha to give more weight to positive class. Switch to optimal threshold based on F1-score to improve the balance between recall and precision. Increase weight decay to add more regularization and prevent overfitting."
+  },
+  "directory": "auto_improvement_runs/iteration_021",
+  "total_time": 10856.155367136002,
+  "ai_analysis_status": "completed"
+}

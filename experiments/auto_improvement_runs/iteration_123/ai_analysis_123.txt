@@ -1,0 +1,35 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-07 00:57:32
+Iteration: 123
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "STOP_PHASE_5_AND_FREEZE",
+  "reasoning": "Iteration 123 is a severe Phase-5 failure relative to the mandatory anchor (iteration 84). Macro AUC dropped from 0.7659 (baseline 84) to 0.7556 (Δ=-0.0103), violating the stability requirement (must remain within ±0.01). Additionally, at least one stable disease appears to regress materially vs the iteration-84 operating point (e.g., Effusion AUC now 0.8277 is very likely >0.01 below the iteration-84 model’s Effusion AUC given historical performance patterns around 0.84+), but we cannot compute exact stable-disease ΔAUC without the iteration-84 per-class AUC table. Because the macro-AUC stability check is definitively FAILED, we must STOP Phase 5 immediately and freeze weights; further auc_improvement tuning is not allowed after a stability violation. Note: the user-provided overfitting warning is not actionable in Phase 5 (regularization changes are forbidden), and threshold optimization/F1 effects are out of scope; the observed collapse is consistent with ranking degradation, not a threshold artifact.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis",
+    "Edema"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.3,
+    "hard_negative_weight": 1.5
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null,
+    "macro_auc": -0.0103
+  },
+  "stable_diseases_check": "FAILED",
+  "success": false
+}

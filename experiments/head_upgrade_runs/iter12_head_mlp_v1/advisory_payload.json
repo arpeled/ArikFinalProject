@@ -1,0 +1,27 @@
+{
+  "phase": "PHASE_7A_HEAD_UPGRADE_AUC",
+  "base_iteration": 12,
+  "experiment_id": "iter12_head_mlp_v1",
+  "change": "MLP head: 1152->512->14 with ReLU + dropout=0.2; backbone frozen",
+  "val_macro_auc_best": 0.8148438042866255,
+  "test_macro_auc": 0.8197636605892917,
+  "auc_delta_vs_iter12": 0.018863660589291786,
+  "per_class_auc_delta": {
+    "Cardiomegaly": 0.0017794701550775116,
+    "Emphysema": 0.00021524881242040994,
+    "Effusion": 0.006163271657456226,
+    "Hernia": 0.23491520764248042,
+    "Infiltration": -0.0020195504991982194,
+    "Mass": 0.0038085222394276252,
+    "Nodule": 0.0032243576782476913,
+    "Atelectasis": 0.0017673432865518146,
+    "Pneumothorax": 0.004035874807122419,
+    "Pleural_Thickening": 0.0034915537501852834,
+    "Pneumonia": 0.0073496458499725525,
+    "Fibrosis": -0.002020074639342284,
+    "Edema": -0.0031186228048674103,
+    "Consolidation": 0.004785070988119977
+  },
+  "regressions": [],
+  "decision_request": "Should we (A) try a different head size/dropout, (B) unfreeze last block, or (C) stop and proceed to calibration for F1?"
+}

@@ -1,0 +1,51 @@
+================================================================================
+BEST CONFIGURATIONS ANALYSIS
+================================================================================
+
+1. BEST F1 CONFIGURATION
+--------------------------------------------------------------------------------
+Iteration: 91
+F1 Score: 0.2957
+AUC: 0.8201
+Precision: 0.2472
+Recall: 0.3904
+
+Configuration:
+  Loss Type: BCE
+  Gamma: nan
+  Alpha: nan
+  Learning Rate: 0.0001
+  Dropout: 0.3
+  Epochs: 16.0
+
+
+2. BEST AUC CONFIGURATION
+--------------------------------------------------------------------------------
+Iteration: 92
+AUC: 0.8204
+F1 Score: 0.2930
+Precision: 0.2401
+Recall: 0.4047
+
+Configuration:
+  Loss Type: BCE
+  Gamma: nan
+  Alpha: nan
+  Learning Rate: 0.0001
+  Dropout: 0.3
+  Epochs: 12.0
+
+
+3. CONFIGURATION PATTERNS
+--------------------------------------------------------------------------------
+
+PATTERNS IN TOP 20% PERFORMERS:
+
+Loss Types:
+  BCE: 24 iterations (100.0%)
+
+Learning Rate:
+  Range: 0.000010 - 0.000100
+  Mean: 0.000096
+  Median: 0.000100
+

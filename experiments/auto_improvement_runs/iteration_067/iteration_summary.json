@@ -1,0 +1,129 @@
+{
+  "iteration": 67,
+  "timestamp": "20260111-084532",
+  "config_path": "auto_improvement_runs/iteration_066/config.yaml",
+  "model_file": "pipeline_model_20260111-084532.pth",
+  "results_file": "pipeline_results_20260111-084532.csv",
+  "comparison_file": "baseline_comparison_20260111-084532.csv",
+  "analysis_file": "auto_improvement_runs/iteration_067/ai_analysis_067.txt",
+  "avg_auc": 0.6432636044807298,
+  "avg_f1": 0.12451269858211099,
+  "avg_recall": 0.5541768731329907,
+  "avg_precision": 0.07707342544266008,
+  "avg_accuracy": 0.6292811273635391,
+  "train_loss": 0.004286126294321915,
+  "val_loss": 0.00443833819844506,
+  "suggested_changes": {
+    "evaluation": {
+      "threshold": "auto",
+      "threshold_optimization": "per_class_f1_score",
+      "threshold_optimization_metric": "f1_score",
+      "threshold_search": {
+        "enabled": true,
+        "min_threshold": 0.01,
+        "max_threshold": 0.99,
+        "num_thresholds": 199,
+        "space": "probability",
+        "apply_sigmoid_before_search": true
+      },
+      "save_thresholds": true,
+      "load_thresholds": true
+    },
+    "reasoning": "F1 is collapsing because precision is extremely low (avg 0.077) and the 'optimized' thresholds are stuck at 0.100 for 13/14 classes, indicating a threshold floor/clipping or incorrect search space (logits vs probabilities). This task fixes threshold optimization so it can select higher per-class thresholds, reducing false positives and improving precision/F1 without changing training. Keep all other major parameters unchanged this iteration to isolate impact."
+  },
+  "directory": "auto_improvement_runs/iteration_067",
+  "total_time": 30340.208515882492,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 25,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.05942162947312822,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.054105363075462744,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3302059496567506,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.85,
+      "score": 0.009359251259899209,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.1,
+      "score": 0.30813549220224495,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.1312645887683647,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.05,
+      "score": 0.11225535126974713,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.1,
+      "score": 0.2276347685559275,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.1,
+      "score": 0.16071973162549558,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.1,
+      "score": 0.08060692271218586,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.044012282497441144,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.1,
+      "score": 0.0473264479016865,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.08893956670467502,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.1,
+      "score": 0.14524796560724704,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

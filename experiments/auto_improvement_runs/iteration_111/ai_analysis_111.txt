@@ -1,0 +1,18 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-04 23:11:05
+Iteration: 111
+================================================================================
+
+{
+  "phase": "SMOTE_HEAD",
+  "decision": "STOP",
+  "reasoning": "This run is already probe 2/2 with feature-space SMOTE at sampling_ratio=8 (the maximum allowed change). Hernia F1 remains 0.0 with 0 TP and 39 FN, so the primary objective (non-zero Hernia F1) was not achieved. Macro AUC is also drifting down versus recent non-SMOTE runs (0.8188 → 0.8169 → 0.8146), indicating no clear ranking benefit and potential collateral harm. Per rules: ratio=8 tested and 2 probes done → STOP.",
+  "smote_config": {
+    "sampling_ratio": 8
+  },
+  "hernia_metrics_summary": "Hernia: F1=0.0000, Recall=0.0000, Precision=0.0000, AUC=0.7527, TP=0 FP=0 FN=39 TN=22385. Even with SMOTE ratio=8, the classifier never predicts Hernia positive at the optimized threshold (0.5).",
+  "macro_metrics_summary": "Macro metrics (test): AUC=0.8146, F1=0.2862, Recall=0.3592, Precision=0.2456. Compared to the last two runs, macro AUC and macro F1 continue a mild downward drift (AUC 0.8188→0.8169→0.8146; F1 0.2892→0.2880→0.2862)."
+}

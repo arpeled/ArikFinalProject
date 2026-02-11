@@ -1,0 +1,159 @@
+{
+  "iteration": 75,
+  "timestamp": "20260116-091828",
+  "config_path": "config_iteration_075.yaml",
+  "model_file": "pipeline_model_20260116-091828.pth",
+  "results_file": "pipeline_results_20260116-091828.csv",
+  "comparison_file": "baseline_comparison_20260116-091828.csv",
+  "analysis_file": "auto_improvement_runs/iteration_075/ai_analysis_075.txt",
+  "avg_auc": 0.6349140584234306,
+  "avg_f1": 0.13860120175268298,
+  "avg_recall": 0.40695494788019093,
+  "avg_precision": 0.0876824593543402,
+  "avg_accuracy": 0.7617285051730287,
+  "train_loss": 0.005441653256342541,
+  "val_loss": 0.00572076393630017,
+  "suggested_changes": {
+    "task_name": "augmentation_increase_v1: stronger rare-class augmentation",
+    "target_metric": "f1",
+    "augmentation": {
+      "base": {
+        "additional_transforms": {
+          "random_rotation": 20
+        }
+      },
+      "rare_class": {
+        "enabled": true,
+        "rotation_degrees": 20,
+        "horizontal_flip_prob": 0.7,
+        "affine_translate": [
+          0.08,
+          0.08
+        ],
+        "color_jitter": {
+          "brightness": 0.25,
+          "contrast": 0.25
+        },
+        "additional_transforms": {
+          "random_resized_crop": {
+            "scale": [
+              0.85,
+              1.0
+            ],
+            "ratio": [
+              0.9,
+              1.1
+            ]
+          },
+          "gaussian_noise": {
+            "std": 0.01,
+            "p": 0.2
+          }
+        }
+      }
+    },
+    "evaluation": {
+      "threshold": "auto",
+      "threshold_optimization": "per_class_f1_score",
+      "save_thresholds": true,
+      "load_thresholds": true,
+      "fbeta": null
+    },
+    "reasoning": "F1 has degraded slightly across the last 3 iterations and Hernia remains at 0 recall with very low AUC, indicating insufficient learned signal for rare classes. Increase rare-class augmentation strength (rotation 20\u00b0, stronger translation, add crop + mild noise) while keeping loss/optimizer/threshold optimization unchanged to isolate impact. Removing/neutralizing fbeta avoids any accidental precision-biased thresholding path."
+  },
+  "directory": "auto_improvement_runs/iteration_075",
+  "total_time": 17742.498511075974,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 25,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.06792058516196448,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.06294337675738423,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3096050706972209,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.3360213065029222,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.15027676363208103,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.1782178217821782,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.2775175644028103,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.22214182344428365,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.10885396703717899,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.04157602127145275,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.15,
+      "score": 0.057057057057057055,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.08167330677290836,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.9,
+      "score": 0.12903225806451613,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

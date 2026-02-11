@@ -1,0 +1,30 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-04 21:13:29
+Iteration: 99
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "NEXT focused task: run a CLEAN Phase-5-compliant AUC-only iteration anchored to iteration 84 by enabling auc_improvement (hard_negative_emphasis) and disabling all forbidden/irrelevant components currently active (SMOTE, freeze_backbone, per-class F1 threshold optimization). The current run is not Phase 5 compliant, so its AUC cannot be used for ΔAUC vs iteration 84. For the first clean attempt, apply a new (not previously tried) hard-negative setting that is moderate and less likely to cause collateral regressions in stable diseases while still suppressing high-scoring negatives for the weakest AUC targets. Also refine focus by removing Edema from the target list because it is already strong (AUC ~0.888) and could introduce unnecessary shifts; concentrate on Pneumonia and Fibrosis where AUC is weak/mid and improvement potential is highest.",
+  "target_diseases": ["Pneumonia", "Fibrosis"],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.33,
+    "hard_negative_weight": 1.9
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

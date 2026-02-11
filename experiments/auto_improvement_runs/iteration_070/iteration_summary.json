@@ -1,0 +1,119 @@
+{
+  "iteration": 70,
+  "timestamp": "20260113-032040",
+  "config_path": "config_iteration_070.yaml",
+  "model_file": "pipeline_model_20260113-032040.pth",
+  "results_file": "pipeline_results_20260113-032040.csv",
+  "comparison_file": "baseline_comparison_20260113-032040.csv",
+  "analysis_file": "auto_improvement_runs/iteration_070/ai_analysis_070.txt",
+  "avg_auc": 0.69504424322011,
+  "avg_f1": 0.1496495800267577,
+  "avg_recall": 0.5559983022609623,
+  "avg_precision": 0.09295668627061068,
+  "avg_accuracy": 0.6983334182763367,
+  "train_loss": 0.004167085735363463,
+  "val_loss": 0.0043387348695912145,
+  "suggested_changes": {
+    "loss": {
+      "type": "FocalLoss",
+      "gamma": 2.0,
+      "use_dynamic_weights": true
+    },
+    "reasoning": "F1 is improving but precision is collapsing due to many false positives, and the problem is highly imbalanced. Enabling dynamic class weights lets the loss compute per-class weights from the true training distribution (instead of relying on static/possibly mismatched class_frequencies/alpha), improving minority-class learning and score separation. Keep all other training and evaluation settings stable to isolate the impact on F1/precision/recall."
+  },
+  "directory": "auto_improvement_runs/iteration_070",
+  "total_time": 24279.562325954437,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 34,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.15,
+      "score": 0.22308288148721922,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.07323529411764707,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.3410073388961496,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.85,
+      "score": 0.008921330089213302,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.1,
+      "score": 0.32767743112570696,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.1,
+      "score": 0.15799468287124951,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.1,
+      "score": 0.13198684828558008,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.1,
+      "score": 0.23732743176309412,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.1,
+      "score": 0.18055350007399734,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.1,
+      "score": 0.08196935969621578,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.15,
+      "score": 0.043907793633369926,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.1,
+      "score": 0.05166444740346205,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.15,
+      "score": 0.10574018126888217,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.1,
+      "score": 0.14739481749791028,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

@@ -1,0 +1,33 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-04 22:18:58
+Iteration: 109
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+  "reasoning": "Next focused task: run the FIRST fully Phase-5-compliant experiment anchored to Iter-84 by ensuring the ONLY change vs the Iter-84 baseline config is enabling auc_improvement=hard_negative_emphasis for the target diseases. The current configuration is critically invalid for Phase 5 attribution because it includes SMOTE (feature_space), freeze_backbone=true, and per-class F1 threshold optimization; all are confounders/forbidden in Phase 5 and will move metrics in ways unrelated to ranking/AUC noise suppression. For the AUC-improvement mechanism (suppress high-scoring negatives) we should keep the target list tight to avoid collateral drift: Pneumonia and Fibrosis remain the lowest-AUC/high-upside among the Phase-5 targets; Edema is already strong and including it risks unintended shifts in stable classes. Do NOT repeat prior tried hard-negative settings (0.38/2.2 and 0.46/2.6). Try a slightly less selective threshold than 0.46 but keep a strong penalty to capture more hard negatives without overfitting to only the most extreme FPs: threshold=0.42, weight=2.8. After training, perform the mandatory per-class ΔAUC vs Iter-84 and verify stable diseases do not regress by >0.01; ignore F1/recall/thresholds.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.42,
+    "hard_negative_weight": 2.8
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "PASSED",
+  "success": false
+}

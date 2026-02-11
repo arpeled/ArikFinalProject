@@ -1,0 +1,156 @@
+{
+  "iteration": 93,
+  "timestamp": "20260204-110815",
+  "config_path": "auto_improvement_runs/iteration_092/config.yaml",
+  "model_file": "pipeline_model_20260204-110815.pth",
+  "results_file": "pipeline_results_20260204-110815.csv",
+  "comparison_file": "baseline_comparison_20260204-110815.csv",
+  "analysis_file": "auto_improvement_runs/iteration_093/ai_analysis_093.txt",
+  "avg_auc": 0.8200735992695817,
+  "avg_f1": 0.29162340711630097,
+  "avg_recall": 0.4066589329478223,
+  "avg_precision": 0.23530045059504415,
+  "avg_accuracy": 0.9115233678201927,
+  "per_class_auc": {
+    "Cardiomegaly": 0.9122705321302192,
+    "Emphysema": 0.9095466197427876,
+    "Effusion": 0.875602917377197,
+    "Hernia": 0.7631289267652903,
+    "Infiltration": 0.7026008793976537,
+    "Mass": 0.8601237957262464,
+    "Nodule": 0.7512598129383465,
+    "Atelectasis": 0.804359304931549,
+    "Pneumothorax": 0.8846470867638611,
+    "Pleural_Thickening": 0.7820877015743727,
+    "Pneumonia": 0.7444570399146146,
+    "Fibrosis": 0.7956956986760049,
+    "Edema": 0.8912572908718955,
+    "Consolidation": 0.8039927829641068
+  },
+  "train_loss": 0.13225507865005987,
+  "val_loss": 0.1563383596051823,
+  "suggested_changes": {
+    "phase": "PHASE_5",
+    "decision": "CONTINUE_TARGETED_AUC_IMPROVEMENT",
+    "reasoning": "We must ignore iterations 87\u201393 for Phase 5 decisions because they violate mandatory rules (HEAD_UPGRADE, backbone frozen/head width change, auc_improvement disabled, and per-class F1 threshold optimization enabled). The next focused task is a CLEAN Phase-5 run anchored to iteration 84 that improves ranking (AUC) via noise suppression: enable hard-negative emphasis for the lowest-AUC target diseases (Pneumonia, Fibrosis, Edema). To avoid repeating prior suggested configs (0.22/2.4 and 0.27/2.7, and previously mentioned 0.28/1.8 and 0.32/2.1), we will try a slightly higher threshold with moderate weight to emphasize only the most problematic high-scoring negatives while reducing risk of collateral regression in stable classes.",
+    "target_diseases": [
+      "Pneumonia",
+      "Fibrosis",
+      "Edema"
+    ],
+    "auc_improvement_config": {
+      "hard_negative_threshold": 0.35,
+      "hard_negative_weight": 2.0
+    },
+    "per_class_auc_delta": {
+      "Pneumonia": 0.0,
+      "Fibrosis": 0.0,
+      "Edema": 0.0,
+      "Effusion": 0.0,
+      "Emphysema": 0.0,
+      "Cardiomegaly": 0.0,
+      "Hernia": 0.0,
+      "Pneumothorax": 0.0
+    },
+    "stable_diseases_check": "PASSED",
+    "success": false
+  },
+  "directory": "auto_improvement_runs/iteration_093",
+  "total_time": 3742.4310371875763,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 13,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.3264957264957265,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.15,
+      "score": 0.4166666666666667,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.25,
+      "score": 0.5305271931652428,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.5,
+      "score": 0.0,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.2,
+      "score": 0.4073073459410781,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.15,
+      "score": 0.3900375939849624,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.15,
+      "score": 0.2606299212598425,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.15,
+      "score": 0.36989172196996156,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.15,
+      "score": 0.4140127388535032,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.1,
+      "score": 0.18323153803442532,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.1,
+      "score": 0.08314087759815242,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.05,
+      "score": 0.17771084337349397,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.1,
+      "score": 0.22452830188679246,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.1,
+      "score": 0.23550724637681159,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "PROBE - Wider MLP head (1024) vs anchor (512)",
+  "early_stopping_monitor": "val_macro_auc",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 5,
+  "model_path": "auto_improvement_runs/iteration_093/pipeline_model_20260204-110815.pth",
+  "phase": "PHASE_5_AUC_IMPROVEMENT",
+  "role": "UNKNOWN"
+}

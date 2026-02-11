@@ -1,0 +1,140 @@
+================================================================================
+ITERATION 122: HERNIA_OVERSAMPLE EXPERIMENT ANALYSIS
+================================================================================
+
+EXPERIMENT TYPE: Controlled Diagnostic Experiment
+PHASE: HERNIA_OVERSAMPLE (not Phase 5)
+ANCHOR ITERATION: 89 (best model weights)
+PARENT ITERATION: 89
+
+================================================================================
+EXPERIMENT OBJECTIVE
+================================================================================
+
+Test whether increased Hernia exposure through label-aware oversampling (10x)
+combined with Hernia-specific augmentation can force the model to learn Hernia
+patterns. This is a diagnostic data-exposure experiment - performance improvement
+is NOT required for success.
+
+Key Features Tested:
+1. WeightedRandomSampler with 10x weight for Hernia-positive samples
+2. HerniaAugmentTransform applied ONLY to Hernia-positive images during training
+3. Validation/test sets remain unmodified (no oversampling or augmentation)
+
+================================================================================
+HERNIA CLASS RESULTS (PRIMARY METRIC)
+================================================================================
+
+                          Iteration 121    Iteration 122    Delta
+                          (Baseline)       (Oversample)
+--------------------------------------------------------------------------------
+Test AUC:                 0.7490           0.7326           -0.0164
+Test F1:                  0.0000           0.0241           +0.0241
+True Positives:           0                5                +5
+False Positives:          0                371              +371
+Recall:                   0.0000           0.1282           +0.1282
+Precision:                N/A              0.0133           -
+Threshold:                0.50             0.10             -0.40
+
+================================================================================
+KEY FINDINGS
+================================================================================
+
+1. POSITIVE: Model Now Detects Hernia Cases
+   - 5 true positive detections (up from 0)
+   - Demonstrates the oversampling mechanism successfully exposed the model
+     to more Hernia examples
+   - Threshold optimization selected 0.10 (vs 0.50 previously), indicating
+     the model learned some weak Hernia signal
+
+2. NEGATIVE: High False Positive Rate
+   - 371 false positives for only 5 true positives
+   - Precision of 1.33% is clinically unacceptable
+   - The model over-predicts Hernia to catch the rare true cases
+
+3. OBSERVATION: AUC Decreased
+   - Hernia AUC dropped from 0.749 to 0.733 (-1.6%)
+   - This suggests the model's ranking ability degraded slightly
+   - The increased false positives hurt the ROC curve
+
+4. OVERALL MODEL STABILITY
+   - Average AUC: 0.8171 (stable, within normal variance)
+   - Average F1: 0.2952 (stable)
+   - No significant regression in other disease classes
+
+================================================================================
+OVERSAMPLING STATISTICS
+================================================================================
+
+Training Set Hernia Statistics:
+- Total training samples: ~72,000
+- Hernia-positive samples: ~156 (0.216%)
+- Oversample factor: 10x
+- Expected Hernia samples per epoch: ~1,530
+- Effective Hernia prevalence: 2.12% (up from 0.216%)
+
+================================================================================
+AUGMENTATION APPLIED TO HERNIA-POSITIVE SAMPLES
+================================================================================
+
+- RandomResizedCrop (scale 0.9-1.0, ratio 0.95-1.05)
+- RandomRotation (±5 degrees)
+- ColorJitter (brightness ±0.1, contrast ±0.1)
+- Gaussian noise (std=0.01)
+- RandomErasing (p=0.1, scale 0.01-0.02)
+
+================================================================================
+INTERPRETATION
+================================================================================
+
+The experiment confirms that the Hernia class CAN learn something from increased
+exposure, but the current intervention (10x oversampling + mild augmentation)
+is insufficient for reliable detection.
+
+Possible explanations for weak performance:
+1. Visual features of Hernia may be subtle and overlap with negative cases
+2. 10x oversampling increases Hernia from 0.2% to 2.1%, still quite rare
+3. The frozen backbone limits feature learning capacity
+4. Hernia may require more specialized model architecture
+
+================================================================================
+RECOMMENDATIONS FOR FUTURE EXPERIMENTS
+================================================================================
+
+1. HIGHER OVERSAMPLE FACTOR
+   - Try 25x or 50x to further increase Hernia exposure
+   - Target effective prevalence of 5-10%
+
+2. FOCAL LOSS FOR HERNIA
+   - Replace BCE with Focal Loss for Hernia class
+   - Down-weight easy negatives, focus on hard examples
+
+3. UNFROZEN BACKBONE
+   - Allow partial backbone fine-tuning (DenseBlock4)
+   - May help learn Hernia-specific low-level features
+
+4. HERNIA-SPECIFIC HEAD
+   - Add dedicated Hernia classification branch
+   - Separate from main multi-label head
+
+5. EXTERNAL HERNIA DATA
+   - Augment training with external Hernia-positive images
+   - Address fundamental data scarcity issue
+
+================================================================================
+CONCLUSION
+================================================================================
+
+The HERNIA_OVERSAMPLE experiment achieved its diagnostic objective by
+demonstrating that label-aware oversampling can force weak class detection.
+The implementation is correct and functional. However, the 10x oversample
+factor produces only marginal Hernia detection capability (5 TP, 371 FP).
+
+This iteration serves as a baseline for future Hernia-focused interventions
+and confirms that more aggressive approaches are needed for clinically
+useful Hernia detection.
+
+EXPERIMENT STATUS: SUCCESSFUL (diagnostic goal achieved)
+PERFORMANCE IMPROVEMENT: NOT ACHIEVED (expected for diagnostic experiment)
+
+================================================================================

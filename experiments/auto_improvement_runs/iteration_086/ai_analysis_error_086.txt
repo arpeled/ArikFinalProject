@@ -1,0 +1,42 @@
+AI Analysis Failed
+Error: name 'PHASE_5_BASELINE_MODEL_PATH' is not defined
+
+Traceback (most recent call last):
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 474, in _call_openai_with_retry
+    {"role": "system", "content": self._get_system_prompt()},
+                                  ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 578, in _get_system_prompt
+    return self._get_phased_protocol_system_prompt()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 603, in _get_phased_protocol_system_prompt
+    - Model path: {PHASE_5_BASELINE_MODEL_PATH}
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'PHASE_5_BASELINE_MODEL_PATH' is not defined. Did you mean: 'PHASE_5_BASELINE_MACRO_AUC'?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/auto_improvement_loop.py", line 1141, in run_single_iteration
+    analysis, suggested_changes = self.ai_advisor.analyze_results(
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        config=trainer.config,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+        iteration_analysis=iteration_analysis  # Pass detailed iteration analysis
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 157, in analyze_results
+    response = self._call_openai_with_retry(prompt)
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 483, in _call_openai_with_retry
+    raise last_error
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 365, in _call_openai_with_retry
+    "content": self._get_system_prompt()
+               ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 578, in _get_system_prompt
+    return self._get_phased_protocol_system_prompt()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/arikpeled/PycharmProjects/ArikFinalProject/ai_advisor.py", line 603, in _get_phased_protocol_system_prompt
+    - Model path: {PHASE_5_BASELINE_MODEL_PATH}
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'PHASE_5_BASELINE_MODEL_PATH' is not defined. Did you mean: 'PHASE_5_BASELINE_MACRO_AUC'?

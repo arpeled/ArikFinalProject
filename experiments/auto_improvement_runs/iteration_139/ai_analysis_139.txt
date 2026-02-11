@@ -1,0 +1,34 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-08 14:07:27
+Iteration: 139
+================================================================================
+
+{
+  "phase": "PHASE_5",
+  "decision": "STOP_PHASE_5_AND_FREEZE",
+  "reasoning": "Iteration 139 is not Phase-5-actionable because it violates the Phase-5 guiding principle and mandatory checks: (1) evaluation.threshold=auto and threshold_optimization=per_class_f1_score are enabled (explicitly forbidden in Phase 5; can confound selection/interpretation even if AUC itself is threshold-free), and (2) we still do not have the required per-class AUC deltas vs the Phase-5 baseline (iteration 84) to run regression detection on stable diseases and confirm target-only effects. Additionally, macro AUC for iteration 139 is 0.7489, which is outside the required ±0.01 stability band vs baseline 0.7659 (Δ=-0.0170), which is a STOP condition by itself. Therefore the only valid next task is to freeze Phase 5 and run a CLEAN AUC-only evaluation (no threshold optimization) to compute per-class AUC deltas vs iteration 84; only after passing stable-disease regression checks can we resume hard-negative tuning.",
+  "target_diseases": [
+    "Pneumonia",
+    "Fibrosis",
+    "Edema"
+  ],
+  "auc_improvement_config": {
+    "hard_negative_threshold": 0.3,
+    "hard_negative_weight": 1.5
+  },
+  "per_class_auc_delta": {
+    "Pneumonia": null,
+    "Fibrosis": null,
+    "Edema": null,
+    "Effusion": null,
+    "Emphysema": null,
+    "Cardiomegaly": null,
+    "Hernia": null,
+    "Pneumothorax": null
+  },
+  "stable_diseases_check": "FAILED",
+  "success": false
+}

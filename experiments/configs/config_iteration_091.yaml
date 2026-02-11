@@ -1,0 +1,119 @@
+metadata:
+  config_version: '1.0'
+  description: PROBE - Wider MLP head (1024) vs anchor (512)
+  created_at: '2026-02-04'
+  iteration: 91
+  parent_iteration: 89
+  parent_config: auto_improvement_runs/iteration_089/config.yaml
+  backbone_source: 12
+  phase: HEAD_UPGRADE
+  note: Single-factor probe - head width 1024 (anchor=512)
+  anchor_iteration: 89
+model:
+  architecture: ModifiedDenseNetWithDropOut
+  backbone: densenet121
+  num_classes: 14
+  use_additional_features: true
+  dropout_rate: 0.3
+  pretrained: true
+  head:
+    type: mlp
+    hidden_features: 1024
+    dropout: 0.2
+    activation: relu
+training:
+  batch_size: 64
+  learning_rate: 0.0001
+  num_epochs: 50
+  num_workers: 8
+  use_mixed_precision: false
+  freeze_backbone: true
+  optimizer:
+    type: Adam
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-08
+    weight_decay: 0.0001
+  scheduler:
+    type: ReduceLROnPlateau
+    mode: max
+    factor: 0.5
+    patience: 3
+    min_lr: 1.0e-06
+  early_stopping:
+    enabled: true
+    monitor: val_macro_auc
+    mode: max
+    patience: 5
+    min_delta: 0.001
+    warmup_epochs: 3
+loss:
+  type: BCE
+  use_class_weights: false
+auc_improvement:
+  enabled: false
+augmentation:
+  base:
+    resize:
+    - 224
+    - 224
+    normalize:
+      mean:
+      - 0.485
+      - 0.456
+      - 0.406
+      std:
+      - 0.229
+      - 0.224
+      - 0.225
+  rare_class:
+    enabled: false
+    rotation_degrees: 10
+    horizontal_flip_prob: 0.7
+    affine_translate:
+    - 0.05
+    - 0.05
+    color_jitter:
+      brightness: 0.2
+      contrast: 0.2
+    thresholds:
+      Hernia: 0.003
+      Pneumonia: 0.01
+      Fibrosis: 0.012
+      Edema: 0.016
+      Emphysema: 0.018
+      Cardiomegaly: 0.02
+      Pleural_Thickening: 0.025
+      Consolidation: 0.035
+      Pneumothorax: 0.045
+data_split:
+  method: GroupShuffleSplit
+  train_ratio: 0.8
+  val_ratio: 0.2
+  random_state: 42
+data:
+  train_csv: ./ChestX-ray14/train_data.csv
+  test_csv: ./ChestX-ray14/test_data.csv
+  images_dir: ./ChestX-ray14/images224
+evaluation:
+  threshold: auto
+  metrics:
+  - AUC
+  - Accuracy
+  - Specificity
+  - Recall
+  - Precision
+  - Sensitivity
+  - F1_Score
+  threshold_optimization: per_class_f1_score
+  threshold_optimization_metric: f1_score
+hardware:
+  device: auto
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+logging:
+  log_interval: 100
+  save_model: true
+  save_results: true

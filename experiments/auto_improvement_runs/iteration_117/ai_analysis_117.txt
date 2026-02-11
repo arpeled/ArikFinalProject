@@ -1,0 +1,18 @@
+================================================================================
+AI ANALYSIS METADATA
+================================================================================
+Model Used: OpenAI gpt-5.2
+Analysis Date: 2026-02-05 16:01:31
+Iteration: 117
+================================================================================
+
+{
+  "phase": "SMOTE_HEAD",
+  "decision": "PROBE_AGAIN",
+  "reasoning": "This run is effectively the first SMOTE probe at sampling_ratio=4 (per current config). The primary objective (non-zero Hernia F1) is still not achieved (Hernia F1=0 with TP=0). However, macro AUC (0.8175) is still within a tolerable band versus the recent non-SMOTE baseline (~0.818–0.820), i.e., no >0.003 drop signal is evident from the information provided. Per rules: if Hernia F1 is still 0 and macro AUC is stable after probe 1, we should run the second and final probe by increasing smote.sampling_ratio to 8.",
+  "smote_config": {
+    "sampling_ratio": 8
+  },
+  "hernia_metrics_summary": "Hernia: F1=0.0000, Recall=0.0000, Precision=0.0000, AUC=0.7507, TP=0 FP=0 FN=39 TN=22385. Optimized threshold stayed at 0.500 with validation F1=0, indicating the model still never produces usable positive predictions for Hernia under ratio=4.",
+  "macro_metrics_summary": "Macro (test): AUC=0.8175, F1=0.2908, Recall=0.3879, Precision=0.2413. Compared to recent runs in the ~0.818–0.820 AUC range, this appears roughly stable (no clear >0.003 degradation signal), while macro F1 is in-family with prior ~0.288–0.296 behavior."
+}

@@ -1,0 +1,159 @@
+{
+  "iteration": 63,
+  "timestamp": "20260109-215519",
+  "config_path": "config_iteration_062.yaml",
+  "model_file": "pipeline_model_20260109-215519.pth",
+  "results_file": "pipeline_results_20260109-215519.csv",
+  "comparison_file": "baseline_comparison_20260109-215519.csv",
+  "analysis_file": "auto_improvement_runs/iteration_063/ai_analysis_063.txt",
+  "avg_auc": 0.7579967835629493,
+  "avg_f1": 0.27366702987248115,
+  "avg_recall": 0.3396269822181213,
+  "avg_precision": 0.24093825914362482,
+  "avg_accuracy": 0.9108066612303144,
+  "train_loss": 8.657169680186308e-05,
+  "val_loss": 0.27352376222610475,
+  "suggested_changes": {
+    "training": {
+      "learning_rate": 0.0001,
+      "num_epochs": 35,
+      "optimizer": {
+        "type": "Adam",
+        "weight_decay": 0.01
+      }
+    },
+    "model": {
+      "dropout_rate": 0.5
+    },
+    "augmentation": {
+      "base": {
+        "resize": [
+          224,
+          224
+        ],
+        "normalize": {
+          "mean": [
+            0.485,
+            0.456,
+            0.406
+          ],
+          "std": [
+            0.229,
+            0.224,
+            0.225
+          ]
+        },
+        "additional_transforms": {
+          "random_rotation": 15,
+          "random_horizontal_flip": 0.5,
+          "color_jitter": {
+            "brightness": 0.3,
+            "contrast": 0.3,
+            "saturation": 0.1
+          },
+          "gaussian_blur": 0.2
+        }
+      }
+    },
+    "training_regularization": {
+      "label_smoothing": 0.1,
+      "mixup_alpha": 0.2
+    },
+    "reasoning": "F1 has plateaued at 0.27 for 10+ iterations while overfitting became severe (val_loss 2735x higher than train_loss). This indicates the model memorizes training data but can't generalize. The task focuses on AGGRESSIVE REGULARIZATION: (1) Increase dropout from 0.3\u21920.5 to prevent feature co-adaptation, (2) Add strong weight decay (0.01) to penalize large weights, (3) Lower learning rate to 0.0001 for more stable training, (4) Add comprehensive data augmentation including rotation, color jitter, and Gaussian blur, (5) Introduce label smoothing (0.1) and mixup (0.2) for better generalization. This differs from previous iterations that focused on loss function tuning - we're now addressing the core overfitting issue that's preventing F1 improvements. Goal: Reduce val_loss to <0.05 while maintaining F1 \u22650.25."
+  },
+  "directory": "auto_improvement_runs/iteration_063",
+  "total_time": 27294.718257904053,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 38,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.1,
+      "score": 0.25487944890929964,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.1,
+      "score": 0.3201663201663202,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.1,
+      "score": 0.4868882923807557,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.44999999999999996,
+      "score": 0.391304347826087,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.05,
+      "score": 0.34193626560038776,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.05,
+      "score": 0.308411214953271,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.1,
+      "score": 0.24010327022375216,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.05,
+      "score": 0.3222591362126246,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.05,
+      "score": 0.30390334572490707,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.05,
+      "score": 0.170439414114514,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.05,
+      "score": 0.0625,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.05,
+      "score": 0.1125,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.05,
+      "score": 0.16281221091581868,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.05,
+      "score": 0.1681338028169014,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Soften FocalLoss imbalance handling + Fix early_stopping to monitor val_f1 (from iteration 57 AI analysis)",
+  "early_stopping_monitor": "val_f1",
+  "early_stopping_mode": "max",
+  "min_delta": 0.001,
+  "patience": 10
+}

@@ -1,0 +1,23 @@
+{
+  "iteration": 30,
+  "timestamp": "20260102-082519",
+  "status": "recovered",
+  "avg_auc": 0.720693472371771,
+  "avg_f1": 0.005498311223207415,
+  "avg_recall": 0.0742684168568598,
+  "avg_precision": 0.07865129214135823,
+  "avg_accuracy": 0.8777680801182406,
+  "avg_specificity": 0.9284295058921804,
+  "avg_sensitivity": 0.0742684168568598,
+  "recovery_date": "2026-01-02 16:04:10",
+  "recovery_note": "Iteration failed during threshold optimization. Model and test results recovered manually.",
+  "ai_analysis_status": "not_available",
+  "threshold_optimization": false,
+  "files": {
+    "model": "pipeline_model_20260102-082519.pth",
+    "results": "pipeline_results_20260102-082519.csv",
+    "confusion_matrix": "confusion_matrix_20260102-082519.json",
+    "baseline_comparison": "baseline_comparison_20260102-082519.csv",
+    "config": "config.yaml"
+  }
+}

@@ -1,0 +1,89 @@
+================================================================================
+PERFORMANCE TRENDS ANALYSIS
+================================================================================
+
+1. OVERALL METRICS TRENDS
+--------------------------------------------------------------------------------
+
+AVG_F1:
+  Best:  Iteration 91 = 0.2957
+  Worst: Iteration 8 = 0.0002
+  Range: 0.0002 - 0.2957
+  Mean:  0.1884
+  Std:   0.0995
+  First 10 avg: 0.0725
+  Last 10 avg:  0.1836
+  Change: 0.1112
+
+AVG_AUC:
+  Best:  Iteration 92 = 0.8204
+  Worst: Iteration 64 = 0.4755
+  Range: 0.4755 - 0.8204
+  Mean:  0.7655
+  Std:   0.0615
+  First 10 avg: 0.7879
+  Last 10 avg:  0.8024
+  Change: 0.0145
+
+AVG_PRECISION:
+  Best:  Iteration 5 = 0.3845
+  Worst: Iteration 8 = 0.0001
+  Range: 0.0001 - 0.3845
+  Mean:  0.1978
+  Std:   0.0833
+  First 10 avg: 0.2113
+  Last 10 avg:  0.3022
+  Change: 0.0909
+
+AVG_RECALL:
+  Best:  Iteration 64 = 0.6832
+  Worst: Iteration 8 = 0.0714
+  Range: 0.0714 - 0.6832
+  Mean:  0.3284
+  Std:   0.1555
+  First 10 avg: 0.0878
+  Last 10 avg:  0.2185
+  Change: 0.1307
+
+
+2. CRITICAL PERIODS IDENTIFIED
+--------------------------------------------------------------------------------
+
+📈 PEAK PERFORMANCE:
+   Iteration 91: F1=0.2957
+
+⚠️  ITERATION 57 DECLINE:
+   Before (52-56): F1=0.2605
+   After (57-62):  F1=0.2722
+   Change: 0.0117 (4.5%)
+
+🏆 TOP 10 ITERATIONS BY F1:
+   Iteration 91: F1=0.2957, AUC=0.8201
+   Iteration 122: F1=0.2952, AUC=0.8171
+   Iteration 89: F1=0.2948, AUC=0.8194
+   Iteration 87: F1=0.2944, AUC=0.8199
+   Iteration 90: F1=0.2943, AUC=0.8194
+   Iteration 88: F1=0.2941, AUC=0.8198
+   Iteration 121: F1=0.2935, AUC=0.8181
+   Iteration 92: F1=0.2930, AUC=0.8204
+   Iteration 94: F1=0.2927, AUC=0.8197
+   Iteration 97: F1=0.2917, AUC=0.8184
+
+
+3. TRAINING DYNAMICS
+--------------------------------------------------------------------------------
+
+TRAIN LOSS:
+  Min:  0.000087 (Iteration 63)
+  Max:  0.139462 (Iteration 120)
+  Mean: 0.053853
+
+VAL LOSS:
+  Min:  0.001040 (Iteration 15)
+  Max:  0.273524 (Iteration 63)
+  Mean: 0.081986
+
+EPOCHS TRAINED:
+  Min:  5 epochs
+  Max:  38 epochs
+  Mean: 15.7 epochs

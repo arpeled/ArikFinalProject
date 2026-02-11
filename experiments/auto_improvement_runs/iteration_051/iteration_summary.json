@@ -1,0 +1,125 @@
+{
+  "iteration": 51,
+  "timestamp": "20260107-070540",
+  "config_path": "config_iteration_051.yaml",
+  "model_file": "pipeline_model_20260107-070540.pth",
+  "results_file": "pipeline_results_20260107-070540.csv",
+  "comparison_file": "baseline_comparison_20260107-070540.csv",
+  "analysis_file": "auto_improvement_runs/iteration_051/ai_analysis_051.txt",
+  "avg_auc": 0.7741984731734044,
+  "avg_f1": 0.2539877918812934,
+  "avg_recall": 0.4207785175302291,
+  "avg_precision": 0.2151849940547241,
+  "avg_accuracy": 0.833131593700627,
+  "train_loss": 0.0011765201631681631,
+  "val_loss": 0.0036805636820976028,
+  "suggested_changes": {
+    "model": {
+      "dropout_rate": 0.5
+    },
+    "training": {
+      "optimizer": {
+        "weight_decay": 0.01
+      }
+    },
+    "loss": {
+      "gamma": 2.0
+    },
+    "reasoning": "The model is currently overfitting, increasing the dropout rate and adding weight decay can help regularize the model and improve its generalization to unseen data. Reducing the gamma parameter in the FocalLoss may decrease the focus on hard examples and improve the model's sensitivity to positive classes."
+  },
+  "directory": "auto_improvement_runs/iteration_051",
+  "total_time": 7647.229584932327,
+  "ai_analysis_status": "completed",
+  "actual_epochs": 10,
+  "thresholds": {
+    "Cardiomegaly": {
+      "threshold": 0.2,
+      "score": 0.24116424116424118,
+      "positive_samples": 413,
+      "status": "optimized"
+    },
+    "Emphysema": {
+      "threshold": 0.15,
+      "score": 0.28489483747609945,
+      "positive_samples": 416,
+      "status": "optimized"
+    },
+    "Effusion": {
+      "threshold": 0.2,
+      "score": 0.5014884359972521,
+      "positive_samples": 2146,
+      "status": "optimized"
+    },
+    "Hernia": {
+      "threshold": 0.95,
+      "score": 0.0038375835602871998,
+      "positive_samples": 32,
+      "status": "optimized"
+    },
+    "Infiltration": {
+      "threshold": 0.15,
+      "score": 0.37521732258574364,
+      "positive_samples": 3127,
+      "status": "optimized"
+    },
+    "Mass": {
+      "threshold": 0.25,
+      "score": 0.3076923076923077,
+      "positive_samples": 999,
+      "status": "optimized"
+    },
+    "Nodule": {
+      "threshold": 0.2,
+      "score": 0.22583732057416267,
+      "positive_samples": 1042,
+      "status": "optimized"
+    },
+    "Atelectasis": {
+      "threshold": 0.2,
+      "score": 0.3378787878787879,
+      "positive_samples": 1815,
+      "status": "optimized"
+    },
+    "Pneumothorax": {
+      "threshold": 0.2,
+      "score": 0.3638275499474238,
+      "positive_samples": 870,
+      "status": "optimized"
+    },
+    "Pleural_Thickening": {
+      "threshold": 0.15,
+      "score": 0.13302575932333718,
+      "positive_samples": 523,
+      "status": "optimized"
+    },
+    "Pneumonia": {
+      "threshold": 0.2,
+      "score": 0.06521739130434782,
+      "positive_samples": 234,
+      "status": "optimized"
+    },
+    "Fibrosis": {
+      "threshold": 0.1,
+      "score": 0.11175616835994194,
+      "positive_samples": 310,
+      "status": "optimized"
+    },
+    "Edema": {
+      "threshold": 0.3,
+      "score": 0.1893939393939394,
+      "positive_samples": 313,
+      "status": "optimized"
+    },
+    "Consolidation": {
+      "threshold": 0.2,
+      "score": 0.18960940462646947,
+      "positive_samples": 771,
+      "status": "optimized"
+    }
+  },
+  "description": "Baseline configuration from v1.1 implementation",
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_mode": "min",
+  "min_delta": 0.01,
+  "patience": 5
+}

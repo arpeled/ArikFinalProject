@@ -1,0 +1,86 @@
+{
+  "Cardiomegaly": {
+    "threshold": 0.39999999999999997,
+    "score": 0.2818955042527339,
+    "positive_samples": 413,
+    "status": "optimized"
+  },
+  "Emphysema": {
+    "threshold": 0.49999999999999994,
+    "score": 0.3862559241706161,
+    "positive_samples": 416,
+    "status": "optimized"
+  },
+  "Effusion": {
+    "threshold": 0.35,
+    "score": 0.48036858974358976,
+    "positive_samples": 2146,
+    "status": "optimized"
+  },
+  "Hernia": {
+    "threshold": 0.25,
+    "score": 0.26666666666666666,
+    "positive_samples": 32,
+    "status": "optimized"
+  },
+  "Infiltration": {
+    "threshold": 0.39999999999999997,
+    "score": 0.3577590480912246,
+    "positive_samples": 3127,
+    "status": "optimized"
+  },
+  "Mass": {
+    "threshold": 0.3,
+    "score": 0.2910321489001692,
+    "positive_samples": 999,
+    "status": "optimized"
+  },
+  "Nodule": {
+    "threshold": 0.35,
+    "score": 0.19859402460456943,
+    "positive_samples": 1042,
+    "status": "optimized"
+  },
+  "Atelectasis": {
+    "threshold": 0.44999999999999996,
+    "score": 0.3291341731653669,
+    "positive_samples": 1815,
+    "status": "optimized"
+  },
+  "Pneumothorax": {
+    "threshold": 0.44999999999999996,
+    "score": 0.3386550556361877,
+    "positive_samples": 870,
+    "status": "optimized"
+  },
+  "Pleural_Thickening": {
+    "threshold": 0.3,
+    "score": 0.1540785498489426,
+    "positive_samples": 523,
+    "status": "optimized"
+  },
+  "Pneumonia": {
+    "threshold": 0.25,
+    "score": 0.050468637346791634,
+    "positive_samples": 234,
+    "status": "optimized"
+  },
+  "Fibrosis": {
+    "threshold": 0.39999999999999997,
+    "score": 0.12634408602150538,
+    "positive_samples": 310,
+    "status": "optimized"
+  },
+  "Edema": {
+    "threshold": 0.35,
+    "score": 0.1575492341356674,
+    "positive_samples": 313,
+    "status": "optimized"
+  },
+  "Consolidation": {
+    "threshold": 0.9,
+    "score": 0.17110694183864916,
+    "positive_samples": 771,
+    "status": "optimized"
+  }
+}
