@@ -272,7 +272,7 @@ class AutoImprovementLoop:
         self._load_previous_iteration_history(sorted(iteration_dirs))
 
         # Look for the config file for the next iteration
-        next_config_path = f"config_iteration_{self.start_iteration:03d}.yaml"
+        next_config_path = os.path.join("experiments", "configs", f"config_iteration_{self.start_iteration:03d}.yaml")
 
         # If next config already exists (from previous run's AI suggestions), use it
         if os.path.exists(next_config_path):
@@ -280,7 +280,7 @@ class AutoImprovementLoop:
             self.logger.info(f"✅ Found existing config for iteration {self.start_iteration}: {next_config_path}")
         else:
             # Otherwise, use the config from the last completed iteration
-            last_config_path = f"config_iteration_{last_iteration:03d}.yaml"
+            last_config_path = os.path.join("experiments", "configs", f"config_iteration_{last_iteration:03d}.yaml")
             if os.path.exists(last_config_path):
                 self.resume_config_path = last_config_path
                 self.logger.info(f"✅ Resuming from iteration {last_iteration}'s config: {last_config_path}")
@@ -1503,21 +1503,18 @@ class AutoImprovementLoop:
         """Move iteration files to iteration directory"""
         import shutil
 
-        # Copy files to iteration directory
-        if os.path.exists(model_file):
-            shutil.copy(model_file, iteration_dir)
-        if os.path.exists(results_file):
-            shutil.copy(results_file, iteration_dir)
-        if os.path.exists(comparison_file):
-            shutil.copy(comparison_file, iteration_dir)
+        # Move files to iteration directory (remove originals from CWD)
+        for src in [model_file, results_file, comparison_file]:
+            if os.path.exists(src):
+                shutil.move(src, os.path.join(iteration_dir, os.path.basename(src)))
         if os.path.exists(config_path):
             shutil.copy(config_path, os.path.join(iteration_dir, "config.yaml"))
         if confusion_file and os.path.exists(confusion_file):
-            shutil.copy(confusion_file, iteration_dir)
-            self.logger.info(f"📊 Confusion matrix copied to iteration directory")
+            shutil.move(confusion_file, os.path.join(iteration_dir, os.path.basename(confusion_file)))
+            self.logger.info(f"📊 Confusion matrix moved to iteration directory")
         if threshold_file and os.path.exists(threshold_file):
-            shutil.copy(threshold_file, iteration_dir)
-            self.logger.info(f"🎯 Optimized thresholds copied to iteration directory")
+            shutil.move(threshold_file, os.path.join(iteration_dir, os.path.basename(threshold_file)))
+            self.logger.info(f"🎯 Optimized thresholds moved to iteration directory")
 
     def _save_iteration_summary(self, iteration_summary: Dict[str, Any], iteration_dir: str):
         """
@@ -1673,7 +1670,7 @@ class AutoImprovementLoop:
                             parent_iteration=parent_iteration,
                             target_diseases=target_diseases
                         )
-                        phase5_config_path = f"config_iteration_{iteration:03d}.yaml"
+                        phase5_config_path = os.path.join("experiments", "configs", f"config_iteration_{iteration:03d}.yaml")
                         import yaml
                         with open(phase5_config_path, 'w') as f:
                             yaml.dump(phase5_config, f, default_flow_style=False)
@@ -1687,7 +1684,7 @@ class AutoImprovementLoop:
                         self.logger.info("📌 PHASE 1: Using EXACT iteration 12 configuration")
                         # Save the exact config for this iteration
                         phase1_config = self._get_phase1_config(iteration=iteration)
-                        phase1_config_path = f"config_iteration_{iteration:03d}.yaml"
+                        phase1_config_path = os.path.join("experiments", "configs", f"config_iteration_{iteration:03d}.yaml")
                         import yaml
                         with open(phase1_config_path, 'w') as f:
                             yaml.dump(phase1_config, f, default_flow_style=False)
@@ -1814,7 +1811,7 @@ class AutoImprovementLoop:
                         new_config = config_manager.create_new_config(suggested_changes, iteration + 1)
 
                         # Save new config
-                        next_config_path = f"config_iteration_{iteration + 1:03d}.yaml"
+                        next_config_path = os.path.join("experiments", "configs", f"config_iteration_{iteration + 1:03d}.yaml")
                         config_manager.save_config(new_config, next_config_path)
 
                         self.logger.info(f"  New config saved: {next_config_path}")

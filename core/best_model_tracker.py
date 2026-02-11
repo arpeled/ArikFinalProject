@@ -85,7 +85,7 @@ class BestModelTracker:
 
         # Try multiple locations
         candidates = [
-            f"config_iteration_{self.best_iteration:03d}.yaml",
+            os.path.join("experiments", "configs", f"config_iteration_{self.best_iteration:03d}.yaml"),
             os.path.join(self.output_dir, f"iteration_{self.best_iteration:03d}", "config.yaml")
         ]
 
@@ -128,7 +128,7 @@ class BestModelTracker:
             return None
 
         # Create new config path
-        new_config_path = f"config_iteration_{next_iteration:03d}.yaml"
+        new_config_path = os.path.join("experiments", "configs", f"config_iteration_{next_iteration:03d}.yaml")
 
         # Copy best config to new iteration
         shutil.copy(best_config, new_config_path)

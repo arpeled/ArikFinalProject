@@ -106,7 +106,7 @@ class ConfigManager:
         if config is None:
             config = self.config
 
-        output_path = f"config_iteration_{iteration:03d}.yaml"
+        output_path = os.path.join("experiments", "configs", f"config_iteration_{iteration:03d}.yaml")
         self.save_config(config, output_path)
         return output_path
 

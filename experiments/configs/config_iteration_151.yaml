@@ -94,7 +94,7 @@ loss:
 metadata:
   baseline_iteration: 84
   config_version: '1.0'
-  created_at: '2026-02-09 15:30:36'
+  created_at: '2026-02-10 21:45:20'
   description: 'PHASE 5: Class-specific AUC improvement (targets: Pneumonia, Fibrosis,
     Edema)'
   iteration: 151
