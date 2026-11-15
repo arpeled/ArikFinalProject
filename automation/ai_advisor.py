@@ -1170,7 +1170,7 @@ Provide your analysis and suggest changes in JSON format.
         # Count improvements for all metrics
         metrics = ['AUC', 'F1_Score', 'Recall', 'Accuracy', 'Specificity', 'Precision', 'Sensitivity']
 
-        summary.append(f"Comparison with Wang et al. Baseline:")
+        summary.append(f"Comparison with the course baseline (Coursera DenseNet-121 notebook):")
         summary.append(f"Classes Better/Worse/Equal:")
 
         for metric in metrics:

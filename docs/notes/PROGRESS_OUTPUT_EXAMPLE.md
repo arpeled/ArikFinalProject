@@ -86,7 +86,7 @@ Results saved to pipeline_results_20241227-143000.csv
 ================================================================================
 📊 [Iteration 1] PHASE 3/4: BASELINE COMPARISON
 ================================================================================
-Comparing results with Wang et al. baseline...
+Comparing results with the course baseline...
 Summary: 8 better, 6 worse, 0 equal
 
 ✅ Comparison phase completed in 2.1 seconds

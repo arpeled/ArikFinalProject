@@ -241,7 +241,7 @@ ls auto_improvement_runs/iteration_006/
 # You'll find:
 # - iteration_summary.json (metrics, AI status)
 # - pipeline_results_*.csv (per-class results)
-# - baseline_comparison_*.csv (vs Wang et al.)
+# - baseline_comparison_*.csv (vs the course baseline (Coursera DenseNet-121 notebook))
 # - config.yaml (configuration used)
 # - ai_analysis_error_*.txt (if AI failed)
 ```

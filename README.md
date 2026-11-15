@@ -167,6 +167,7 @@ uv run python main.py --single --config experiments/configs/config_baseline.yaml
 uv run python analysis/thesis_chapter5_figures.py
 uv run python analysis/thesis_appendix_b_figures.py
 uv run python analysis/thesis_dataset_analysis.py
+uv run python analysis/thesis_appendix_c_axes_timeline.py   # Figure C.1
 ```
 
 ---
@@ -175,7 +176,7 @@ uv run python analysis/thesis_dataset_analysis.py
 
 All experiment outputs are stored under `experiments/`:
 
-- **`auto_improvement_runs/`**: Contains 150 iteration directories (`iteration_001` through `iteration_150`). Each iteration includes its YAML config, trained model weights (`.pth`), test results CSV, confusion matrix JSON, optimized thresholds JSON, AI analysis text, and an iteration summary.
+- **`auto_improvement_runs/`**: Contains the experiment directories (`iteration_001` through `iteration_152`; 148 directories, 144 with a logged test result). A complete directory includes its YAML config, test results CSV, confusion matrix JSON, optimized thresholds JSON, AI analysis text, and an iteration summary; some directories are incomplete (experiments without a logged test result, and experiments 1–5, whose overwritten metadata was moved to `unassigned_runs/`). Model weights (`.pth`) are **not** included (see *What is not in this repository* below). `auto_improvement_runs/unassigned_runs/` holds files that had been mis-filed into experiments 1–5; see its README.
 - **`configs/`**: Baseline and per-iteration YAML configuration files.
 - **`results/`**: Aggregated comparison CSVs, retrospective analysis, and evaluation summaries.
 - **`logs/`**: Training logs and run information files.
@@ -191,6 +192,14 @@ Iteration outputs follow the naming pattern `pipeline_results_YYYYMMDD-HHMMSS.cs
 - Train/validation splits use `GroupShuffleSplit` with `random_state=42`, grouped by `Patient ID`.
 - This ensures no patient appears in both training and validation sets (preventing data leakage).
 - The test set (`test_data.csv`) is fixed and separate from the train/validation split.
+
+### What is not in this repository
+
+- **Model weights** (`*.pth`) and **saved test predictions** (`*.npz`) are excluded by `.gitignore` and were not preserved. Saved configurations and logged metrics are included for every experiment that has them (144 experiments with a test result; the configurations of experiments 1 and 3 were lost).
+- The following results in the final report were computed from the experiment-92 test predictions and therefore cannot be regenerated from this repository: Figure 5.2 (ROC curves), Figures 6.1–6.4 (hernia analysis), Table B.5 (hernia threshold sweep), and the unseen-patient macro AUC (0.818) in Chapter 5. Earlier scripts that produced simulated versions of these outputs have been removed.
+- The original configurations of experiments 1 and 3 were lost (overwritten); experiments 2, 4 and 5 use the configs preserved in `experiments/configs/`.
+- `uv.lock` is not committed; dependency ranges are in `pyproject.toml`.
+- No global random seed is set for model initialization or data shuffling, so re-running a configuration gives slightly different results (e.g. macro AUC 0.8197–0.8204 for the identical experiments 91–94).
 
 ### Configuration-driven experiments
 

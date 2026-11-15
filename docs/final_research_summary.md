@@ -253,13 +253,15 @@ loss:
 
 ## 5. Comparison to Reference Paper
 
-### Wang et al. Baseline (ChestX-ray14 Paper)
+### Course Baseline (Coursera DenseNet-121 Notebook)
 
-The primary reference is the original ChestX-ray14 paper by Wang et al., which established benchmark AUC values for each disease class.
+The baseline values below are the per-class results of the DenseNet-121 notebook that served as the project's starting point (`experiments/notebooks/chest-x-ray-classifier-densenet121.ipynb`). The notebook is adapted from the Week 1 assignment "Chest X-Ray Medical Diagnosis with Deep Learning" of the Coursera course *AI for Medical Diagnosis* (DeepLearning.AI). **They are not the results of Wang et al. (CVPR 2017)**, which reports AUC for 8 classes only (best macro AUC 0.696 for those classes).
+
+The notebook does not train a model: it evaluates course-provided pretrained weights, whose training split is not documented, on the last 22,378 rows of the dataset CSV, and selects its thresholds on that same data. Its evaluation images may therefore overlap its training data, so the comparison below is indicative only (see `docs/review/Independent_Verification_Report.docx`, finding F12).
 
 ### AUC Comparison (Best Model - Iteration 92)
 
-| Disease | Wang et al. AUC | Our AUC | Delta |
+| Disease | Course baseline AUC | Our AUC | Delta |
 |---------|----------------|---------|-------|
 | Cardiomegaly | 0.919 | 0.911 | -0.008 |
 | Emphysema | 0.916 | 0.910 | -0.006 |
@@ -279,16 +281,16 @@ The primary reference is the original ChestX-ray14 paper by Wang et al., which e
 
 ### Why Macro-AUC Is Comparable
 
-The AUC deficit of ~0.02 is within acceptable range considering:
-1. Different data splits (we use GroupShuffleSplit to prevent patient leakage)
-2. Different preprocessing pipelines
-3. Different training procedures
+The AUC deficit of ~0.02 should not be read as a controlled difference:
+1. Different and partly unknown data splits (the course weights were trained on an undocumented split; our training/validation split is patient-level, our test split image-level)
+2. Different preprocessing pipelines and frameworks (Keras vs PyTorch)
+3. Different training procedures, and the course thresholds were chosen on the evaluation data
 
 The ranking quality of our model is comparable to the reference, with most per-class AUCs within 0.01-0.02 of baseline.
 
 ### F1-Score: A Meaningful Improvement
 
-Wang et al. did not report F1-scores in their original paper, focusing only on AUC. Our work demonstrates that **high AUC alone is insufficient for clinical utility**.
+Wang et al. (CVPR 2017) did not report F1-scores, focusing only on AUC. Our work demonstrates that **high AUC alone is insufficient for clinical utility**.
 
 | Metric | Iteration 12 (High AUC) | Iteration 92 (Balanced) |
 |--------|------------------------|------------------------|

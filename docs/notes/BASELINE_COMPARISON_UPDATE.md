@@ -38,7 +38,7 @@ Updated all **23 previous iterations** (1-25, excluding 6 and 22 which have no r
 
 For **each of the 8 metrics**, the comparison CSV now includes:
 
-1. `Baseline_{metric}` - Wang et al. baseline value
+1. `Baseline_{metric}` - course baseline value (Coursera DenseNet-121 notebook)
 2. `Our_{metric}` - Our model's value
 3. `{metric}_Improvement` - Difference (our value - baseline)
 4. `Better_{metric}` - Yes/No/Equal indicator
@@ -138,7 +138,7 @@ The AI advisor now shows **comprehensive comparison summaries**:
 
 ### Before (Old Format):
 ```
-Comparison with Wang et al. Baseline:
+Comparison with the course baseline (Coursera DenseNet-121 notebook):
   Better AUC: 8/14 classes
   Worse AUC: 6/14 classes
 
@@ -149,7 +149,7 @@ Average Improvements:
 
 ### After (New Format):
 ```
-Comparison with Wang et al. Baseline:
+Comparison with the course baseline (Coursera DenseNet-121 notebook):
 Classes Better/Worse/Equal:
   AUC         :  8/ 6/ 0 (better/worse/equal)
   F1_Score    :  9/ 5/ 0 (better/worse/equal)

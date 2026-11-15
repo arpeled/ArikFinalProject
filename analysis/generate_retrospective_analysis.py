@@ -10,6 +10,10 @@ import pandas as pd
 import yaml
 import glob
 import numpy as np
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # project root, for `analysis.*` imports
+from analysis.iteration_files import select_results_file
 from pathlib import Path
 from datetime import datetime
 
@@ -75,9 +79,9 @@ class RetrospectiveAnalyzer:
 
         else:
             # Try to reconstruct from results CSV
-            results_files = glob.glob(f"{iter_dir}/pipeline_results_*.csv")
-            if results_files:
-                results_df = pd.read_csv(results_files[0])
+            results_file = select_results_file(iter_dir)
+            if results_file is not None:
+                results_df = pd.read_csv(results_file)
                 data['avg_f1'] = results_df['F1_Score'].mean()
                 data['avg_auc'] = results_df['AUC'].mean()
                 data['avg_recall'] = results_df['Recall'].mean()
@@ -129,9 +133,9 @@ class RetrospectiveAnalyzer:
             data['has_augmentation'] = 'additional_transforms' in aug_config
 
         # Load per-disease results
-        results_files = glob.glob(f"{iter_dir}/pipeline_results_*.csv")
-        if results_files:
-            results_df = pd.read_csv(results_files[0])
+        results_file = select_results_file(iter_dir)
+        if results_file is not None:
+            results_df = pd.read_csv(results_file)
 
             # Add per-disease metrics for key diseases
             for disease in ['Infiltration', 'Effusion', 'Atelectasis', 'Nodule', 'Mass', 'Pneumonia']:

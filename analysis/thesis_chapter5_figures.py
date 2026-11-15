@@ -17,8 +17,14 @@ from pathlib import Path
 import json
 import yaml
 import warnings
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # project root, for `analysis.*` imports
+from analysis.iteration_files import select_results_file
 
 warnings.filterwarnings('ignore')
+# ...but never hide the warning that a folder holds several results files (analysis/iteration_files.py)
+warnings.filterwarnings('always', message=r'.*results files found')
 
 # =============================================================================
 # CONFIGURATION
@@ -118,13 +124,11 @@ def load_iteration_results(iteration_num):
     iter_dir = ITERATIONS_DIR / f"iteration_{iteration_num:03d}"
 
     # Find the results CSV file
-    csv_files = list(iter_dir.glob("pipeline_results_*.csv"))
-    if not csv_files:
+    results_file = select_results_file(iter_dir)
+    if results_file is None:
         print(f"  Warning: No results found for iteration {iteration_num}")
         return None
 
-    # Use the most recent file
-    results_file = sorted(csv_files)[-1]
     df = pd.read_csv(results_file)
     df['iteration'] = iteration_num
 
@@ -346,88 +350,6 @@ def generate_auc_barchart(results, output_name='figure_5_1_baseline_auc_barchart
     plt.savefig(output_path, dpi=300, facecolor='white', bbox_inches='tight')
     plt.close()
     print(f"  Saved: {output_path}")
-
-
-def generate_baseline_roc_curves(results, output_name='figure_5_1_baseline_roc_curves'):
-    """
-    Figure 5.1b: ROC curves for three representative diseases.
-    - Effusion (common)
-    - Cardiomegaly (medium frequency)
-    - Hernia (rare)
-    """
-    print("\n" + "="*60)
-    print("FIGURE 5.1b: Baseline ROC Curves (3 Representative Diseases)")
-    print("="*60)
-
-    if 'best_bce_auc' not in results:
-        print("  Error: Best BCE iteration not found")
-        return
-
-    setup_thesis_style()
-
-    # Get AUC values from results
-    bce_df = results['best_bce_auc'].set_index('Label')
-
-    # Define the three representative diseases
-    diseases = {
-        'Effusion': {'color': COLORS['dark'], 'linestyle': '-', 'label': 'Common'},
-        'Cardiomegaly': {'color': COLORS['medium'], 'linestyle': '--', 'label': 'Medium'},
-        'Hernia': {'color': COLORS['negative'], 'linestyle': ':', 'label': 'Rare'}
-    }
-
-    fig, ax = plt.subplots(figsize=(8, 8))
-
-    # Plot ROC curve for each disease
-    # Note: Since we don't have raw predictions, we simulate ROC curves
-    # based on the AUC values using a parametric approach
-    for disease, style in diseases.items():
-        auc_value = bce_df.loc[disease, 'AUC'] if disease in bce_df.index else 0.5
-
-        # Generate smooth ROC curve that achieves the target AUC
-        # Using a power-law parameterization: TPR = FPR^((1-AUC)/AUC)
-        fpr = np.linspace(0, 1, 100)
-        if auc_value > 0.5:
-            # Shape parameter based on AUC
-            shape = (1 - auc_value) / auc_value if auc_value < 1 else 0.01
-            tpr = fpr ** shape
-        else:
-            tpr = fpr  # Random classifier
-
-        ax.plot(fpr, tpr, color=style['color'], linestyle=style['linestyle'],
-                linewidth=2.5, label=f"{disease} ({style['label']}) - AUC: {auc_value:.3f}")
-
-    # Diagonal reference line (random classifier)
-    ax.plot([0, 1], [0, 1], 'k--', linewidth=1, alpha=0.5, label='Random (AUC: 0.500)')
-
-    # Labels and formatting
-    ax.set_xlabel('False Positive Rate (1 - Specificity)', fontweight='bold', fontsize=12)
-    ax.set_ylabel('True Positive Rate (Sensitivity)', fontweight='bold', fontsize=12)
-    ax.set_title('ROC Curves for Representative Disease Classes\n(Baseline BCE Model)',
-                 fontweight='bold', pad=15, fontsize=13)
-
-    ax.set_xlim(-0.02, 1.02)
-    ax.set_ylim(-0.02, 1.02)
-    ax.set_aspect('equal')
-
-    # Legend
-    ax.legend(loc='lower right', framealpha=0.95, fontsize=10)
-
-    # Grid
-    ax.grid(True, alpha=0.3)
-
-    plt.tight_layout()
-
-    # Save
-    output_path = OUTPUT_DIR / f"{output_name}.png"
-    plt.savefig(output_path, dpi=300, facecolor='white', bbox_inches='tight')
-    plt.close()
-    print(f"  Saved: {output_path}")
-
-    # Print AUC values
-    print("\n  AUC Values:")
-    for disease in diseases.keys():
-        auc = bce_df.loc[disease, 'AUC'] if disease in bce_df.index else 0
-        print(f"    {disease}: {auc:.4f}")
 
 
 # =============================================================================
@@ -784,240 +706,6 @@ def generate_architecture_comparison_figure(results, output_name='figure_5_3_arc
 # SECTION 5.4: RARE DISEASE ANALYSIS (HERNIA)
 # =============================================================================
 
-def generate_hernia_threshold_table(results, output_name='table_5_5_hernia_thresholds'):
-    """
-    Table 5.5: Hernia Precision/Recall/F1 at multiple thresholds.
-    """
-    print("\n" + "="*60)
-    print("TABLE 5.5: Hernia Performance at Different Thresholds")
-    print("="*60)
-
-    # Simulate different threshold scenarios based on available data
-    # In practice, you would load predictions and compute these
-    thresholds = [0.05, 0.10, 0.15, 0.20, 0.30, 0.50]
-
-    # Using iteration 92 Hernia data as reference (actual values from logs)
-    # These are representative values based on the experiment results
-    table_data = [
-        {'Threshold': 0.05, 'TP': 15, 'FP': 2500, 'TN': 19885, 'FN': 24,
-         'Precision': 0.0060, 'Recall': 0.3846, 'F1': 0.0118},
-        {'Threshold': 0.10, 'TP': 8, 'FP': 1200, 'TN': 21185, 'FN': 31,
-         'Precision': 0.0066, 'Recall': 0.2051, 'F1': 0.0128},
-        {'Threshold': 0.15, 'TP': 5, 'FP': 600, 'TN': 21785, 'FN': 34,
-         'Precision': 0.0083, 'Recall': 0.1282, 'F1': 0.0155},
-        {'Threshold': 0.20, 'TP': 3, 'FP': 300, 'TN': 22085, 'FN': 36,
-         'Precision': 0.0099, 'Recall': 0.0769, 'F1': 0.0175},
-        {'Threshold': 0.30, 'TP': 1, 'FP': 100, 'TN': 22285, 'FN': 38,
-         'Precision': 0.0099, 'Recall': 0.0256, 'F1': 0.0143},
-        {'Threshold': 0.50, 'TP': 0, 'FP': 0, 'TN': 22385, 'FN': 39,
-         'Precision': 0.0000, 'Recall': 0.0000, 'F1': 0.0000},
-    ]
-
-    table_df = pd.DataFrame(table_data)
-    table_df['Precision'] = table_df['Precision'].apply(lambda x: f"{x:.4f}")
-    table_df['Recall'] = table_df['Recall'].apply(lambda x: f"{x:.4f}")
-    table_df['F1'] = table_df['F1'].apply(lambda x: f"{x:.4f}")
-
-    # Save
-    output_path = OUTPUT_DIR / f"{output_name}.csv"
-    table_df.to_csv(output_path, index=False)
-    print(f"  Saved: {output_path}")
-
-    print("\n  Key Insight: Hernia detection shows fundamental trade-off")
-    print("  - Lower thresholds: Higher recall but very low precision")
-    print("  - Higher thresholds: Zero detections due to extreme imbalance")
-
-    return table_df
-
-
-def generate_hernia_pr_curve(output_name='figure_5_4_hernia_pr_curve'):
-    """
-    Figure 5.4: Precision-Recall curve for Hernia.
-    """
-    print("\n" + "="*60)
-    print("FIGURE 5.4: Hernia Precision-Recall Curve")
-    print("="*60)
-
-    setup_thesis_style()
-
-    # Simulated PR curve data based on experiment results
-    # In practice, load from saved predictions
-    recalls = np.array([0.0, 0.03, 0.08, 0.13, 0.21, 0.38, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
-    precisions = np.array([1.0, 0.15, 0.02, 0.015, 0.01, 0.008, 0.005, 0.004, 0.003, 0.002, 0.0018, 0.0017])
-
-    fig, ax = plt.subplots(figsize=(8, 6))
-
-    ax.plot(recalls, precisions, color=COLORS['dark'], linewidth=2, marker='o',
-            markersize=4, label='Hernia')
-
-    # Fill area under curve
-    ax.fill_between(recalls, precisions, alpha=0.2, color=COLORS['dark'])
-
-    # Baseline (random classifier)
-    baseline_precision = 39 / 22424  # Hernia prevalence in test set
-    ax.axhline(y=baseline_precision, color=COLORS['negative'], linestyle='--',
-               linewidth=1.5, label=f'Random Baseline ({baseline_precision:.4f})')
-
-    # Labels
-    ax.set_xlabel('Recall', fontweight='bold')
-    ax.set_ylabel('Precision', fontweight='bold')
-    ax.set_title('Precision-Recall Curve for Hernia Detection',
-                 fontweight='bold', pad=15)
-
-    ax.set_xlim(0, 1.0)
-    ax.set_ylim(0, 0.2)  # Zoomed in due to low precision values
-
-    ax.legend(loc='upper right', framealpha=0.9)
-    ax.grid(True, alpha=0.3)
-
-    # Add annotation about challenge
-    ax.annotate('Extreme class imbalance\n(0.17% prevalence)\nlimits achievable precision',
-                xy=(0.5, 0.15), fontsize=10, ha='center',
-                bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
-
-    plt.tight_layout()
-
-    # Save
-    output_path = OUTPUT_DIR / f"{output_name}.png"
-    plt.savefig(output_path, dpi=300, facecolor='white', bbox_inches='tight')
-    plt.close()
-    print(f"  Saved: {output_path}")
-
-
-def generate_hernia_tradeoff_figure(output_name='figure_5_5_hernia_tradeoff'):
-    """
-    Figure 5.5: Recall vs Precision trade-off plot for Hernia.
-    """
-    print("\n" + "="*60)
-    print("FIGURE 5.5: Hernia Recall-Precision Trade-off")
-    print("="*60)
-
-    setup_thesis_style()
-
-    # Threshold points with metrics
-    thresholds = [0.05, 0.10, 0.15, 0.20, 0.30, 0.50]
-    recalls = [0.385, 0.205, 0.128, 0.077, 0.026, 0.0]
-    precisions = [0.006, 0.007, 0.008, 0.010, 0.010, 0.0]
-    f1_scores = [0.012, 0.013, 0.016, 0.018, 0.014, 0.0]
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    # Scatter plot with size based on F1
-    sizes = [f1 * 3000 + 50 for f1 in f1_scores]  # Scale for visibility
-
-    scatter = ax.scatter(recalls, precisions, s=sizes, c=thresholds,
-                        cmap='Greys_r', edgecolors=COLORS['dark'],
-                        linewidth=1.5, alpha=0.7)
-
-    # Add threshold labels
-    for i, (r, p, t) in enumerate(zip(recalls, precisions, thresholds)):
-        if t > 0:
-            ax.annotate(f't={t}', (r, p), textcoords="offset points",
-                       xytext=(10, 5), fontsize=9)
-
-    # Colorbar
-    cbar = plt.colorbar(scatter, ax=ax, shrink=0.8)
-    cbar.set_label('Threshold Value', fontweight='bold')
-
-    # Labels
-    ax.set_xlabel('Recall', fontweight='bold')
-    ax.set_ylabel('Precision', fontweight='bold')
-    ax.set_title('Hernia Detection: Threshold Selection Trade-off',
-                 fontweight='bold', pad=15)
-
-    ax.set_xlim(-0.05, 0.5)
-    ax.set_ylim(0, 0.015)
-
-    # Best F1 annotation
-    best_idx = np.argmax(f1_scores)
-    ax.annotate(f'Best F1\n(t={thresholds[best_idx]})',
-                xy=(recalls[best_idx], precisions[best_idx]),
-                xytext=(recalls[best_idx] + 0.1, precisions[best_idx] + 0.003),
-                arrowprops=dict(arrowstyle='->', color=COLORS['dark']),
-                fontsize=10,
-                bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
-
-    ax.grid(True, alpha=0.3)
-
-    plt.tight_layout()
-
-    # Save
-    output_path = OUTPUT_DIR / f"{output_name}.png"
-    plt.savefig(output_path, dpi=300, facecolor='white', bbox_inches='tight')
-    plt.close()
-    print(f"  Saved: {output_path}")
-
-
-def generate_hernia_recall_vs_threshold(output_name='figure_5_3_hernia_recall_vs_threshold'):
-    """
-    Figure 5.3b: Hernia Recall as a function of decision threshold.
-    Shows how recall drops as threshold increases.
-    """
-    print("\n" + "="*60)
-    print("FIGURE 5.3b: Hernia Recall vs Threshold")
-    print("="*60)
-
-    setup_thesis_style()
-
-    # Threshold vs Recall data (based on BCE baseline experiment)
-    # More granular data points for smooth curve
-    thresholds = np.array([0.01, 0.02, 0.03, 0.05, 0.07, 0.10, 0.12, 0.15,
-                           0.18, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50])
-    recalls = np.array([0.72, 0.62, 0.54, 0.385, 0.31, 0.205, 0.17, 0.128,
-                        0.10, 0.077, 0.05, 0.026, 0.015, 0.01, 0.005, 0.0])
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    # Main curve
-    ax.plot(thresholds, recalls, color=COLORS['dark'], linewidth=2.5,
-            marker='o', markersize=6, label='Hernia Recall')
-
-    # Fill area under curve
-    ax.fill_between(thresholds, recalls, alpha=0.15, color=COLORS['dark'])
-
-    # Highlight key threshold points
-    key_thresholds = {0.05: 'Low (t=0.05)', 0.15: 'Medium (t=0.15)', 0.50: 'High (t=0.50)'}
-    for t, label in key_thresholds.items():
-        idx = np.argmin(np.abs(thresholds - t))
-        ax.scatter([thresholds[idx]], [recalls[idx]], s=150,
-                   color=COLORS['negative'], zorder=5, edgecolors='white', linewidth=2)
-        ax.annotate(f'{label}\nRecall: {recalls[idx]:.2f}',
-                   xy=(thresholds[idx], recalls[idx]),
-                   xytext=(thresholds[idx] + 0.05, recalls[idx] + 0.08),
-                   fontsize=9, ha='left',
-                   arrowprops=dict(arrowstyle='->', color=COLORS['medium'], lw=1),
-                   bbox=dict(boxstyle='round', facecolor='white', alpha=0.9))
-
-    # Reference line at 50% recall
-    ax.axhline(y=0.5, color=COLORS['medium'], linestyle='--', linewidth=1.5,
-               alpha=0.7, label='50% Recall Reference')
-
-    # Labels
-    ax.set_xlabel('Decision Threshold', fontweight='bold', fontsize=12)
-    ax.set_ylabel('Recall (Sensitivity)', fontweight='bold', fontsize=12)
-    ax.set_title('Hernia Detection: Recall Degradation with Increasing Threshold',
-                 fontweight='bold', pad=15, fontsize=13)
-
-    ax.set_xlim(0, 0.55)
-    ax.set_ylim(0, 0.85)
-
-    ax.legend(loc='upper right', framealpha=0.95)
-    ax.grid(True, alpha=0.3)
-
-    # Add annotation about the challenge
-    ax.annotate('Higher thresholds reduce\nfalse positives but miss\nalmost all true cases',
-                xy=(0.35, 0.35), fontsize=10, ha='center',
-                bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
-
-    plt.tight_layout()
-
-    # Save
-    output_path = OUTPUT_DIR / f"{output_name}.png"
-    plt.savefig(output_path, dpi=300, facecolor='white', bbox_inches='tight')
-    plt.close()
-    print(f"  Saved: {output_path}")
-
-
 # =============================================================================
 # BONUS: CROSS-ITERATION PROGRESSION FIGURE
 # =============================================================================
@@ -1119,7 +807,9 @@ def main():
     generate_baseline_auc_table(results)
     generate_baseline_summary_table(results)
     generate_auc_barchart(results)
-    generate_baseline_roc_curves(results)  # NEW: ROC curves for 3 diseases
+    # generate_baseline_roc_curves was removed: it produced a simulated or hard-coded version of a result that
+    # requires the experiment-92 test predictions, which are not in this repository
+    # (see docs/review/Independent_Verification_Report.docx, finding F2).
 
     # Section 5.2: Loss Function Comparison
     print("\n" + "-"*50)
@@ -1140,10 +830,18 @@ def main():
     print("\n" + "-"*50)
     print("SECTION 5.4: Rare Disease Analysis (Hernia)")
     print("-"*50)
-    generate_hernia_threshold_table(results)
-    generate_hernia_pr_curve()
-    generate_hernia_tradeoff_figure()
-    generate_hernia_recall_vs_threshold()  # NEW: Recall vs Threshold plot
+    # generate_hernia_threshold_table was removed: it produced a simulated or hard-coded version of a result that
+    # requires the experiment-92 test predictions, which are not in this repository
+    # (see docs/review/Independent_Verification_Report.docx, finding F2).
+    # generate_hernia_pr_curve was removed: it produced a simulated or hard-coded version of a result that
+    # requires the experiment-92 test predictions, which are not in this repository
+    # (see docs/review/Independent_Verification_Report.docx, finding F2).
+    # generate_hernia_tradeoff_figure was removed: it produced a simulated or hard-coded version of a result that
+    # requires the experiment-92 test predictions, which are not in this repository
+    # (see docs/review/Independent_Verification_Report.docx, finding F2).
+    # generate_hernia_recall_vs_threshold was removed: it produced a simulated or hard-coded version of a result that
+    # requires the experiment-92 test predictions, which are not in this repository
+    # (see docs/review/Independent_Verification_Report.docx, finding F2).
 
     # Bonus: Progression Figure
     print("\n" + "-"*50)

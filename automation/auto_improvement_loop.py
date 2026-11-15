@@ -15,7 +15,7 @@ import sys
 _this_dir = os.path.dirname(os.path.abspath(__file__))
 _project_root = os.path.dirname(_this_dir)
 _core_dir = os.path.join(_project_root, 'core')
-for _d in [_this_dir, _core_dir]:
+for _d in [_this_dir, _core_dir, _project_root]:
     if _d not in sys.path:
         sys.path.insert(0, _d)
 import time
@@ -30,6 +30,7 @@ from dataclasses import dataclass, field, asdict
 
 from config_manager import ConfigManager
 from config_based_pipeline import ConfigBasedTrainer
+from analysis.iteration_files import select_results_file
 from chest_xray_test_pipeline import test_model_pipeline
 from ai_advisor import AIAdvisor
 from telegram_notifier import TelegramNotifier
@@ -117,7 +118,13 @@ class IterationLog:
         return asdict(self)
 
 
-# Wang et al. baseline results
+# Course baseline: per-class results of the DenseNet-121 notebook used as the project's starting point
+# (experiments/notebooks/chest-x-ray-classifier-densenet121.ipynb), adapted from the Week 1 assignment
+# "Chest X-Ray Medical Diagnosis with Deep Learning" of the Coursera course "AI for Medical Diagnosis"
+# (DeepLearning.AI). These are NOT the results of Wang et al. (CVPR 2017), which reports AUC only, for 8 classes.
+# The notebook evaluates course-provided pretrained weights whose training split is undocumented, and its
+# thresholds were chosen on the evaluation data, so these values are not directly comparable with ours
+# (see docs/review/Independent_Verification_Report.docx, finding F12).
 BASELINE_RESULTS = {
     'Cardiomegaly': {'AUC': 0.919101, 'Threshold': 0.489469, 'Sensitivity': 0.865, 'Specificity': 0.819083, 'Accuracy': 0.820225, 'Precision': 0.112312, 'Recall': 0.863322, 'F1_Score': 0.198765},
     'Emphysema': {'AUC': 0.916227, 'Threshold': 0.445399, 'Sensitivity': 0.866, 'Specificity': 0.819995, 'Accuracy': 0.82103, 'Precision': 0.103055, 'Recall': 0.864245, 'F1_Score': 0.184152},
@@ -349,14 +356,12 @@ class AutoImprovementLoop:
                     # Fallback: reconstruct from CSV files (for backward compatibility)
                     self.logger.info(f"  No summary file found for iteration {iter_num}, reconstructing from CSV...")
 
-                    results_files = [f for f in os.listdir(iter_dir) if f.startswith("pipeline_results_") and f.endswith(".csv")]
+                    results_file = select_results_file(iter_dir)
 
-                    if not results_files:
+                    if results_file is None:
                         self.logger.warning(f"  No results file found for iteration {iter_num}, skipping")
                         continue
 
-                    # Load the most recent results file
-                    results_file = os.path.join(iter_dir, sorted(results_files)[-1])
                     results_df = pd.read_csv(results_file)
 
                     # Extract metrics

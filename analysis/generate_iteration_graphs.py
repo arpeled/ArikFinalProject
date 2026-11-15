@@ -14,6 +14,10 @@ import json
 import argparse
 import logging
 from pathlib import Path
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # project root, for `analysis.*` imports
+from analysis.iteration_files import select_results_file
 from typing import Dict, List, Tuple, Optional
 import pandas as pd
 import numpy as np
@@ -176,14 +180,11 @@ class IterationGraphGenerator:
             return None
 
         # Find pipeline_results CSV file
-        csv_files = [f for f in os.listdir(iter_dir) if f.startswith('pipeline_results_') and f.endswith('.csv')]
+        csv_file = select_results_file(iter_dir)
 
-        if not csv_files:
+        if csv_file is None:
             logger.warning(f"No pipeline_results CSV found for iteration {iteration}")
             return None
-
-        # Use the most recent file if multiple exist
-        csv_file = os.path.join(iter_dir, sorted(csv_files)[-1])
 
         try:
             df = pd.read_csv(csv_file)
