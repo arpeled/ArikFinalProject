@@ -214,7 +214,7 @@ auto_improvement_runs/
    - Saves results to CSV
 
 3. **Comparison Phase**
-   - Compares results with Wang et al. baseline
+   - Compares results with the course baseline (Coursera DenseNet-121 notebook)
    - Identifies improvements/regressions
    - Saves comparison to CSV
 
@@ -420,6 +420,6 @@ For questions about this auto-improvement system, refer to the main project READ
 
 ## Acknowledgments
 
-- Wang et al. for ChestX-ray8 baseline results
+- Wang et al. for the ChestX-ray8 dataset; baseline results are from the course baseline (Coursera DenseNet-121 notebook)
 - OpenAI GPT-4 for intelligent optimization suggestions
 - PyTorch and torchvision teams

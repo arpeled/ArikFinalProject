@@ -135,7 +135,7 @@ FOR each iteration from start_iteration to max_iterations:
     4. Get enforced configuration for phase
     5. Run training via ConfigBasedTrainer
     6. Run evaluation via test_model_pipeline
-    7. Compare against baseline (Wang et al.)
+    7. Compare against the course baseline (Coursera DenseNet-121 notebook)
     8. Get AI analysis and suggestions
     9. Generate next iteration's configuration
     10. Save all artifacts and update trackers
@@ -159,7 +159,7 @@ Phase 2: TESTING
 └── Calculate metrics
 
 Phase 3: BASELINE COMPARISON
-├── Compare against Wang et al. baseline
+├── Compare against the course baseline
 ├── Calculate per-class deltas
 └── Generate comparison report
 

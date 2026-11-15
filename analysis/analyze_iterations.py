@@ -5,6 +5,10 @@ import os
 import pandas as pd
 import json
 from pathlib import Path
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # project root, for `analysis.*` imports
+from analysis.iteration_files import select_results_file
 
 output_dir = "experiments/auto_improvement_runs"
 
@@ -52,9 +56,9 @@ for i in range(1, 11):
         })
     else:
         # Fallback to CSV
-        csv_files = list(Path(iter_dir).glob("pipeline_results_*.csv"))
-        if csv_files:
-            df = pd.read_csv(csv_files[0])
+        results_file = select_results_file(iter_dir)
+        if results_file is not None:
+            df = pd.read_csv(results_file)
             avg_auc = df['AUC'].mean()
             avg_f1 = df.get('F1_Score', pd.Series([0])).mean()
             avg_recall = df.get('Recall', pd.Series([0])).mean()

@@ -13,7 +13,13 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-# Wang et al. baseline results from ChestX-ray8 paper
+# Course baseline: per-class results of the DenseNet-121 notebook used as the project's starting point
+# (experiments/notebooks/chest-x-ray-classifier-densenet121.ipynb), adapted from the Week 1 assignment
+# "Chest X-Ray Medical Diagnosis with Deep Learning" of the Coursera course "AI for Medical Diagnosis"
+# (DeepLearning.AI). These are NOT the results of Wang et al. (CVPR 2017), which reports AUC only, for 8 classes.
+# The notebook evaluates course-provided pretrained weights whose training split is undocumented, and its
+# thresholds were chosen on the evaluation data, so these values are not directly comparable with ours
+# (see docs/review/Independent_Verification_Report.docx, finding F12).
 BASELINE_RESULTS = {
     'Cardiomegaly': {'AUC': 0.919101, 'Threshold': 0.489469, 'Sensitivity': 0.865, 'Specificity': 0.819083, 'Accuracy': 0.820225, 'Precision': 0.112312, 'Recall': 0.863322, 'F1_Score': 0.198765},
     'Emphysema': {'AUC': 0.916227, 'Threshold': 0.445399, 'Sensitivity': 0.866, 'Specificity': 0.819995, 'Accuracy': 0.82103, 'Precision': 0.103055, 'Recall': 0.864245, 'F1_Score': 0.184152},
@@ -80,7 +86,7 @@ class ChestXRayPipeline:
             raise Exception(f"Testing failed: {str(e)}")
     
     def compare_with_baseline(self):
-        """Compare results with Wang et al. baseline"""
+        """Compare results with the course baseline (Coursera DenseNet-121 notebook)"""
         self.log("Comparing results with baseline...")
         
         if not os.path.exists(self.results_file):

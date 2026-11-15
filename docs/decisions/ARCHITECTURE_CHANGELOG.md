@@ -167,7 +167,7 @@ thresholds = {
 8. **F1-Score**: Harmonic mean of Precision/Recall
 
 #### Baseline Comparison
-- **Reference**: Wang et al. ChestX-ray8 paper results
+- **Reference**: course baseline — per-class results of the Coursera "AI for Medical Diagnosis" DenseNet-121 notebook (not Wang et al.; see docs/review/Independent_Verification_Report.docx, F12)
 - **Format**: Side-by-side comparison with improvements
 - **Output**: Baseline → Our → Improvement → Better (Yes/No/Equal)
 

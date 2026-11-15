@@ -19,7 +19,14 @@ import json
 import yaml
 import warnings
 
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))  # project root, for `analysis.*` imports
+from analysis.iteration_files import select_results_file
+
 warnings.filterwarnings('ignore')
+# ...but never hide the warning that a folder holds several results files (analysis/iteration_files.py)
+warnings.filterwarnings('always', message=r'.*results files found')
 
 # =============================================================================
 # CONFIGURATION
@@ -106,12 +113,11 @@ def load_iteration_results(iteration_num):
     """Load pipeline results for a specific iteration."""
     iter_dir = ITERATIONS_DIR / f"iteration_{iteration_num:03d}"
 
-    csv_files = list(iter_dir.glob("pipeline_results_*.csv"))
-    if not csv_files:
+    results_file = select_results_file(iter_dir)
+    if results_file is None:
         print(f"  Warning: No results found for iteration {iteration_num}")
         return None
 
-    results_file = sorted(csv_files)[-1]
     df = pd.read_csv(results_file)
     df['iteration'] = iteration_num
 
@@ -390,88 +396,6 @@ def generate_table_b4_loss_comparison(results):
 # TABLE B5: COMPLETE HERNIA THRESHOLD SWEEP
 # =============================================================================
 
-def generate_table_b5_hernia_threshold_sweep():
-    """
-    Table B5: Detailed Hernia metrics across all evaluated thresholds.
-    """
-    print("\n" + "="*60)
-    print("TABLE B5: Complete Hernia Threshold Sweep")
-    print("="*60)
-
-    # Comprehensive threshold sweep data for Hernia
-    # Based on BCE baseline experiment results
-    # Total Hernia positives in test set: 39
-    # Total test samples: 22,424
-
-    threshold_data = [
-        # Low thresholds - high recall, very low precision
-        {'Threshold': 0.01, 'TP': 28, 'FP': 5500, 'TN': 16885, 'FN': 11,
-         'Precision': 0.0051, 'Recall': 0.7179, 'F1': 0.0100},
-        {'Threshold': 0.02, 'TP': 24, 'FP': 4200, 'TN': 18185, 'FN': 15,
-         'Precision': 0.0057, 'Recall': 0.6154, 'F1': 0.0112},
-        {'Threshold': 0.03, 'TP': 21, 'FP': 3400, 'TN': 18985, 'FN': 18,
-         'Precision': 0.0061, 'Recall': 0.5385, 'F1': 0.0121},
-        {'Threshold': 0.05, 'TP': 15, 'FP': 2500, 'TN': 19885, 'FN': 24,
-         'Precision': 0.0060, 'Recall': 0.3846, 'F1': 0.0116},
-        {'Threshold': 0.07, 'TP': 12, 'FP': 1800, 'TN': 20585, 'FN': 27,
-         'Precision': 0.0066, 'Recall': 0.3077, 'F1': 0.0128},
-
-        # Medium thresholds
-        {'Threshold': 0.10, 'TP': 8, 'FP': 1200, 'TN': 21185, 'FN': 31,
-         'Precision': 0.0066, 'Recall': 0.2051, 'F1': 0.0128},
-        {'Threshold': 0.12, 'TP': 6, 'FP': 900, 'TN': 21485, 'FN': 33,
-         'Precision': 0.0066, 'Recall': 0.1538, 'F1': 0.0128},
-        {'Threshold': 0.15, 'TP': 5, 'FP': 600, 'TN': 21785, 'FN': 34,
-         'Precision': 0.0083, 'Recall': 0.1282, 'F1': 0.0155},
-        {'Threshold': 0.18, 'TP': 4, 'FP': 420, 'TN': 21965, 'FN': 35,
-         'Precision': 0.0094, 'Recall': 0.1026, 'F1': 0.0172},
-        {'Threshold': 0.20, 'TP': 3, 'FP': 300, 'TN': 22085, 'FN': 36,
-         'Precision': 0.0099, 'Recall': 0.0769, 'F1': 0.0175},
-
-        # Higher thresholds - approaching zero recall
-        {'Threshold': 0.25, 'TP': 2, 'FP': 180, 'TN': 22205, 'FN': 37,
-         'Precision': 0.0110, 'Recall': 0.0513, 'F1': 0.0200},
-        {'Threshold': 0.30, 'TP': 1, 'FP': 100, 'TN': 22285, 'FN': 38,
-         'Precision': 0.0099, 'Recall': 0.0256, 'F1': 0.0143},
-        {'Threshold': 0.35, 'TP': 1, 'FP': 50, 'TN': 22335, 'FN': 38,
-         'Precision': 0.0196, 'Recall': 0.0256, 'F1': 0.0222},
-        {'Threshold': 0.40, 'TP': 0, 'FP': 25, 'TN': 22360, 'FN': 39,
-         'Precision': 0.0000, 'Recall': 0.0000, 'F1': 0.0000},
-        {'Threshold': 0.45, 'TP': 0, 'FP': 10, 'TN': 22375, 'FN': 39,
-         'Precision': 0.0000, 'Recall': 0.0000, 'F1': 0.0000},
-        {'Threshold': 0.50, 'TP': 0, 'FP': 0, 'TN': 22385, 'FN': 39,
-         'Precision': 0.0000, 'Recall': 0.0000, 'F1': 0.0000},
-    ]
-
-    table_df = pd.DataFrame(threshold_data)
-
-    # Calculate additional metrics
-    table_df['FPR'] = table_df['FP'] / (table_df['FP'] + table_df['TN'])
-    table_df['Specificity'] = table_df['TN'] / (table_df['TN'] + table_df['FP'])
-    table_df['Accuracy'] = (table_df['TP'] + table_df['TN']) / \
-                           (table_df['TP'] + table_df['TN'] + table_df['FP'] + table_df['FN'])
-
-    # Reorder columns
-    table_df = table_df[['Threshold', 'TP', 'FP', 'TN', 'FN',
-                         'Precision', 'Recall', 'F1', 'Specificity', 'FPR', 'Accuracy']]
-
-    # Format numeric columns
-    for col in ['Precision', 'Recall', 'F1', 'Specificity', 'FPR', 'Accuracy']:
-        table_df[col] = table_df[col].apply(lambda x: f"{x:.4f}")
-
-    output_path = OUTPUT_DIR / "appendix_table_b5_hernia_threshold_sweep.csv"
-    table_df.to_csv(output_path, index=False)
-    print(f"  Saved: {output_path}")
-
-    print(f"\n  Threshold sweep summary:")
-    print(f"    Thresholds evaluated: {len(threshold_data)}")
-    print(f"    Best F1 threshold: 0.35 (F1=0.0222)")
-    print(f"    Best Recall threshold: 0.01 (Recall=0.7179)")
-    print(f"    Zero-detection threshold: >= 0.40")
-
-    return table_df
-
-
 # =============================================================================
 # FIGURE B1: ABSOLUTE BCE VS FOCAL LOSS COMPARISON
 # =============================================================================
@@ -650,11 +574,11 @@ def generate_figure_b3_auc_progression():
             continue
 
         # Load results
-        csv_files = list(iter_dir.glob("pipeline_results_*.csv"))
-        if not csv_files:
+        results_file = select_results_file(iter_dir)
+        if results_file is None:
             continue
 
-        df = pd.read_csv(sorted(csv_files)[-1])
+        df = pd.read_csv(results_file)
         mean_auc = df['AUC'].mean()
 
         # Load config for additional info
@@ -682,7 +606,7 @@ def generate_figure_b3_auc_progression():
     for lt in iter_df['loss_type']:
         if lt == 'BCE':
             colors.append(COLORS['dark'])
-        elif lt == 'FocalLoss':
+        elif lt in ('FocalLoss', 'focal'):
             colors.append(COLORS['medium'])
         else:
             colors.append(COLORS['light'])
@@ -701,15 +625,17 @@ def generate_figure_b3_auc_progression():
                 auc_val = data['metrics']['avg_auc']
                 ax.scatter([iter_num], [auc_val], s=100, c='none',
                           edgecolors=COLORS['dark'], linewidth=2, zorder=3)
-                ax.annotate(metric.replace('_', ' ').title()[:10],
+                # Milestones 91 and 92 sit next to each other: place their labels on opposite sides
+                dx, ha = (-6, 'right') if metric == 'best_f1' else (6, 'left')
+                ax.annotate(f"{metric.replace('_', ' ').title()} (exp. {iter_num})",
                            xy=(iter_num, auc_val),
-                           xytext=(5, 5), textcoords='offset points',
+                           xytext=(dx, 8), textcoords='offset points', ha=ha,
                            fontsize=7, alpha=0.8)
 
     # Labels
-    ax.set_xlabel('Iteration Number', fontweight='bold')
+    ax.set_xlabel('Experiment Number', fontweight='bold')
     ax.set_ylabel('Mean AUC (Macro Average)', fontweight='bold')
-    ax.set_title('Model Performance Progression Across All Iterations',
+    ax.set_title('Model Performance Progression Across All Experiments',
                  fontweight='bold', pad=10)
 
     # Set y-axis limits
@@ -720,7 +646,7 @@ def generate_figure_b3_auc_progression():
     legend_elements = [
         Patch(facecolor=COLORS['dark'], label='BCE Loss'),
         Patch(facecolor=COLORS['medium'], label='Focal Loss'),
-        Patch(facecolor=COLORS['light'], label='Other/Unknown'),
+        Patch(facecolor=COLORS['light'], label='Unknown (configuration not preserved)'),
     ]
     ax.legend(handles=legend_elements, loc='lower right', fontsize=8, framealpha=0.95)
 
@@ -734,9 +660,9 @@ def generate_figure_b3_auc_progression():
     print(f"  Saved: {output_path}")
 
     print(f"\n  Progression summary:")
-    print(f"    Total iterations: {len(iter_df)}")
+    print(f"    Total experiments: {len(iter_df)}")
     print(f"    AUC range: {iter_df['mean_auc'].min():.4f} - {iter_df['mean_auc'].max():.4f}")
-    print(f"    Best iteration: {iter_df.loc[iter_df['mean_auc'].idxmax(), 'iteration']}")
+    print(f"    Best experiment: {iter_df.loc[iter_df['mean_auc'].idxmax(), 'iteration']}")
 
 
 # =============================================================================
@@ -769,7 +695,9 @@ def main():
         generate_table_b3_architecture_auc(results)
         generate_table_b4_loss_comparison(results)
 
-    generate_table_b5_hernia_threshold_sweep()
+    # generate_table_b5_hernia_threshold_sweep was removed: it produced a simulated or hard-coded version of a result that
+    # requires the experiment-92 test predictions, which are not in this repository
+    # (see docs/review/Independent_Verification_Report.docx, finding F2).
 
     # Generate Figures
     print("\n" + "-"*50)

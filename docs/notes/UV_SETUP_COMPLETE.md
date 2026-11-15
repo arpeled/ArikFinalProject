@@ -202,7 +202,7 @@ After running the auto-improvement loop, you'll get:
 - `config.yaml` - Configuration used
 - `pipeline_model_*.pth` - Trained model
 - `pipeline_results_*.csv` - Test metrics
-- `baseline_comparison_*.csv` - vs Wang et al.
+- `baseline_comparison_*.csv` - vs the course baseline (Coursera DenseNet-121 notebook)
 - `ai_analysis_*.txt` - GPT-4 suggestions
 
 ### Final Report
